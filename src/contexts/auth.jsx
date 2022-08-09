@@ -11,17 +11,24 @@ export const AuthProvider = ({ children }) => {
 
         if (storagedUser && storagedToken) {
             //send token if user is authenticated!
-            api.defaults.headers["Authorization"] = `Bearer ${storagedToken}`
+            api.defaults.headers["Authorization"] = storagedToken;
             setUserData(JSON.parse(storagedUser));
         }
     }, [])
+
+    const logout = () => {
+        setUserData(null)
+        localStorage.removeItem("LinkrAuthUser")
+        localStorage.removeItem("LinkrAuthToken")
+    }
 
     return (
         <AuthContext.Provider
             value={{
                 signed: !!userData,
                 userData,
-                setUserData
+                setUserData,
+                logout
             }}>
             {children}
 

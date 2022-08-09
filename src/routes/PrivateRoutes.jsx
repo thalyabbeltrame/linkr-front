@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { TimeLine } from '../pages/TimeLine'
+import { TimeLine } from '../pages/timeLine/TimeLine'
 
 export const PrivateRoutes = () => (
     <Routes>

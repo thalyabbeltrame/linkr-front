@@ -1,5 +1,6 @@
-import { Input, Button, Form } from '../shared/CustomStyles'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Input, Button, Form } from '../shared/CustomStyles'
 import { isEmpty } from '../utils/isEmpty';
 export const SignInForm = () => {
     const [userInfo, setUserInfo] = useState(
@@ -10,7 +11,7 @@ export const SignInForm = () => {
     );
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(isEmpty(userInfo)) {
+        if (isEmpty(userInfo)) {
             alert("Todos os campos devem ser preenchidos!")
         }
         //TODO: request to api to signIn
@@ -18,12 +19,12 @@ export const SignInForm = () => {
     }
 
     const handleChange = (e) => {
-        setUserInfo( (info) => {
+        setUserInfo((info) => {
             return {
                 ...info,
                 [e.target.name]: e.target.value
             }
-        } )
+        })
 
     }
 
@@ -32,7 +33,7 @@ export const SignInForm = () => {
             <Input placeholder='e-mail' name='email' onChange={(e) => handleChange(e)} />
             <Input placeholder='password' name='password' onChange={(e) => handleChange(e)} />
             <Button>Log In</Button>
-
+            <Link to="/sign-up">First time? Create an account!</Link>
         </Form>
     )
 }

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Input, Button, Form } from '../shared/CustomStyles'
-import { isEmpty } from '../utils/isEmpty';
-import { signInRequest } from '../services/apiRequests';
+import { Input, Button, Form } from '../../shared/CustomStyles'
+import { isEmpty } from '../../utils/isEmpty';
+import { signInRequest } from '../../services/apiRequests';
 export const SignInForm = () => {
     const [userInfo, setUserInfo] = useState(
         {

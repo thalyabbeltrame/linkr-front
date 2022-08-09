@@ -27,8 +27,8 @@ export const Button = styled.button`
     font-size: 27px;
     font-weight: 700;
     color: white;
-    background-color: #1877F2;
-    cursor: pointer;
+    background-color: ${props => props.isLoading ? '#4290f6' : '#1877F2' };
+    cursor: ${props => props.isLoading ? 'default' : 'pointer' };
     &:hover {
         background-color: #3386f3;
     }

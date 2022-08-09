@@ -1,12 +1,17 @@
 import { useState } from 'react'
+import GlobalStyles from './shared/GlobalStyles'
 
 function App() {
   
 
   return (
-    <div>
+    <>
+    <GlobalStyles />
+     <div>
       <p>test</p>
     </div>
+    </>
+   
   )
 }
 

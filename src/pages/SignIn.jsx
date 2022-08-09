@@ -1,7 +1,7 @@
-export const SignIn = () => {
-    return (
-        <div>
-      <p>SignIn</p>
-        </div>
-    )
-}
+import { ContainerForm } from "../shared/ContainerForm"
+export const SignIn = () => (
+    <ContainerForm>
+        <p>FormLogin</p>
+    </ContainerForm>
+)
+

@@ -1,8 +1,10 @@
 import styled from "styled-components"
 import { AiOutlineDown } from "react-icons/ai"
 import { useState } from "react"
+import { useAuth } from "../../contexts/auth"
 
 export default function Logout() {
+    const { userData, logout } = useAuth();
     const [animation, setAnimation] = useState("")
     function handleClick(){
         if(animation === "close" || animation === ""){
@@ -18,9 +20,9 @@ export default function Logout() {
                 <AiOutlineDown 
                     className={`logout-icon ${animation}`}
                     onClick={handleClick}/>
-                <img src="https://ih1.redbubble.net/image.1311114349.9148/flat,750x1000,075,f.jpg" alt="" />
+                <img onClick={handleClick} src={userData.image} alt={userData.username} />
             </div>
-            <h2>Logout</h2>
+            <h2 onClick={logout}>Logout</h2>
         </Container>
     )
 }
@@ -42,11 +44,13 @@ const Container = styled.div`
         color: #ffffff;
     }
     div > img {
+        cursor: pointer;
         width: 50px;
         height: 50px;
         border-radius: 50%;
     }
     .logout-icon{
+        cursor: pointer;
         margin-right: 10px;
     }
     .open {
@@ -56,6 +60,7 @@ const Container = styled.div`
         animation: for-down 0.6s forwards;
     }
     h2 {
+        cursor: pointer;
         display: ${props => props.status === "" || props.status === "close" ? "none": "block"};
         font-family: 'Lato', sans-serif;
         font-weight: 700;

@@ -36,7 +36,6 @@ width: 50px;
 height: 50px;
 background: url(image.png);
 border-radius: 26.5px;
-
 `;
 
 const InputsContainer = styled.div`

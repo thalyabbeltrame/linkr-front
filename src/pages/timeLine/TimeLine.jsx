@@ -2,8 +2,6 @@ import React from 'react'
 import { PublishComponent } from "./PublishComponent";
 import styled from 'styled-components';
 import { Header } from "../../shared/components/Header";
-
-
 export const TimeLine = () => {
   return (
     <>

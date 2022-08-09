@@ -1,9 +1,7 @@
 import React from 'react'
 
-const PublishComponent = () => {
+export const PublishComponent = () => {
   return (
     <div>PublishComponent</div>
   )
 }
-
-export default PublishComponent

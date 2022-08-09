@@ -1,8 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
-import { SignIn } from '../pages/SignIn'
+import { SignIn } from '../pages/signIn/SignIn'
+import { SignUp } from '../pages/signUp/SignUp'
 
 export const PublicRoutes = () => (
     <Routes>
         <Route path='/' element={ <SignIn /> }/>
+        <Route path='/sign-up' element={ <SignUp /> }/>
     </Routes>
 )

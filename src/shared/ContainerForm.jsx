@@ -69,10 +69,11 @@ const FormContainer = styled.div`
     justify-content: center;
     width: 40%;
     height: 100vh;
-    background-color: #E5E5E5;
+    background-color: #333333;
     @media screen and (max-width: 768px) {
         top: auto;
         bottom: 0;
+        align-items: flex-start;
         width: 100%;
         height: 80vh;
     }

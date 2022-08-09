@@ -42,7 +42,12 @@ export const Form = styled.form`
     padding: 40px;
     display:flex;
     flex-direction: column;
+    align-items: center;
     gap: 8px;
+    a {
+        color: white;
+        text-decoration: underline;
+    }
 
 `;
 

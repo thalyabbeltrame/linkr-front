@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import GlobalStyles from './shared/GlobalStyles'
-import { PublicRoutes } from './routes/PublicRoutes'
-import Header from './shared/components/Header'
+import { HandleRoute } from './routes/HandleRoutes'
+import { AuthProvider } from './contexts/auth'
 function App() {
 
 
@@ -9,7 +9,9 @@ function App() {
     <>
       <BrowserRouter>
         <GlobalStyles />
-        <PublicRoutes />
+        <AuthProvider>
+          <HandleRoute />
+        </AuthProvider>
       </BrowserRouter>
     </>
   )

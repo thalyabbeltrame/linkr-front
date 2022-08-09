@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Logout from "./Logout";
 import InputComponetSearch from "./InputComponentSearch";
 
-export default function Header() {
+export function Header() {
 
   return (
     <>

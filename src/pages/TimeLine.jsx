@@ -1,7 +1,7 @@
 import React from 'react'
-import PublishComponent from '../components/PublishComponent.jsx';
+import PublishComponent from '../shared/components/PublishComponent';
 import styled from 'styled-components';
-import Header from '../components/Header.jsx';
+import Header from '../shared/components/Header';
 
 export const TimeLine = () => {
   return (

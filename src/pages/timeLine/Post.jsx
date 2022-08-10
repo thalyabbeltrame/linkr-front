@@ -92,6 +92,7 @@ const Text = styled.p`
   line-height: 20px;
   color: #b7b7b7;
   margin-bottom: 10px;
+  word-break: break-word;
 
   @media screen and (max-width: 768px) {
     font-size: 15px;

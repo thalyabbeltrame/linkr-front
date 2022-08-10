@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getTimelineRequest } from '../../services/apiRequests';
@@ -13,12 +13,11 @@ export default function Posts() {
     getTimelineRequest()
       .then(({ data }) => {
         setPosts(data);
+        setLoading(false);
       })
       .catch(() => {
-        setError(true);
-      })
-      .finally(() => {
         setLoading(false);
+        setError(true);
       });
   }, []);
 
@@ -59,9 +58,4 @@ const PostsContainer = styled.section`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 29px;
-
-  @media screen and (max-width: 768px) {
-    margin-top: 16px;
-  }
 `;

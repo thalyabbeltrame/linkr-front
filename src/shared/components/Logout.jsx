@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { AiOutlineDown } from 'react-icons/ai';
+import styled from 'styled-components';
 
 import { useAuth } from '../../contexts/auth';
 

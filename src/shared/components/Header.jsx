@@ -1,15 +1,16 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import Logout from "./Logout";
-import InputComponetSearch from "./InputComponentSearch";
+import InputComponetSearch from './InputComponentSearch';
+import Logout from './Logout';
 
 export default function Header() {
-
   return (
     <>
       <Container>
-        <div className="title">linkr</div>
-        <div className="desktop"><InputComponetSearch widthProps={"35vw"} /></div>
+        <div className='title'>linkr</div>
+        <div className='desktop'>
+          <InputComponetSearch widthProps={'35vw'} />
+        </div>
         <Logout />
       </Container>
     </>
@@ -28,16 +29,15 @@ const Container = styled.div`
   height: 72px;
 
   .title {
-    font-family: "Passion One";
+    font-family: 'Passion One';
     font-style: normal;
     font-weight: 700;
     font-size: 49px;
     color: #ffffff;
   }
-  @media screen and (max-width: 768px){
-    .desktop{
-        display: none;
+  @media screen and (max-width: 768px) {
+    .desktop {
+      display: none;
     }
   }
-  
-`
+`;

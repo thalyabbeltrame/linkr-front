@@ -1,9 +1,10 @@
-import { ContainerForm } from "../../shared/ContainerForm"
-import { SignInForm } from "./SignInForm"
+
+import { ContainerForm } from '../../shared/ContainerForm';
+import { SignInForm } from './SignInForm';
+
 
 export const SignIn = () => (
-    <ContainerForm>
-        <SignInForm />
-    </ContainerForm>
-)
-
+  <ContainerForm>
+    <SignInForm />
+  </ContainerForm>
+);

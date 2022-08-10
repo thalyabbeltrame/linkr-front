@@ -1,7 +1,8 @@
-import React from 'react'
-import PublishComponent from '../../shared/components/PublishComponent';
 import styled from 'styled-components';
+
 import Header from '../../shared/components/Header';
+import Posts from './Posts';
+import { Publish } from './Publish';
 
 export const TimeLine = () => {
   return (
@@ -10,42 +11,52 @@ export const TimeLine = () => {
       <MainContainer>
         <Content>
           <Title>timeline</Title>
-          <PublishComponent />
+          <Publish />
+          <Posts />
         </Content>
       </MainContainer>
     </>
-  )
+  );
 };
 
-const Content = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
-    width: 70%;
-`;
 const MainContainer = styled.main`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #373434;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
 
-    @media screen and (max-width: 768px) {
-        align-items: flex-start;
-        padding-left: 0;
-    }
+  @media screen and (max-width: 768px) {
+    padding-left: 0;
+    width: 100%;
+  }
 `;
+
+const Content = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 611px;
+  margin-top: 125px;
+  background-color: red;
+
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    margin-top: 91px;
+  }
+`;
+
 const Title = styled.div`
-      width: 100%;
-      padding-left: 5%;
-      font-family: 'Oswald';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 43px;
-      line-height: 64px;
-      color: #FFFFFF;
-      position: relative;
-`
+  width: 100%;
+  font-family: 'Oswald';
+  font-weight: 700;
+  font-size: 43px;
+  line-height: 64px;
+  color: #ffffff;
+  margin-bottom: 43px;
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 19px;
+    padding: 0 17px;
+  }
+`;

@@ -1,8 +1,8 @@
-import { PrivateRoutes } from './PrivateRoutes'
-import { PublicRoutes } from './PublicRoutes'
-import { useAuth } from '../contexts/auth'
+import { useAuth } from '../contexts/auth';
+import { PrivateRoutes } from './PrivateRoutes';
+import { PublicRoutes } from './PublicRoutes';
 
 export const HandleRoute = () => {
-    const { signed } = useAuth();
-    return signed ? <PrivateRoutes /> : <PublicRoutes />
-}
+  const { signed } = useAuth();
+  return signed ? <PrivateRoutes /> : <PublicRoutes />;
+};

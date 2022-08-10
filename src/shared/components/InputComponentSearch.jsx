@@ -1,15 +1,39 @@
 import styled from "styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
+import { DebounceInput } from "react-debounce-input"
+import { searchUsers } from "../../services/apiRequests";
 
-export default function InputComponetSearch({widthProps}) {
-  const [search, setSearch] = useState("");
+export default function InputComponetSearch({ widthProps }) {
+
+  let search = "";
+  const [searchList, setSearchList] = useState([])
+
+  const handleSearch = async (search) => {
+    try {
+      const { data } = await searchUsers(search);
+      setSearchList(data)
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Container widthProps={widthProps}>
-      <input
+      <DebounceInput
+        minLength={3}
+        debounceTimeout={300}
         type="text"
         placeholder="Search for people"
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          search = e.target.value;
+          if(search.length > 0){
+            handleSearch(search);
+          } else {
+            setSearchList([])
+          }
+        }}
         value={search}
       />
       <span>
@@ -44,5 +68,8 @@ const Container = styled.div`
     height: 110%;
     right: 10px;
     bottom: 0;
+  }
+  h2 {
+    color: #ffffff;
   }
 `;

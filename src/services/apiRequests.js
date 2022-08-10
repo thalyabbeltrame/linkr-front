@@ -7,3 +7,6 @@ export const signInRequest = async (data) => {
 export const signUpRequest = async (data) => {
     return api.post('/signUp',data)
 }
+export const searchUsers = async (data) => {
+    return api.get(`/users/${data}`)
+}

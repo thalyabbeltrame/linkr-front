@@ -9,7 +9,7 @@ export default function Header() {
     <>
       <Container>
         <div className="title">linkr</div>
-        <div className="desktop"><InputComponetSearch widthProps={"35vw"}/></div>
+        <div className="desktop"><InputComponetSearch widthProps={"35vw"} /></div>
         <Logout />
       </Container>
     </>

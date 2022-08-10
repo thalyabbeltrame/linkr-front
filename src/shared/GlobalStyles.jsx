@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -50,7 +50,10 @@ const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
   }
-
-`
+  body {
+    font-family: 'Lato', sans-serif;
+    background-color: #373434;
+  }
+`;
 
 export default GlobalStyles;

@@ -12,13 +12,13 @@ export default function Posts() {
   useEffect(() => {
     getTimelineRequest()
       .then(({ data }) => {
-        console.log(data);
         setPosts(data);
-        setLoading(false);
       })
       .catch(() => {
-        setLoading(false);
         setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 

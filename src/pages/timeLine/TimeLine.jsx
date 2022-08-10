@@ -9,7 +9,7 @@ export const TimeLine = () => {
       <MainContainer>
         <Content>
           <Title>timeline</Title>
-        <PublishComponent />
+          <PublishComponent />
         </Content>
       </MainContainer>
     </>
@@ -22,7 +22,11 @@ const Content = styled.div`
     justify-content: center;
     flex-direction: column;
     height: 100vh;
-    width: 70%;
+    width: 100%;
+    max-width: 611px;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 `;
 const MainContainer = styled.main`
     display: flex;
@@ -31,15 +35,16 @@ const MainContainer = styled.main`
     flex-direction: column;
     height: 100vh;
     background-color: #373434;
+    
 
     @media screen and (max-width: 768px) {
         align-items: flex-start;
         padding-left: 0;
+        width: 100%;
     }
 `;
 const Title = styled.div`
       width: 100%;
-      padding-left: 5%;
       font-family: 'Oswald';
       font-style: normal;
       font-weight: 700;
@@ -47,4 +52,5 @@ const Title = styled.div`
       line-height: 64px;
       color: #FFFFFF;
       position: relative;
+      margin-bottom: 2.0rem;
 `

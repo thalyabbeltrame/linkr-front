@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { AiOutlineSearch } from 'react-icons/ai';
+import styled from 'styled-components';
 
 export default function InputComponetSearch({ widthProps }) {
   const [search, setSearch] = useState('');

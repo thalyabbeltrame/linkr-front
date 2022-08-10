@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Logout from './Logout';
 import InputComponetSearch from './InputComponentSearch';
+import Logout from './Logout';
 
 export default function Header() {
   return (

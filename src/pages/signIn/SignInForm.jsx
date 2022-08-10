@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, Form } from '../../shared/CustomStyles';
-import { isEmpty } from '../../utils/isEmpty';
-import { signInRequest } from '../../services/apiRequests';
+
 import { useAuth } from '../../contexts/auth';
 import { api } from '../../services/api';
+import { signInRequest } from '../../services/apiRequests';
+import { Button, Form, Input } from '../../shared/CustomStyles';
+import { isEmpty } from '../../utils/isEmpty';
 
 export const SignInForm = () => {
   const { setUserData } = useAuth();

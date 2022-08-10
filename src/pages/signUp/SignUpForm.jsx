@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Input, Button, Form } from '../../shared/CustomStyles';
-import { isEmpty } from '../../utils/isEmpty';
 import { signUpRequest } from '../../services/apiRequests';
+import { Button, Form, Input } from '../../shared/CustomStyles';
+import { isEmpty } from '../../utils/isEmpty';
 
 export const SignUpForm = () => {
   let navigate = useNavigate();

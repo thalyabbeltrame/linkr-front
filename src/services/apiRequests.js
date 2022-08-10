@@ -12,7 +12,6 @@ export const getTimelineRequest = async () => {
   return api.get('/timeline');
 };
 
-export const postTimelineRequest = async () => {
-  return api.post('/timeline');
+export const postTimelineRequest = async (data) => {
+  return api.post('/timeline', data);
 };
-

@@ -2,42 +2,45 @@ import React from 'react';
 import styled from 'styled-components';
 import { useAuth } from "../../contexts/auth"
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { postTimelineRequest } from '../../services/apiRequests';
 
+
 export const PublishComponent = () => {
-    const MySwal = withReactContent(Swal)
-    const { userData } = useAuth();
+    const { userData, logout } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
-    const [publishData, setPublishData] = useState({ link: '', description: '' });
-    function publish(e) {
+    const [publishData, setPublishData] = useState({
+        link: '',
+        text: ''
+    });
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        const promise = api.publishPost({ ...auth, publishData: publishData });
-        promise.then(response => {
+        try {
+            await postTimelineRequest(publishData);
+        } catch (err) {
+            const { status } = err.response;
+            if (status === 401) {
+                Swal.fire({
+                    icon: 'error',
+                    title: "OOPS...",
+                    text: "An error occured while trying to fetch the trending hashtags, please refresh the page",
+                });
+                logout();
+            }
+        } finally {
             setIsLoading(false);
-            setPublishData({ link: '', description: '' });
-            window.location.reload();
-        }).catch(error => {
-            MySwal.fire({
-                icon: 'error',
-                title: "OOPS...",
-                text: 'Erro ao postar o post, tente postar novamente.',
-            });
-            setIsLoading(false);
-
-        });
+        }
     }
-    function handleChange(e) {
-        setPublishData({ ...publishData, [e.target.name]: e.target.value });
-    }
-    useEffect(() => {
-        const promise = postTimelineRequest();
-        promise.then(response => {
-            setUserData(response.data);
+    const handleChange = (e) => {
+        setPublishData((publishData) => {
+            return {
+                ...publishData,
+                [e.target.name]: e.target.value,
+            };
         });
-    }, []);
+    };
+    console.log(publishData)
     return (
         <>
             <Content>
@@ -45,7 +48,7 @@ export const PublishComponent = () => {
                     <img src={userData.image} alt={userData.username} />
                 </ImgContainer>
                 <InputsContainer>
-                    <Form onSubmit={e => publish(e)}>
+                    <Form onSubmit={e => handleSubmit(e)}>
                         <span>What are you going to share today?</span>
                         <input
                             type="text"
@@ -59,9 +62,9 @@ export const PublishComponent = () => {
                         <textarea
                             text="text"
                             placeholder="Awesome article about #javascript"
-                            name="description"
+                            name="text"
                             onChange={handleChange}
-                            value={publishData.description}
+                            value={publishData.text}
                             disabled={isLoading}
                         />
                         <Button disabled={isLoading} type="submit" >

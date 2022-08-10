@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useAuth } from "../../contexts/auth"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useState, useEffect } from 'react';
+import { postTimelineRequest } from '../../services/apiRequests';
 
 export const PublishComponent = () => {
     const MySwal = withReactContent(Swal)
@@ -24,17 +26,18 @@ export const PublishComponent = () => {
                 text: 'Erro ao postar o post, tente postar novamente.',
             });
             setIsLoading(false);
+
         });
     }
     function handleChange(e) {
         setPublishData({ ...publishData, [e.target.name]: e.target.value });
     }
     useEffect(() => {
-        const promise = api.getUserData(auth);
+        const promise = postTimelineRequest();
         promise.then(response => {
             setUserData(response.data);
         });
-    }, [auth]);
+    }, []);
     return (
         <>
             <Content>
@@ -80,6 +83,7 @@ width: 100%;
 max-width: 611px;
 height: 209px;
 border-radius: 16px;
+
 @media screen and (max-width: 768px) {
         width: 100%;
         border-radius: 0px;
@@ -111,14 +115,17 @@ const InputsContainer = styled.div`
 display: flex;
 flex-direction: row;
 background: #FFFFFF;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+margin-left: 35px;
+padding: 20px;
+width: 100%;
 border-radius: 16px;
+
+
 `;
 
 const Form = styled.form`
     width: 100%;
     gap: 12px;
-    
     display: flex;
     flex-direction: column;
     span {
@@ -137,6 +144,7 @@ const Form = styled.form`
         width: 100%;
         height: 30px;
         background: #EFEFEF;
+        border: none;
         border-radius: 5px;
         &::placeholder {
             padding-left: 13px;
@@ -181,6 +189,7 @@ const Button = styled.button`
     align-self: flex-end;
     background: #1877F2;
     border-radius: 5px;
+    border: none;
     color: #FFFFFF;
     ${props => props.disabled && 'opacity: 0.5;'}
     font-family: 'Lato';

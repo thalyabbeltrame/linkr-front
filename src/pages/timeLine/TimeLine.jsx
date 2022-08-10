@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { PublishComponent } from './PublishComponent';
 import Header from '../../shared/components/Header';
-import Publish from './Publish';
 import Posts from './Posts';
 
 export const TimeLine = () => {
@@ -13,7 +12,6 @@ export const TimeLine = () => {
         <Content>
           <Title>timeline</Title>
           <PublishComponent />
-          <Publish />
           <Posts />
         </Content>
       </MainContainer>

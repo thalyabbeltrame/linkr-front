@@ -11,3 +11,8 @@ export const signUpRequest = async (data) => {
 export const getTimelineRequest = async () => {
   return api.get('/timeline');
 };
+
+export const postTimelineRequest = async () => {
+  return api.post('/timeline');
+};
+

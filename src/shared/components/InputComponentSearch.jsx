@@ -113,6 +113,7 @@ const Container = styled.div`
     display: ${props => props.displayStatus};
   }
   .user{
+    cursor: pointer;
     display: flex;
     align-items: center;
     margin: 15px 15px;
@@ -121,10 +122,15 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 19px;
     line-height: 23px;
+    padding: 10px 5px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    &:hover{
+      background-color: #acacac;
+    }
     
   }
-  h2, img {
-    cursor: pointer;
+  h2 {
     color: #515151;
   }
   img {

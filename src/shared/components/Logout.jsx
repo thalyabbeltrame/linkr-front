@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -8,7 +9,7 @@ export default function Logout() {
   const { userData, logout } = useAuth();
   const [animation, setAnimation] = useState('');
 
-  function handleClick() {
+  function handleClickAnimation() {
     if (animation === 'close' || animation === '') {
       setAnimation('open');
     } else {
@@ -18,23 +19,27 @@ export default function Logout() {
   }
 
   return (
-    <Container status={animation}>
-      <div>
-        <AiOutlineDown
-          className={`logout-icon ${animation}`}
-          onClick={handleClick}
-        />
-        <img
-          onClick={handleClick}
-          src={userData.image}
-          alt={userData.username}
-        />
-      </div>
-      <h2 onClick={logout}>Logout</h2>
-    </Container>
+    <>
+      <Container status={animation}>
+        <div className="menu">
+          <span>
+          <AiOutlineDown
+            className={`logout-icon ${animation}`}
+            onClick={handleClickAnimation}
+          />
+          <img
+            onClick={handleClickAnimation}
+            src={!!userData ? userData.image : ""}
+            alt={!!userData ? userData.image : ""}
+          />
+          </span>
+        <h2 onClick={logout}>Logout</h2>
+        </div>
+      </Container>
+      <Overlay status={animation} onClick={() => setAnimation("close")} />
+    </>
   );
 }
-
 const Container = styled.div`
   background: #151515;
   height: ${(props) =>
@@ -46,15 +51,21 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-around;
   border-bottom-left-radius: 10px;
-  div {
+  .menu {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: auto;
     color: #ffffff;
+    z-index: 1;
   }
-  div > img {
+  span{
+    display: flex;
+    align-items: center;
+  }
+  span > img {
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -71,7 +82,8 @@ const Container = styled.div`
     animation: for-down 0.6s forwards;
   }
   h2 {
-    cursor: pointer;
+    cursor: pointer;  
+    margin-top: 10px;
     display: ${(props) =>
       props.status === '' || props.status === 'close' ? 'none' : 'block'};
     font-family: 'Lato', sans-serif;
@@ -95,4 +107,15 @@ const Container = styled.div`
       transform: rotate(0);
     }
   }
+`;
+const Overlay = styled.div`
+    background: transparent;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: ${(props) =>
+    props.status === "" || props.status === "close" ? "none" : "block"};
+    z-index: 0;
 `;

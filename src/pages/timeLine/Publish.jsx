@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+
 import { useAuth } from '../../contexts/auth';
+import { usePosts } from '../../contexts/posts';
 import { postTimelineRequest } from '../../services/apiRequests';
 
 export const Publish = () => {
   const { userData, logout } = useAuth();
+  const { posts, setPosts } = usePosts();
   const [isLoading, setIsLoading] = useState(false);
   const [publishData, setPublishData] = useState({
     link: '',
@@ -18,6 +21,7 @@ export const Publish = () => {
 
     try {
       await postTimelineRequest(publishData);
+      setPosts([...posts, publishData]);
     } catch (err) {
       const { status } = err.response;
       if (status === 401) {

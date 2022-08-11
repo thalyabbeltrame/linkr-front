@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { TailSpin } from 'react-loader-spinner';
 
+import { useAuth } from '../../contexts/auth';
 import { getTimelineRequest } from '../../services/apiRequests';
 import Post from './Post';
 
@@ -8,6 +10,10 @@ export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const { logout } = useAuth();
+
+  const handleError = (error) =>
+    error.response.status === 401 ? logout() : setError(true);
 
   useEffect(() => {
     getTimelineRequest()
@@ -15,9 +21,9 @@ export default function Posts() {
         setPosts(data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
-        setError(true);
+        handleError(err);
       });
   }, []);
 
@@ -38,10 +44,18 @@ export default function Posts() {
   };
 
   const renderContent = () => {
-    if (loading) return <p>Loading...</p>;
+    if (loading)
+      return (
+        <TailSpin
+          wrapperClass='spinner'
+          height='80'
+          width='80'
+          color='#1877F2'
+        />
+      );
     if (error)
       return (
-        <p>
+        <p className='error-message'>
           An error occured while trying to fetch the posts, please refresh the
           page
         </p>
@@ -55,7 +69,18 @@ export default function Posts() {
 const PostsContainer = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
+  min-height: 100vh;
+
+  .spinner {
+    margin-top: 50px;
+  }
+
+  .error-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #ff0000;
+  }
 `;

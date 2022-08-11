@@ -50,7 +50,7 @@ export const Publish = () => {
         </ImgContainer>
         <InputsContainer>
           <Form onSubmit={(e) => handleSubmit(e)}>
-            <span>What are you going to share today?</span>
+            <spam>What are you going to share today?</spam>
             <input
               type='text'
               placeholder='http://...'
@@ -81,28 +81,30 @@ export const Publish = () => {
 const Content = styled.div`
   display: flex;
   flex-direction: row;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 100%;
   max-width: 611px;
   height: 209px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   margin-bottom: 29px;
+  padding: 20px;
 
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 100%;
+    height: 164px;
     border-radius: 0px;
     margin-bottom: 16px;
+    padding: 15px;
   }
 `;
 
 const ImgContainer = styled.div`
   display: flex;
-  position: relative;
-  left: 22px;
-  top: 22px;
   flex-direction: row;
+  width: 87px;
+  height: 100%;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
@@ -126,31 +128,31 @@ const ImgContainer = styled.div`
 const InputsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background: #ffffff;
-  margin-left: 35px;
-  padding: 20px;
+  padding-left: 20px;
   width: 100%;
   border-radius: 16px;
 
   @media screen and (max-width: 768px) {
-    margin-left: 0px;
+    padding-left: 0;
   }
 `;
 
 const Form = styled.form`
   width: 100%;
-  gap: 12px;
+  gap: 5px;
   display: flex;
   flex-direction: column;
 
-  span {
-    font-family: 'Lato';
+  spam {
     font-weight: 300;
     font-size: 20px;
     line-height: 24px;
     color: #707070;
 
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
       font-size: 17px;
       line-height: 20px;
       text-align: center;
@@ -163,18 +165,15 @@ const Form = styled.form`
     background: #efefef;
     border: none;
     border-radius: 5px;
+    padding: 7px 13px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 18px;
 
     &::placeholder {
-      padding-left: 13px;
-
-      font-family: 'Lato';
-      font-style: normal;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 18px;
       color: #949494;
 
-      @media (max-width: 610px) {
+      @media screen and (max-width: 768px) {
         font-size: 13px;
         line-height: 16px;
       }
@@ -182,22 +181,26 @@ const Form = styled.form`
   }
 
   textarea {
+    font-family: 'Lato', sans-serif;
     width: 100%;
     min-height: 66px;
     background: #efefef;
     border-radius: 5px;
     border: none;
     resize: vertical;
+    padding: 8px 12px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 18px;
+
+    @media screen and (max-width: 768px) {
+      min-height: 47px;
+    }
 
     &::placeholder {
-      padding-left: 13px;
-      font-family: 'Lato';
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 18px;
       color: #949494;
 
-      @media (max-width: 610px) {
+      @media screen and (max-width: 768px) {
         font-size: 13px;
         line-height: 16px;
       }
@@ -214,18 +217,14 @@ const Button = styled.button`
   border: none;
   color: #ffffff;
   ${(props) => props.disabled && 'opacity: 0.5;'}
-  font-family: 'Lato';
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
+  cursor: pointer;
 
-  @media (max-width: 610px) {
+  @media screen and (max-width: 768px) {
     height: 22px;
     font-size: 13px;
     line-height: 16px;
-  }
-
-  &:hover {
-    cursor: pointer;
   }
 `;

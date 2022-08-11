@@ -37,8 +37,8 @@ const Content = styled.div`
   flex-direction: column;
   height: 100vh;
   max-width: 611px;
+  width: 100%;
   margin-top: 125px;
-  background-color: red;
 
   @media screen and (max-width: 768px) {
     max-width: 100%;

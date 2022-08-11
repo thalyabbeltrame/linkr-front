@@ -8,18 +8,18 @@ const Post = (props) => {
   return (
     <PostContent>
       <LeftSide>
-        <Avatar src={avatar} alt={username} />
+        <img src={avatar} alt={username} />
       </LeftSide>
       <RightSide>
-        <Username>{username}</Username>
-        <Text>{text}</Text>
+        <h3>{username}</h3>
+        <p>{text}</p>
         <LinkPreview onClick={handleClick}>
           <div>
-            <Title>{title}</Title>
-            <Description>{description}</Description>
-            <Link>{link}</Link>
+            <h2>{title}</h2>
+            <h3>{description}</h3>
+            <p>{link}</p>
           </div>
-          <Image src={image} alt='' />
+          <img src={image} alt='' />
         </LinkPreview>
       </RightSide>
     </PostContent>
@@ -49,19 +49,19 @@ const LeftSide = styled.div`
   width: 87px;
   height: 100%;
 
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
   @media screen and (max-width: 768px) {
     width: 69px;
-  }
-`;
 
-const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-
-  @media screen and (max-width: 768px) {
-    width: 40px;
-    height: 40px;
+    img {
+      width: 40px;
+      height: 40px;
+    }
   }
 `;
 
@@ -73,30 +73,32 @@ const RightSide = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   background: #171717;
-`;
 
-const Username = styled.h3`
-  font-size: 19px;
-  line-height: 23px;
-  color: #ffffff;
-  margin-bottom: 7px;
+  h3 {
+    font-size: 19px;
+    line-height: 23px;
+    color: #ffffff;
+    margin-bottom: 7px;
+  }
 
-  @media screen and (max-width: 768px) {
+  p {
     font-size: 17px;
     line-height: 20px;
+    color: #b7b7b7;
+    margin-bottom: 10px;
+    word-break: break-word;
   }
-`;
-
-const Text = styled.p`
-  font-size: 17px;
-  line-height: 20px;
-  color: #b7b7b7;
-  margin-bottom: 10px;
-  word-break: break-word;
 
   @media screen and (max-width: 768px) {
-    font-size: 15px;
-    line-height: 18px;
+    h3 {
+      font-size: 17px;
+      line-height: 20px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 18px;
+    }
   }
 `;
 
@@ -115,10 +117,56 @@ const LinkPreview = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 330px;
     height: 100%;
-    padding: 24px 20px;
+    padding: 20px;
+  }
+
+  h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 16px;
+    line-height: 19px;
+    color: #cecece;
+    margin-bottom: 5px;
+  }
+
+  h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: 11px;
+    line-height: 13px;
+    color: #9b9595;
+    margin-bottom: 13px;
+  }
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 11px !important;
+    line-height: 13px !important;
+    color: #cecece;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 153px;
+    height: 100%;
+    border-radius: 0 11px 11px 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    object-fit: cover;
   }
 
   @media screen and (max-width: 768px) {
@@ -129,70 +177,26 @@ const LinkPreview = styled.div`
       width: calc(100% - 95px);
       padding: 7px 11px;
     }
-  }
-`;
 
-const Title = styled.h3`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  font-size: 16px;
-  line-height: 19px;
-  color: #cecece;
-  margin-bottom: 5px;
+    h2 {
+      font-size: 11px;
+      line-height: 13px;
+    }
 
-  @media screen and (max-width: 768px) {
-    font-size: 11px;
-    line-height: 13px;
-  }
-`;
+    h3 {
+      font-size: 9px;
+      line-height: 11px;
+    }
 
-const Description = styled.h2`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  font-size: 11px;
-  line-height: 13px;
-  color: #9b9595;
-  margin-bottom: 13px;
+    p {
+      font-size: 9px !important;
+      line-height: 11px !important;
+      text-align: start;
+    }
 
-  @media screen and (max-width: 768px) {
-    font-size: 9px;
-    line-height: 11px;
-  }
-`;
-
-const Link = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  font-size: 11px;
-  line-height: 13px;
-  color: #cecece;
-
-  @media screen and (max-width: 768px) {
-    font-size: 9px;
-    line-height: 11px;
-  }
-`;
-
-const Image = styled.img`
-  width: 153px;
-  height: 100%;
-  border-radius: 0 11px 11px 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  object-fit: cover;
-
-  @media screen and (max-width: 768px) {
-    width: 95px;
-    height: 115px;
+    img {
+      width: 95px;
+      height: 115px;
+    }
   }
 `;

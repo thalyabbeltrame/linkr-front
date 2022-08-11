@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
 import styled from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../providers/auth';
 
 export default function Logout() {
   const { userData, logout } = useAuth();
@@ -21,22 +20,22 @@ export default function Logout() {
   return (
     <>
       <Container status={animation}>
-        <div className="menu">
+        <div className='menu'>
           <span>
-          <AiOutlineDown
-            className={`logout-icon ${animation}`}
-            onClick={handleClickAnimation}
-          />
-          <img
-            onClick={handleClickAnimation}
-            src={!!userData ? userData.image : ""}
-            alt={!!userData ? userData.image : ""}
-          />
+            <AiOutlineDown
+              className={`logout-icon ${animation}`}
+              onClick={handleClickAnimation}
+            />
+            <img
+              onClick={handleClickAnimation}
+              src={!!userData ? userData.image : ''}
+              alt={!!userData ? userData.image : ''}
+            />
           </span>
-        <h2 onClick={logout}>Logout</h2>
+          <h2 onClick={logout}>Logout</h2>
         </div>
       </Container>
-      <Overlay status={animation} onClick={() => setAnimation("close")} />
+      <Overlay status={animation} onClick={() => setAnimation('close')} />
     </>
   );
 }
@@ -61,7 +60,7 @@ const Container = styled.div`
     color: #ffffff;
     z-index: 1;
   }
-  span{
+  span {
     display: flex;
     align-items: center;
   }
@@ -82,7 +81,7 @@ const Container = styled.div`
     animation: for-down 0.6s forwards;
   }
   h2 {
-    cursor: pointer;  
+    cursor: pointer;
     margin-top: 10px;
     display: ${(props) =>
       props.status === '' || props.status === 'close' ? 'none' : 'block'};
@@ -109,13 +108,13 @@ const Container = styled.div`
   }
 `;
 const Overlay = styled.div`
-    background: transparent;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: ${(props) =>
-    props.status === "" || props.status === "close" ? "none" : "block"};
-    z-index: 0;
+  background: transparent;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: ${(props) =>
+    props.status === '' || props.status === 'close' ? 'none' : 'block'};
+  z-index: 0;
 `;

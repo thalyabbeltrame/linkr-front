@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
-import { usePosts } from '../../contexts/posts';
+import { useAuth } from '../../providers/auth';
+import { useTimeline } from '../../providers/timeline';
 import { getTimelineRequest } from '../../services/apiRequests';
 import Post from './Post';
 
 export default function Posts() {
   const { logout } = useAuth();
-  const { posts, setPosts } = usePosts();
-  const [loading, setLoading] = useState(true);
+  const { dataPosts, setDataPosts, hasUpdate } = useTimeline();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const handleError = (error) =>
@@ -19,18 +19,19 @@ export default function Posts() {
   useEffect(() => {
     getTimelineRequest()
       .then(({ data }) => {
-        setPosts(data);
+        setDataPosts(data);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false);
-        handleError(err);
+        handleError;
       });
-  }, [posts]);
+  }, [hasUpdate]);
 
   const renderPosts = () => {
-    if (posts.length === 0) return <p>There are no posts yet</p>;
-    return posts.map((post) => (
+    if (dataPosts.length === 0)
+      return <p className=''>There are no posts yet</p>;
+    return dataPosts.map((post) => (
       <Post
         key={post.id}
         avatar={post.avatar}

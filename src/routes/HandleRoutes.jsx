@@ -1,4 +1,4 @@
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../providers/auth';
 import { PrivateRoutes } from './PrivateRoutes';
 import { PublicRoutes } from './PublicRoutes';
 

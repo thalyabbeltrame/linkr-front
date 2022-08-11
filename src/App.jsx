@@ -1,9 +1,9 @@
-
 import { BrowserRouter } from 'react-router-dom';
-import GlobalStyles from './shared/GlobalStyles';
-import { HandleRoute } from './routes/HandleRoutes';
-import { AuthProvider } from './contexts/auth';
 
+import { AuthProvider } from './contexts/auth';
+import { PostsProvider } from './contexts/posts';
+import { HandleRoute } from './routes/HandleRoutes';
+import GlobalStyles from './shared/GlobalStyles';
 
 function App() {
   return (
@@ -11,7 +11,9 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <AuthProvider>
-          <HandleRoute />
+          <PostsProvider>
+            <HandleRoute />
+          </PostsProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

@@ -17,6 +17,7 @@
     "react-icons": "^4.4.0",
     "react-loader-spinner": "^5.1.7-beta.1",
     "react-router-dom": "^6.3.0",
+    "react-tagify": "^0.1.4",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.26",
     "sweetalert2-react-content": "^5.0.2"

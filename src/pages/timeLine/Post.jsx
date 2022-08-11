@@ -1,10 +1,16 @@
 import styled from 'styled-components';
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from 'react-router-dom';
 
 const Post = (props) => {
   const { avatar, username, text, title, description, link, image } = props;
-
+  const navigate = useNavigate()
   const handleClick = () => window.open(link, '_blank');
-
+  const tagStyle = {
+    color: 'white',
+    cursor: 'pointer',
+    fontWeight: '700'
+  }
   return (
     <PostContent>
       <LeftSide>
@@ -12,7 +18,12 @@ const Post = (props) => {
       </LeftSide>
       <RightSide>
         <h3>{username}</h3>
-        <p>{text}</p>
+        <ReactTagify
+          tagStyle={tagStyle}
+          tagClicked={(tag) => navigate(`../hashtag/${(tag.replace('#','')).toLowerCase()}`)}>
+          <p>{text}</p>
+        </ReactTagify>
+
         <LinkPreview onClick={handleClick}>
           <div>
             <h2>{title}</h2>

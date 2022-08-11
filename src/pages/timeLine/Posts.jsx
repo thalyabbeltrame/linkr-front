@@ -22,9 +22,9 @@ export default function Posts() {
         setDataPosts(data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
-        handleError;
+        handleError(err);
       });
   }, [hasUpdate]);
 

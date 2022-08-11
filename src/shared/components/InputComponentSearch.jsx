@@ -70,6 +70,7 @@ export default function InputComponetSearch({ widthProps }) {
 
 const Container = styled.div`
   position: relative;
+  z-index: 1;
 
   input {
     font-family: 'Lato', sans-serif;

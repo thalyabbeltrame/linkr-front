@@ -27,6 +27,7 @@ const Container = styled.div`
   padding: 10px 0px 10px 30px;
   width: 100%;
   height: 72px;
+  z-index: 2;
 
   .title {
     font-family: 'Passion One';

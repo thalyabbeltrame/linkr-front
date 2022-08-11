@@ -1,17 +1,27 @@
 import styled from 'styled-components';
+import { IoMdTrash } from 'react-icons/io';
+import { useNavigate } from "react-router-dom";
 
 const Post = (props) => {
   const { avatar, username, text, title, description, link, image } = props;
 
   const handleClick = () => window.open(link, '_blank');
 
+  const navigate = useNavigate();
   return (
     <PostContent>
       <LeftSide>
         <img src={avatar} alt={username} />
       </LeftSide>
       <RightSide>
-        <h3>{username}</h3>
+        <span>
+          <h3>
+            {username}
+          </h3>
+          <icon onClick={() => navigate("/timeline")}>
+            <IoMdTrash fontSize="1.3em" color='#FFFFFF' />
+          </icon>
+        </span>
         <p>{text}</p>
         <LinkPreview onClick={handleClick}>
           <div>
@@ -87,6 +97,15 @@ const RightSide = styled.div`
     color: #b7b7b7;
     margin-bottom: 10px;
     word-break: break-word;
+  }
+  span{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  icon{
+    cursor: pointer;
   }
 
   @media screen and (max-width: 768px) {

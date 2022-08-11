@@ -1,22 +1,31 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../shared/components/Header';
 import Posts from './Posts';
+import InputComponentSearch from '../../shared/components/InputComponentSearch'
 import { Publish } from './Publish';
 
 export const TimeLine = () => {
-  return (
-    <>
-      <Header />
-      <MainContainer>
-        <Content>
-          <Title>timeline</Title>
-          <Publish />
-          <Posts />
-        </Content>
-      </MainContainer>
-    </>
-  );
+  const [tela, setTela] = useState(window.screen.width);
+  window.addEventListener('resize', () => {
+    setTela(window.screen.width)
+  }, true);
+
+return (
+  <>
+    <Header />
+    <MainContainer>
+      <Content>
+
+        {tela <= 768 ? <InputComponentSearch widthProps={"95vw"} /> : ""}
+        <Title>timeline</Title>
+        <Publish />
+        <Posts />
+      </Content>
+    </MainContainer>
+  </>
+);
 };
 
 const MainContainer = styled.main`
@@ -54,7 +63,6 @@ const Title = styled.div`
   line-height: 64px;
   color: #ffffff;
   margin-bottom: 43px;
-
   @media screen and (max-width: 768px) {
     margin-bottom: 19px;
     padding: 0 17px;

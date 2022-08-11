@@ -1,34 +1,38 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { HandleButtonContent } from '../../shared/HandleButtonContent';
 import { signUpRequest } from '../../services/apiRequests';
 import { Button, Form, Input } from '../../shared/CustomStyles';
 import { isEmpty } from '../../utils/isEmpty';
 
 export const SignUpForm = () => {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('Sign Up');
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
     username: '',
     image: '',
   });
-  const [loading, setLoading] = useState(false);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEmpty(userInfo)) {
-      alert('Todos os campos devem ser preenchidos!');
+      alert('All fields must be filled!');
       return;
     }
     setLoading(true);
+    setMessage(msg => msg = 'loading')
     try {
       await signUpRequest(userInfo);
+      setMessage(msg => msg = 'sucess')
       navigate('../');
     } catch (err) {
+      setMessage(msg => msg = 'error')
       const { status } = err.response;
       if (status === 409) {
-        alert('Usuário já cadastrado!');
+        alert('The user is already registered!');
       }
     } finally {
       setLoading(false);
@@ -68,9 +72,9 @@ export const SignUpForm = () => {
         onChange={(e) => handleChange(e)}
       />
       <Button disabled={loading} isLoading={loading}>
-        Sign Up
+        <HandleButtonContent message={message} />
       </Button>
-      <Link to='/'>Switch back to log in</Link>
+      <Link to='/'>Switch back to Sign In</Link>
     </Form>
   );
 };

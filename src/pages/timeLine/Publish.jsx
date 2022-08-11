@@ -2,13 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { useAuth } from '../../contexts/auth';
-import { usePosts } from '../../contexts/posts';
+import { useAuth } from '../../providers/auth';
+import { useTimeline } from '../../providers/timeline';
 import { postTimelineRequest } from '../../services/apiRequests';
 
 export const Publish = () => {
   const { userData, logout } = useAuth();
-  const { posts, setPosts } = usePosts();
+  const { hasUpdate, setHasUpdate } = useTimeline();
   const [isLoading, setIsLoading] = useState(false);
   const [publishData, setPublishData] = useState({
     link: '',
@@ -21,8 +21,13 @@ export const Publish = () => {
 
     try {
       await postTimelineRequest(publishData);
-      setPosts([...posts, publishData]);
+      setHasUpdate(!hasUpdate);
+      setPublishData({
+        link: '',
+        text: '',
+      });
     } catch (err) {
+      console.log(err);
       const { status } = err.response;
       if (status === 401) {
         Swal.fire({
@@ -54,7 +59,7 @@ export const Publish = () => {
         </ImgContainer>
         <InputsContainer>
           <Form onSubmit={(e) => handleSubmit(e)}>
-            <spam>What are you going to share today?</spam>
+            <span>What are you going to share today?</span>
             <input
               type='text'
               placeholder='http://...'
@@ -150,7 +155,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
 
-  spam {
+  span {
     font-weight: 300;
     font-size: 20px;
     line-height: 24px;

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HandleButtonContent } from '../../shared/HandleButtonContent';
-import { useAuth } from '../../contexts/auth';
+
+import { useAuth } from '../../providers/auth';
 import { api } from '../../services/api';
 import { signInRequest } from '../../services/apiRequests';
 import { Button, Form, Input } from '../../shared/CustomStyles';
+import { HandleButtonContent } from '../../shared/HandleButtonContent';
 import { isEmpty } from '../../utils/isEmpty';
 
 export const SignInForm = () => {
@@ -23,17 +24,17 @@ export const SignInForm = () => {
       return;
     }
     setLoading(true);
-    setMessage(msg => msg = 'loading')
+    setMessage((msg) => (msg = 'loading'));
     try {
       const { data } = await signInRequest(userInfo);
-      setMessage(msg => msg = 'sucess')
+      setMessage((msg) => (msg = 'sucess'));
 
       setUserData(data.user);
       api.defaults.headers['Authorization'] = data.token;
       localStorage.setItem('LinkrAuthUser', JSON.stringify(data.user));
       localStorage.setItem('LinkrAuthToken', data.token);
     } catch (err) {
-      setMessage(msg => msg = 'error')
+      setMessage((msg) => (msg = 'error'));
       const { status } = err.response;
       if (status === 401) {
         alert('User or password incorrect!');
@@ -66,7 +67,7 @@ export const SignInForm = () => {
         onChange={(e) => handleChange(e)}
       />
       <Button disabled={loading} isLoading={loading}>
-      <HandleButtonContent message={message} />
+        <HandleButtonContent message={message} />
       </Button>
       <Link to='/sign-up'>First time? Create an account!</Link>
     </Form>

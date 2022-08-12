@@ -9,6 +9,7 @@ export default function Posts({ dataPosts, error, loading }) {
       return <p className=''>There are no posts yet</p>;
     return dataPosts.map((post) => (
       <Post
+        id={post.id}
         key={post.id}
         avatar={post.avatar}
         username={post.username}

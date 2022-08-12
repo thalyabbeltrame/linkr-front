@@ -8,6 +8,7 @@ import { Publish } from './Publish';
 import { usePosts } from '../../providers/posts';
 import { useAuth } from '../../providers/auth';
 import { getTimelineRequest } from "../../services/apiRequests.js"
+import { HashTag } from '../../components/trending/HashTags';
 
 export const TimeLine = () => {
   const [loading, setLoading] = useState(false);
@@ -50,12 +51,13 @@ export const TimeLine = () => {
           {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
           <Title>timeline</Title>
           <Publish />
-          <Pos
-          ts 
+          <Posts 
             dataPosts={dataPosts}
             error={error}
             loading={loading}
             setDataPosts={setDataPosts}/>
+        <HashTag />
+
         </Content>
       </MainContainer>
     </>

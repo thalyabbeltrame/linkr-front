@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { IoMdTrash } from 'react-icons/io';
 import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
-import { useNavigate } from 'react-router-dom';
-import { ReactTagify } from 'react-tagify';
-import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
 import { deletePostRequest } from '../../services/apiRequests';
-import { LinkPreview } from './LinkPreview';
+import { useTimeline } from '../../providers/timeline';
 
 Modal.setAppElement('*');
 const customStyles = {
@@ -34,6 +29,9 @@ const customStyles = {
 };
 
 const Post = (props) => {
+  const { hasUpdate, setHasUpdate } = useTimeline();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
   const {
     id,
     avatar,
@@ -44,11 +42,6 @@ const Post = (props) => {
     link,
     image
   } = props;
-  const { userData } = useAuth();
-  const navigate = useNavigate();
-  const { hasUpdate, setHasUpdate } = useTimeline();
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   async function deletePost(id) {
     setLoading(true)
     try {
@@ -70,80 +63,48 @@ const Post = (props) => {
       setIsOpen(false);
     }
   }
-
-  const handleHashtagClick = (tag) =>
-    navigate(`../hashtag/${tag.replace('#', '').toLowerCase()}`);
-
-  const buildTooltipMessage = (users) => {
-    const numberOfLikes = users.length;
-    const userLiked = users.map((user) => user.id).includes(userData.id);
-    if (numberOfLikes === 0) return 'Be the first to like this post';
-    if (userLiked) {
-      return numberOfLikes === 1
-        ? 'You'
-        : `You, ${users[0].username} and other 
-                ${numberOfLikes - 2} people`;
-    } else {
-      return numberOfLikes === 1
-        ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${
-            numberOfLikes - 2
-          } people`;
-    }
-  };
-
-  const tooltipMessage = buildTooltipMessage(likes);
-
-  const tagStyle = {
-    color: 'white',
-    cursor: 'pointer',
-    fontWeight: '700',
-  };
-
+  const handleClick = () => window.open(link, '_blank');
   return (
-    <><Modal
-      isOpen={modalIsOpen}
-      onRequestClose={() => setIsOpen(false)}
-      style={customStyles}
-    >
-      {loading === true ? <RotatingLines strokeColor='white' width={200} /> :
-        <>
-          <ModalText>Are you sure you want <br /> to delete this post?</ModalText>
-          <ButtonBox>
-            <CancelButton onClick={() => setIsOpen(false)}>No, go back</CancelButton>
-            <ConfirmButton onClick={() => deletePost(id)}>Yes, delete it</ConfirmButton>
-          </ButtonBox>
-        </>}
-    </Modal><PostContent>
+    <>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={customStyles}
+      >
+        {loading === true ? <RotatingLines strokeColor='white' width={200}  /> :
+          <>
+            <ModalText>Are you sure you want <br /> to delete this post?</ModalText>
+            <ButtonBox>
+              <CancelButton onClick={() => setIsOpen(false)} >No, go back</CancelButton>
+              <ConfirmButton onClick={() => deletePost(id)}>Yes, delete it</ConfirmButton>
+            </ButtonBox>
+          </>}
+      </Modal>
+      <PostContent>
         <LeftSide>
           <img src={avatar} alt={username} />
-          <AiOutlineHeart
-            style={{
-              color: '#fff',
-              width: '25px',
-              height: '25px',
-              marginBottom: '5px',
-            }} />
-          <Likes data-tip={tooltipMessage}>
-            {likes.length} {likes.length === 1 ? 'like' : 'likes'}
-          </Likes>
-          <ReactTooltip place='bottom' type='light' effect='solid' />
         </LeftSide>
         <RightSide>
-          <h3>{username}</h3>
-          <ReactTagify
-            tagStyle={tagStyle}
-            tagClicked={(tag) => handleHashtagClick(tag)}
-          >
-            <p>{text}</p>
-          </ReactTagify>
-          <LinkPreview
-            title={title}
-            description={description}
-            link={link}
-            image={image} />
+          <span>
+            <h3>
+              {username}
+            </h3>
+            <p onClick={() => setIsOpen(true)}>
+              <IoMdTrash fontSize="1.3em" color='#FFFFFF' />
+            </p>
+          </span>
+          <p>{text}</p>
+          <LinkPreview onClick={handleClick}>
+            <div>
+              <h2>{title}</h2>
+              <h3>{description}</h3>
+              <p>{link}</p>
+            </div>
+            <img src={image} alt='' />
+          </LinkPreview>
         </RightSide>
-      </PostContent></>
+      </PostContent>
+    </>
   );
 };
 
@@ -167,38 +128,22 @@ const PostContent = styled.div`
 const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 50px;
+  width: 87px;
   height: 100%;
-  margin-right: 20px;
 
   img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-bottom: 19px;
   }
 
   @media screen and (max-width: 768px) {
-    width: 40px;
-    margin-right: 15px;
+    width: 69px;
 
     img {
       width: 40px;
       height: 40px;
-      margin-bottom: 17px;
     }
-  }
-`;
-
-const Likes = styled.p`
-  font-size: 11px;
-  line-height: 13px;
-  color: #ffffff;
-
-  @media screen and (max-width: 768px) {
-    font-size: 9px;
-    line-height: 11px;
   }
 `;
 
@@ -225,6 +170,15 @@ const RightSide = styled.div`
     margin-bottom: 10px;
     word-break: break-word;
   }
+  span{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  p :last-child{
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 768px) {
     h3 {
@@ -235,6 +189,105 @@ const RightSide = styled.div`
     p {
       font-size: 15px;
       line-height: 18px;
+    }
+  }
+`;
+
+const LinkPreview = styled.div`
+  display: flex;
+  flex-direction: row;
+  color: #ffffff;
+  width: 503px;
+  height: 155px;
+  border: 1px solid #4d4d4d;
+  border-radius: 11px;
+  position: relative;
+  cursor: pointer;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    width: 330px;
+    height: 100%;
+    padding: 20px;
+  }
+
+  h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 16px;
+    line-height: 19px;
+    color: #cecece;
+    margin-bottom: 5px;
+  }
+
+  h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: 11px;
+    line-height: 13px;
+    color: #9b9595;
+    margin-bottom: 13px;
+  }
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 11px !important;
+    line-height: 13px !important;
+    color: #cecece;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 153px;
+    height: 100%;
+    border-radius: 0 11px 11px 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 115px;
+
+    div {
+      width: calc(100% - 95px);
+      padding: 7px 11px;
+    }
+
+    h2 {
+      font-size: 11px;
+      line-height: 13px;
+    }
+
+    h3 {
+      font-size: 9px;
+      line-height: 11px;
+    }
+
+    p {
+      font-size: 9px !important;
+      line-height: 11px !important;
+      text-align: start;
+    }
+
+    img {
+      width: 95px;
+      height: 115px;
     }
   }
 `;

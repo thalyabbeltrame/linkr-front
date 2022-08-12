@@ -41,7 +41,6 @@ export const Publish = () => {
       });
       setUpdateTrending(update => !update)
     } catch (error) {
-      console.log(error);
       handleError(error);
     } finally {
       setIsLoading(false);

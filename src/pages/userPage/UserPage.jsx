@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { getPostOfSigleUserById } from '../../services/apiRequests';
 import Header from '../../components/header/Header';
-import Posts from '../../components/post/Post';
+import Posts from '../timeLine/Posts';
 import InputSearch from '../../components/header/InputSearch'
 import { useParams } from 'react-router-dom'
 import { useEffect } from 'react';
@@ -21,18 +21,18 @@ export const UserPage = () => {
     hasUpdate
   } = usePosts();
 
+
   const params = useParams();
   const { id } = params;
-  console.log(id)
 
 
   useEffect(() => {
     getPostOfSigleUserById(id)
       .then(({ data }) => {
-        setDataPosts(data.posts);
         setUser(data.user)
+        setDataPosts(data.posts);
         setLoading(false);
-        console.log(data);
+
       })
       .catch((err) => {
         setLoading(false);
@@ -67,8 +67,8 @@ export const UserPage = () => {
             : <Title>User not found</Title>}
           <Posts
             userId={parseInt(id)}
-            setDataPosts={setDataPosts}
             dataPosts={dataPosts}
+            setDataPosts={setDataPosts}
             error={error}
             loading={loading}
           />

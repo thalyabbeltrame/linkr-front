@@ -20,7 +20,6 @@ import { LinkPreview } from './LinkPreview';
 export default function Post(props) {
   const { id, avatar, username, text, title, description, link, image, likes } =
     props;
-
   const { userData } = useAuth();
   const navigate = useNavigate();
   const { hasUpdate, setHasUpdate } = usePosts();
@@ -84,7 +83,7 @@ export default function Post(props) {
   };
 
   const buildTooltipMessage = (users) => {
-    const numberOfLikes = users?.length;
+    const numberOfLikes = users.length;
     const userLiked = users.map((user) => user.id).includes(userData.id);
     if (numberOfLikes === 0) return 'Be the first to like this post';
     if (userLiked) {
@@ -99,7 +98,6 @@ export default function Post(props) {
         } people`;
     }
   };
-
   const tooltipMessage = buildTooltipMessage(likes);
   const renderIonIcon = likes.map((like) => like.id).includes(userData.id) ? (
     <AiFillHeart
@@ -168,7 +166,7 @@ export default function Post(props) {
         </LeftSide>
         <RightSide>
           <span>
-            <h3>{username}</h3>
+            <h3 onClick={() => navigate(`/user/${id}`)}>{username}</h3>
             <p onClick={() => setIsOpen(true)}>
               <IoMdTrash fontSize='1.3em' color='#FFFFFF' />
             </p>
@@ -254,10 +252,14 @@ const RightSide = styled.div`
   background: #171717;
 
   h3 {
+    cursor: pointer;
     font-size: 19px;
     line-height: 23px;
     color: #ffffff;
     margin-bottom: 7px;
+    &:hover{
+      text-decoration: underline;
+    }
   }
 
   p {

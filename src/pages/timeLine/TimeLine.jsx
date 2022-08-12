@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../components/header/Header';
-import Posts from '../../components/posts/Posts';
+import Posts from './Posts';
 import InputSearch from '../../components/header/InputSearch';
 import { Publish } from './Publish';
 

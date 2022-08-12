@@ -1,20 +1,37 @@
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { ReactTagify } from 'react-tagify';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 
 import { useAuth } from '../../providers/auth';
+import { useTimeline } from '../../providers/timeline';
+import { likeDislikeRequest } from '../../services/apiRequests';
 import { LinkPreview } from './LinkPreview';
 
-const Post = (props) => {
-  const { avatar, username, text, title, description, link, image, likes } =
+export default function Post(props) {
+  const { id, avatar, username, text, title, description, link, image, likes } =
     props;
   const { userData } = useAuth();
+  const { hasUpdate, setHasUpdate } = useTimeline();
   const navigate = useNavigate();
+
+  const handleError = (error) => {
+    if (error.response.status === 401) logout();
+  };
 
   const handleHashtagClick = (tag) =>
     navigate(`../hashtag/${tag.replace('#', '').toLowerCase()}`);
+
+  const handleLikeDislike = async () => {
+    try {
+      await likeDislikeRequest(id);
+      setHasUpdate(!hasUpdate);
+    } catch (error) {
+      console.log(error);
+      handleError(error);
+    }
+  };
 
   const buildTooltipMessage = (users) => {
     const numberOfLikes = users.length;
@@ -35,6 +52,30 @@ const Post = (props) => {
   };
 
   const tooltipMessage = buildTooltipMessage(likes);
+  const renderIonIcon = likes.map((like) => like.id).includes(userData.id) ? (
+    <AiFillHeart
+      onClick={handleLikeDislike}
+      size={20}
+      style={{
+        color: '#AC0000',
+        width: '25px',
+        height: '25px',
+        marginBottom: '5px',
+        cursor: 'pointer',
+      }}
+    />
+  ) : (
+    <AiOutlineHeart
+      onClick={handleLikeDislike}
+      style={{
+        color: '#fff',
+        width: '25px',
+        height: '25px',
+        marginBottom: '5px',
+        cursor: 'pointer',
+      }}
+    />
+  );
 
   const tagStyle = {
     color: 'white',
@@ -46,14 +87,7 @@ const Post = (props) => {
     <PostContent>
       <LeftSide>
         <img src={avatar} alt={username} />
-        <AiOutlineHeart
-          style={{
-            color: '#fff',
-            width: '25px',
-            height: '25px',
-            marginBottom: '5px',
-          }}
-        />
+        {renderIonIcon}
         <Likes data-tip={tooltipMessage}>
           {likes.length} {likes.length === 1 ? 'like' : 'likes'}
         </Likes>
@@ -76,9 +110,7 @@ const Post = (props) => {
       </RightSide>
     </PostContent>
   );
-};
-
-export default Post;
+}
 
 const PostContent = styled.div`
   display: flex;

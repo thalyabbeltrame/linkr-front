@@ -5,10 +5,12 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
 import { postTimelineRequest } from '../../services/apiRequests';
+import { useTrending } from '../../providers/trendings';
 
 export const Publish = () => {
   const { userData, logout } = useAuth();
   const { hasUpdate, setHasUpdate } = usePosts();
+  const { setUpdateTrending } = useTrending()
   const [isLoading, setIsLoading] = useState(false);
   const [publishData, setPublishData] = useState({
     link: '',
@@ -37,6 +39,7 @@ export const Publish = () => {
         link: '',
         text: '',
       });
+      setUpdateTrending(update => !update)
     } catch (error) {
       handleError(error);
     } finally {

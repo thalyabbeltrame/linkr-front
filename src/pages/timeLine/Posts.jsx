@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 import Post from '../../components/post/Post';

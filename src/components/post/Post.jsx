@@ -20,7 +20,6 @@ import { LinkPreview } from './LinkPreview';
 export default function Post(props) {
   const { id, avatar, username, text, title, description, link, image, likes } =
     props;
-    console.log(likes)
   const { userData } = useAuth();
   const navigate = useNavigate();
   const { hasUpdate, setHasUpdate } = usePosts();

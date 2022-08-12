@@ -1,20 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useAuth } from '../../providers/auth';
+import { useTrending } from '../../providers/trendings';
 import { EmptyMessage } from './EmptyMessage';
-import { fetchTrending } from './fetchTrending';
 import { LoadingMessage } from './LoadingMessage';
 import { Tag } from './Tag';
 
 export const HashTag = () => {
-  const [loading, setLoading] = useState(false);
-  const [trending, setTrending] = useState([]);
-  const { logout } = useAuth();
+  const { trending, loading } = useTrending();
 
-  useEffect(() => {
-    fetchTrending(setTrending, setLoading, logout);
-  }, []);
   const handleRender = () => {
     if (loading) {
       return <LoadingMessage />;

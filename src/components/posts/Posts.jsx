@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 
+
 import { useAuth } from '../../providers/auth';
 import { useTimeline } from '../../providers/timeline';
 import { getTimelineRequest } from '../../services/apiRequests';
@@ -22,9 +23,9 @@ export default function Posts() {
         setDataPosts(data);
         setLoading(false);
       })
-      .catch((error) => {
+      .catch((err) => {
         setLoading(false);
-        handleError(error);
+        handleError(err);
       });
   }, [hasUpdate]);
 
@@ -42,6 +43,7 @@ export default function Posts() {
         description={post.description}
         link={post.link}
         image={post.image}
+        likes={post.likes}
       />
     ));
   };

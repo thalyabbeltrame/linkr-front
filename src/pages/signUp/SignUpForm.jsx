@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { HandleButtonContent } from '../../shared/HandleButtonContent';
+
+import { Button, Form, Input } from '../../components/CustomStyles';
+import { HandleButtonContent } from '../../components/HandleButtonContent';
 import { signUpRequest } from '../../services/apiRequests';
-import { Button, Form, Input } from '../../shared/CustomStyles';
 import { isEmpty } from '../../utils/isEmpty';
 
 export const SignUpForm = () => {
@@ -15,7 +16,7 @@ export const SignUpForm = () => {
     username: '',
     image: '',
   });
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEmpty(userInfo)) {
@@ -23,13 +24,13 @@ export const SignUpForm = () => {
       return;
     }
     setLoading(true);
-    setMessage(msg => msg = 'loading')
+    setMessage((msg) => (msg = 'loading'));
     try {
       await signUpRequest(userInfo);
-      setMessage(msg => msg = 'sucess')
+      setMessage((msg) => (msg = 'sucess'));
       navigate('../');
     } catch (err) {
-      setMessage(msg => msg = 'error')
+      setMessage((msg) => (msg = 'error'));
       const { status } = err.response;
       if (status === 409) {
         alert('The user is already registered!');

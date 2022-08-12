@@ -8,17 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import { searchUsers } from '../../services/apiRequests';
 
 
-  export default function InputSearch({ widthProps }) {
-    let search = '';
-    const [searchList, setSearchList] = useState([]);
-    const [displayStatus, setDisplayStatus] = useState('none');
-    const navigate = useNavigate();
+export default function InputSearch({ widthProps }) {
+  let search = '';
+  const [searchList, setSearchList] = useState([]);
+  const [displayStatus, setDisplayStatus] = useState('none');
+  const navigate = useNavigate();
 
   const handleSearch = async (search) => {
     try {
       const { data } = await searchUsers(search);
       setSearchList(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -26,10 +25,13 @@ import { searchUsers } from '../../services/apiRequests';
 
   function SingleUserOnSearchInput({ imgSrc, name, id }) {
     return (
-        <div className="user" onClick={()=> navigate(`/user/${id}`)}>
-          <img src={imgSrc} alt={"name: " + name} />
-          <h2>{name}</h2>
-        </div>
+      <div className="user" onClick={() => {
+        navigate("/timeline")
+        navigate(`/user/${id}`)
+      }}>
+        <img src={imgSrc} alt={"name: " + name} />
+        <h2>{name}</h2>
+      </div>
     )
   }
 
@@ -40,7 +42,7 @@ import { searchUsers } from '../../services/apiRequests';
         debounceTimeout={300}
         type="text"
         placeholder="Search for people"
-        onBlur={() => setTimeout(() => setDisplayStatus("none"),300)}
+        onBlur={() => setTimeout(() => setDisplayStatus("none"), 300)}
         onFocus={() => setDisplayStatus("block")}
         onChange={(e) => {
           search = e.target.value;
@@ -61,11 +63,11 @@ import { searchUsers } from '../../services/apiRequests';
       <div className="search-list" >
         {searchList.length > 0 ? (
           searchList.map((user, i) => {
-            return <SingleUserOnSearchInput 
-              imgSrc={user.avatar} 
+            return <SingleUserOnSearchInput
+              imgSrc={user.avatar}
               name={user.username}
               id={user.id}
-              key={i}/>
+              key={i} />
           })
         ) : ""}
       </div>

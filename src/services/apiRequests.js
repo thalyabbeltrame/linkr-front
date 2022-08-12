@@ -20,7 +20,7 @@ export const searchUsers = async name => {
   return api.get(`search/${name}`);
 }
 export const getPostOfSigleUserById = (id) => {
-  return api.get(`/users/${id}`)
+  return api.get(`/user-posts/${id}`)
 }
 
 export const deletePostRequest = async id => {

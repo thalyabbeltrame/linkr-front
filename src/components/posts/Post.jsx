@@ -8,7 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
+import { usePosts } from '../../providers/posts';
 import { deletePostRequest } from '../../services/apiRequests';
 import { LinkPreview } from './LinkPreview';
 
@@ -46,7 +46,7 @@ const Post = (props) => {
   } = props;
   const { userData } = useAuth();
   const navigate = useNavigate();
-  const { hasUpdate, setHasUpdate } = useTimeline();
+  const { hasUpdate, setHasUpdate } = usePosts();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   async function deletePost(id) {

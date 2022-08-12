@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-
+import { getPostOfSigleUserById } from '../../services/apiRequests';
 import Header from '../../components/header/Header';
 import Posts from '../../components/posts/Posts';
 import InputSearch from '../../components/header/InputSearch'
@@ -8,34 +8,41 @@ import { useParams } from 'react-router-dom'
 import { useEffect } from 'react';
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
-import { getPostOfSigleUserById } from "../../services/apiRequests.js"
 
 export const UserPage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  const {
+    dataPosts,
+    setDataPosts,
+    user,
+    setUser,
+    hasUpdate
+  } = usePosts();
+
   const params = useParams();
   const { id } = params;
   console.log(id)
 
+
   useEffect(() => {
     getPostOfSigleUserById(id)
       .then(({ data }) => {
-        setDataPosts(data);
+        setDataPosts(data.posts);
+        setUser(data.user)
         setLoading(false);
+        console.log(data);
       })
       .catch((err) => {
         setLoading(false);
         handleError(err);
       });
-  }, [hasUpdate]);
+  }, [hasUpdate, id]);
+
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
-
-
 
 
   const [tela, setTela] = useState(window.screen.width);
@@ -52,10 +59,10 @@ export const UserPage = () => {
       <MainContainer>
         <Content>
           {tela <= 768 ? <span><InputSearch widthProps={"95vw"} /></span> : ""}
-          {dataPosts.length > 0 ?
+          {user.length > 0 ?
             <span className='title'>
-              <img src={dataPosts[0].avatar} alt="" />
-              <Title>{dataPosts[0].username}'s posts</Title>
+              <img src={user[0].avatar} alt="" />
+              <Title>{user[0].username}'s posts</Title>
             </span>
             : <Title>User not found</Title>}
           <Posts
@@ -63,7 +70,8 @@ export const UserPage = () => {
             setDataPosts={setDataPosts}
             dataPosts={dataPosts}
             error={error}
-            loading={loading} />
+            loading={loading}
+          />
         </Content>
       </MainContainer>
     </>

@@ -5,7 +5,7 @@ import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import { ReactTagify } from 'react-tagify';
-import ReactTooltip from 'react-tooltip';
+import ReactTooltip from '@huner2/react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { useTrending } from '../../providers/trendings';

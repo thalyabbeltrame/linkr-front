@@ -3,12 +3,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import { DebounceInput } from "react-debounce-input"
 import { searchUsers } from "../../services/apiRequests";
+import { useNavigate } from "react-router-dom";
 
 export default function InputComponetSearch({ widthProps }) {
 
   let search = "";
   const [searchList, setSearchList] = useState([])
   const [displayStatus, setDisplayStatus] = useState("none");
+  const navigate = useNavigate();
 
   const handleSearch = async (search) => {
     try {
@@ -20,12 +22,12 @@ export default function InputComponetSearch({ widthProps }) {
     }
   }
 
-  function SingleUserOnSearchInput({ imgSrc, name }) {
+  function SingleUserOnSearchInput({ imgSrc, name, id }) {
     return (
-      <div className="user" >
-        <img src={imgSrc} alt={"name: " + name} />
-        <h2>{name}</h2>
-      </div>
+        <div className="user" onClick={()=> navigate(`/user/${id}`)}>
+          <img src={imgSrc} alt={"name: " + name} />
+          <h2>{name}</h2>
+        </div>
     )
   }
 
@@ -39,7 +41,7 @@ export default function InputComponetSearch({ widthProps }) {
         type="text"
         placeholder="Search for people"
 
-        onBlur={() => setDisplayStatus("none")}
+        onBlur={() => setTimeout(() => setDisplayStatus("none"),300)}
         onFocus={() => setDisplayStatus("block")}
         onChange={(e) => {
           search = e.target.value;
@@ -59,8 +61,12 @@ export default function InputComponetSearch({ widthProps }) {
       </span>
       <div className="search-list" >
         {searchList.length > 0 ? (
-          searchList.map(user => {
-            return <SingleUserOnSearchInput imgSrc={user.avatar} name={user.username} />
+          searchList.map((user, i) => {
+            return <SingleUserOnSearchInput 
+              imgSrc={user.avatar} 
+              name={user.username}
+              id={user.id}
+              key={i}/>
           })
         ) : ""}
       </div>

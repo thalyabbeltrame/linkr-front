@@ -24,4 +24,6 @@ export const deletePostRequest = async id => {
   return api.delete( `/delete/${id}`);
 }
 
-
+export const getTrending = async () => {
+  return api.get('/trending');
+}

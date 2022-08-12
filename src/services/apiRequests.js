@@ -20,3 +20,7 @@ export const searchUsers = async name => {
   return api.get(`search/${name}`);
 }
 
+export const getTrending = async () => {
+  return api.get('/trending');
+}
+

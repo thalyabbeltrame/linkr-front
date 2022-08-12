@@ -5,6 +5,7 @@ import Header from '../../components/header/Header';
 import Posts from '../../components/posts/Posts';
 import InputSearch from '../../components/header/InputSearch';
 import { Publish } from './Publish';
+import { HashTag } from '../../components/trending/HashTags';
 
 export const TimeLine = () => {
   const [tela, setTela] = useState(window.screen.width);
@@ -25,6 +26,7 @@ export const TimeLine = () => {
           <Title>timeline</Title>
           <Publish />
           <Posts />
+        <HashTag />
         </Content>
       </MainContainer>
     </>

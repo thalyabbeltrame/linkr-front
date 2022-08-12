@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 
+
 import { useAuth } from '../../providers/auth';
 import { useTimeline } from '../../providers/timeline';
 import { getTimelineRequest } from '../../services/apiRequests';
@@ -33,6 +34,7 @@ export default function Posts() {
       return <p className=''>There are no posts yet</p>;
     return dataPosts.map((post) => (
       <Post
+        id={post.id}
         key={post.id}
         avatar={post.avatar}
         username={post.username}

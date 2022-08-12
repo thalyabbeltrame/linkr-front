@@ -20,3 +20,8 @@ export const searchUsers = async name => {
   return api.get(`search/${name}`);
 }
 
+export const deletePostRequest = async id => {
+  return api.delete( `/delete/${id}`);
+}
+
+

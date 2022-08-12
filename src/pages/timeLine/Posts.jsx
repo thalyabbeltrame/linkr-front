@@ -22,9 +22,9 @@ export default function Posts() {
         setDataPosts(data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
         setLoading(false);
-        handleError;
+        handleError(error);
       });
   }, [hasUpdate]);
 
@@ -33,6 +33,7 @@ export default function Posts() {
       return <p className=''>There are no posts yet</p>;
     return dataPosts.map((post) => (
       <Post
+        id={post.id}
         key={post.id}
         avatar={post.avatar}
         username={post.username}

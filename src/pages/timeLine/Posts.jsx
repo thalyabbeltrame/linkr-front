@@ -1,6 +1,7 @@
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
-import Post from './Post';
+
+import Post from '../../components/post/Post';
 
 export default function Posts({ dataPosts, error, loading }) {
    

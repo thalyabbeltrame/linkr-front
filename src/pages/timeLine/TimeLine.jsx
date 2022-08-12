@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../components/header/Header';
-import Posts from '../../components/posts/Posts';
 import InputSearch from '../../components/header/InputSearch';
 import { Publish } from './Publish';
 import { usePosts } from '../../providers/posts';
 import { useAuth } from '../../providers/auth';
 import { getTimelineRequest } from "../../services/apiRequests.js"
 import { HashTag } from '../../components/trending/HashTags';
+import Posts from './Posts';
+import { Publish } from './Publish';
 
 export const TimeLine = () => {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ export const TimeLine = () => {
           {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
           <Title>timeline</Title>
           <Publish />
+<<<<<<< HEAD
           <Posts 
             dataPosts={dataPosts}
             error={error}
@@ -58,6 +60,10 @@ export const TimeLine = () => {
             setDataPosts={setDataPosts}/>
         <HashTag />
 
+=======
+          <Posts />
+          <HashTag />
+>>>>>>> main
         </Content>
       </MainContainer>
     </>

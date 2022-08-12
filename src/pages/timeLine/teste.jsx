@@ -4,8 +4,9 @@ import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
-import { deletePostRequest } from '../../services/apiRequests';
+
 import { useTimeline } from '../../providers/timeline';
+import { deletePostRequest } from '../../services/apiRequests';
 
 Modal.setAppElement('*');
 const customStyles = {
@@ -31,35 +32,26 @@ const customStyles = {
 const Post = (props) => {
   const { hasUpdate, setHasUpdate } = useTimeline();
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const {
-    id,
-    avatar,
-    username,
-    text,
-    title,
-    description,
-    link,
-    image
-  } = props;
+  const [loading, setLoading] = useState(false);
+  const { id, avatar, username, text, title, description, link, image } = props;
   async function deletePost(id) {
-    setLoading(true)
+    setLoading(true);
     try {
-      await deletePostRequest(id)
+      await deletePostRequest(id);
       if (hasUpdate === false) {
-        setHasUpdate(true)
-      }else{
-        setHasUpdate(false)
-      }      
+        setHasUpdate(true);
+      } else {
+        setHasUpdate(false);
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       Swal.fire({
         icon: 'error',
         title: 'Cannot Delete post',
-        text: "Somtething went wrong, please try again.",
+        text: 'Somtething went wrong, please try again.',
       });
     } finally {
-      setLoading(false)
+      setLoading(false);
       setIsOpen(false);
     }
   }
@@ -71,14 +63,23 @@ const Post = (props) => {
         onRequestClose={() => setIsOpen(false)}
         style={customStyles}
       >
-        {loading === true ? <RotatingLines strokeColor='white' width={200}  /> :
+        {loading === true ? (
+          <RotatingLines strokeColor='white' width={200} />
+        ) : (
           <>
-            <ModalText>Are you sure you want <br /> to delete this post?</ModalText>
+            <ModalText>
+              Are you sure you want <br /> to delete this post?
+            </ModalText>
             <ButtonBox>
-              <CancelButton onClick={() => setIsOpen(false)} >No, go back</CancelButton>
-              <ConfirmButton onClick={() => deletePost(id)}>Yes, delete it</ConfirmButton>
+              <CancelButton onClick={() => setIsOpen(false)}>
+                No, go back
+              </CancelButton>
+              <ConfirmButton onClick={() => deletePost(id)}>
+                Yes, delete it
+              </ConfirmButton>
             </ButtonBox>
-          </>}
+          </>
+        )}
       </Modal>
       <PostContent>
         <LeftSide>
@@ -86,11 +87,9 @@ const Post = (props) => {
         </LeftSide>
         <RightSide>
           <span>
-            <h3>
-              {username}
-            </h3>
+            <h3>{username}</h3>
             <p onClick={() => setIsOpen(true)}>
-              <IoMdTrash fontSize="1.3em" color='#FFFFFF' />
+              <IoMdTrash fontSize='1.3em' color='#FFFFFF' />
             </p>
           </span>
           <p>{text}</p>
@@ -170,13 +169,13 @@ const RightSide = styled.div`
     margin-bottom: 10px;
     word-break: break-word;
   }
-  span{
+  span {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
-  p :last-child{
+  p :last-child {
     cursor: pointer;
   }
 
@@ -292,63 +291,62 @@ const LinkPreview = styled.div`
   }
 `;
 
-
 const ModalText = styled.h1`
-width: 500px;
-height: 82px;
-font-family: 'Lato';
-font-style: normal;
-font-weight: 700;
-font-size: 34px;
-line-height: 41px;
-text-align: center;
-color: #FFFFFF;
-@media (max-width: 635px) {
-  font-size: 25px;
-  line-height: 30px;
-  padding: 10px 25px;
-}
-`
+  width: 500px;
+  height: 82px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 41px;
+  text-align: center;
+  color: #ffffff;
+  @media (max-width: 635px) {
+    font-size: 25px;
+    line-height: 30px;
+    padding: 10px 25px;
+  }
+`;
 
 const CancelButton = styled.button`
-width: 134px;
-height: 37px;
-background-color: #fff;
-color: #1877F2;
-border-radius: 5px;
-text-align: center;
-cursor: pointer;
-@media (max-width: 635px) {
-  width: 108px;
-  height: 32px;
-  font-size: 14px;
-  line-height: 18px;
-}
-`
+  width: 134px;
+  height: 37px;
+  background-color: #fff;
+  color: #1877f2;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  @media (max-width: 635px) {
+    width: 108px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+`;
 
 const ConfirmButton = styled.button`
-width: 134px;
-height: 37px;
-background-color: #1877F2;
-color: #fff;
-border-radius: 5px;
-text-align: center;
-cursor: pointer;
-@media (max-width: 635px) {
-  width: 108px;
-  height: 32px;
-  font-size: 14px;
-  line-height: 18px;
-}
-`
+  width: 134px;
+  height: 37px;
+  background-color: #1877f2;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  @media (max-width: 635px) {
+    width: 108px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+`;
 const ButtonBox = styled.div`
-margin-top: 60px;
-display: flex;
-justify-content: center;
-gap: 27px;
-@media (max-width: 635px) {
-        gap: 20px;
-        
-        padding: 10px 0;
-    }
-`
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 27px;
+  @media (max-width: 635px) {
+    gap: 20px;
+
+    padding: 10px 0;
+  }
+`;

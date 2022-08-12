@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
@@ -7,72 +7,85 @@ import { ReactTagify } from 'react-tagify';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+
 import { useAuth } from '../../providers/auth';
+<<<<<<< HEAD:src/components/posts/Post.jsx
 import { usePosts } from '../../providers/posts';
 import { deletePostRequest } from '../../services/apiRequests';
+=======
+import { useTimeline } from '../../providers/timeline';
+import {
+  deletePostRequest,
+  likeDislikeRequest,
+} from '../../services/apiRequests';
+>>>>>>> main:src/components/post/Post.jsx
 import { LinkPreview } from './LinkPreview';
 
-Modal.setAppElement('*');
-const customStyles = {
-  overlay: { zIndex: 10 },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '597px',
-    height: '262px',
-    background: '#333333',
-    border: 'solid 1px #333333',
-    borderRadius: '50px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-};
+export default function Post(props) {
+  const { id, avatar, username, text, title, description, link, image, likes } =
+    props;
 
-const Post = (props) => {
-  const {
-    id,
-    avatar,
-    username,
-    text,
-    title,
-    description,
-    link,
-    image
-  } = props;
   const { userData } = useAuth();
   const navigate = useNavigate();
   const { hasUpdate, setHasUpdate } = usePosts();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  async function deletePost(id) {
-    setLoading(true)
+
+  Modal.setAppElement('*');
+  const customStyles = {
+    overlay: { zIndex: 10 },
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '597px',
+      height: '262px',
+      background: '#333333',
+      border: 'solid 1px #333333',
+      borderRadius: '50px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+  };
+
+  const deletePost = async (id) => {
+    setLoading(true);
     try {
-      await deletePostRequest(id)
-      if (hasUpdate === false) {
-        setHasUpdate(true)
-      }else{
-        setHasUpdate(false)
-      }      
+      await deletePostRequest(id);
+      setHasUpdate(!hasUpdate);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       Swal.fire({
         icon: 'error',
         title: 'Cannot Delete post',
-        text: "Somtething went wrong, please try again.",
+        text: 'Somtething went wrong, please try again.',
       });
     } finally {
-      setLoading(false)
+      setLoading(false);
       setIsOpen(false);
     }
-  }
+  };
+
+  const handleError = (error) => {
+    if (error.response.status === 401) logout();
+  };
 
   const handleHashtagClick = (tag) =>
     navigate(`../hashtag/${tag.replace('#', '').toLowerCase()}`);
+
+  const handleLikeDislike = async () => {
+    try {
+      await likeDislikeRequest(id);
+      setHasUpdate(!hasUpdate);
+    } catch (error) {
+      console.log(error);
+      handleError(error);
+    }
+  };
 
   const buildTooltipMessage = (users) => {
     const numberOfLikes = users.length;
@@ -93,6 +106,30 @@ const Post = (props) => {
   };
 
   const tooltipMessage = buildTooltipMessage(likes);
+  const renderIonIcon = likes.map((like) => like.id).includes(userData.id) ? (
+    <AiFillHeart
+      onClick={handleLikeDislike}
+      size={20}
+      style={{
+        color: '#AC0000',
+        width: '25px',
+        height: '25px',
+        marginBottom: '5px',
+        cursor: 'pointer',
+      }}
+    />
+  ) : (
+    <AiOutlineHeart
+      onClick={handleLikeDislike}
+      style={{
+        color: '#fff',
+        width: '25px',
+        height: '25px',
+        marginBottom: '5px',
+        cursor: 'pointer',
+      }}
+    />
+  );
 
   const tagStyle = {
     color: 'white',
@@ -101,29 +138,34 @@ const Post = (props) => {
   };
 
   return (
-    <><Modal
-      isOpen={modalIsOpen}
-      onRequestClose={() => setIsOpen(false)}
-      style={customStyles}
-    >
-      {loading === true ? <RotatingLines strokeColor='white' width={200} /> :
-        <>
-          <ModalText>Are you sure you want <br /> to delete this post?</ModalText>
-          <ButtonBox>
-            <CancelButton onClick={() => setIsOpen(false)}>No, go back</CancelButton>
-            <ConfirmButton onClick={() => deletePost(id)}>Yes, delete it</ConfirmButton>
-          </ButtonBox>
-        </>}
-    </Modal><PostContent>
+    <>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={customStyles}
+      >
+        {loading === true ? (
+          <RotatingLines strokeColor='white' width={200} />
+        ) : (
+          <>
+            <ModalText>
+              Are you sure you want <br /> to delete this post?
+            </ModalText>
+            <ButtonBox>
+              <CancelButton onClick={() => setIsOpen(false)}>
+                No, go back
+              </CancelButton>
+              <ConfirmButton onClick={() => deletePost(id)}>
+                Yes, delete it
+              </ConfirmButton>
+            </ButtonBox>
+          </>
+        )}
+      </Modal>
+      <PostContent>
         <LeftSide>
           <img src={avatar} alt={username} />
-          <AiOutlineHeart
-            style={{
-              color: '#fff',
-              width: '25px',
-              height: '25px',
-              marginBottom: '5px',
-            }} />
+          {renderIonIcon}
           <Likes data-tip={tooltipMessage}>
             {likes.length} {likes.length === 1 ? 'like' : 'likes'}
           </Likes>
@@ -141,13 +183,13 @@ const Post = (props) => {
             title={title}
             description={description}
             link={link}
-            image={image} />
+            image={image}
+          />
         </RightSide>
-      </PostContent></>
+      </PostContent>
+    </>
   );
-};
-
-export default Post;
+}
 
 const PostContent = styled.div`
   display: flex;
@@ -239,63 +281,62 @@ const RightSide = styled.div`
   }
 `;
 
-
 const ModalText = styled.h1`
-width: 500px;
-height: 82px;
-font-family: 'Lato';
-font-style: normal;
-font-weight: 700;
-font-size: 34px;
-line-height: 41px;
-text-align: center;
-color: #FFFFFF;
-@media (max-width: 635px) {
-  font-size: 25px;
-  line-height: 30px;
-  padding: 10px 25px;
-}
-`
+  width: 500px;
+  height: 82px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 41px;
+  text-align: center;
+  color: #ffffff;
+  @media (max-width: 635px) {
+    font-size: 25px;
+    line-height: 30px;
+    padding: 10px 25px;
+  }
+`;
 
 const CancelButton = styled.button`
-width: 134px;
-height: 37px;
-background-color: #fff;
-color: #1877F2;
-border-radius: 5px;
-text-align: center;
-cursor: pointer;
-@media (max-width: 635px) {
-  width: 108px;
-  height: 32px;
-  font-size: 14px;
-  line-height: 18px;
-}
-`
+  width: 134px;
+  height: 37px;
+  background-color: #fff;
+  color: #1877f2;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  @media (max-width: 635px) {
+    width: 108px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+`;
 
 const ConfirmButton = styled.button`
-width: 134px;
-height: 37px;
-background-color: #1877F2;
-color: #fff;
-border-radius: 5px;
-text-align: center;
-cursor: pointer;
-@media (max-width: 635px) {
-  width: 108px;
-  height: 32px;
-  font-size: 14px;
-  line-height: 18px;
-}
-`
+  width: 134px;
+  height: 37px;
+  background-color: #1877f2;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  @media (max-width: 635px) {
+    width: 108px;
+    height: 32px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+`;
 const ButtonBox = styled.div`
-margin-top: 60px;
-display: flex;
-justify-content: center;
-gap: 27px;
-@media (max-width: 635px) {
-        gap: 20px;
-        
-        padding: 10px 0;
-    }
-`
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 27px;
+  @media (max-width: 635px) {
+    gap: 20px;
+
+    padding: 10px 0;
+  }
+`;

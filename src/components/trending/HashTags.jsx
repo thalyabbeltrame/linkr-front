@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { useTrending } from '../../providers/trendings';
 import { EmptyMessage } from './EmptyMessage';
 import { LoadingMessage } from './LoadingMessage';
 import { Tag } from './Tag';
+import { updateTrendingRequest } from './updateTrending';
 
 export const HashTag = () => {
-  const { trending, loading } = useTrending();
+  const [loading, setLoading] = useState(false)
+  const { trending, updateTrending, setTrending } = useTrending();
+  const { logout } = useTrending();
+
+  useEffect(() => { updateTrendingRequest(setLoading, setTrending, logout) }, [updateTrending])
 
   const handleRender = () => {
     if (loading) {

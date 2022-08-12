@@ -8,6 +8,8 @@ import { ReactTagify } from 'react-tagify';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import { useTrending } from '../../providers/trendings';
+
 
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
@@ -22,6 +24,7 @@ export default function Post(props) {
     props;
 
   const { userData } = useAuth();
+  const { setUpdateTrending } = useTrending()
   const navigate = useNavigate();
   const { hasUpdate, setHasUpdate } = usePosts();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -53,6 +56,7 @@ export default function Post(props) {
     try {
       await deletePostRequest(id);
       setHasUpdate(!hasUpdate);
+      setUpdateTrending(update => !update)
     } catch (error) {
       console.log(error);
       Swal.fire({

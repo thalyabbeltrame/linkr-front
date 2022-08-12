@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { searchUsers } from '../../services/apiRequests';
 
-export default function Search({ widthProps }) {
+export default function InputSearch({ widthProps }) {
   let search = '';
   const [searchList, setSearchList] = useState([]);
   const [displayStatus, setDisplayStatus] = useState('none');
@@ -114,6 +114,7 @@ const Container = styled.div`
     display: ${(props) => props.displayStatus};
   }
   .user {
+    cursor: pointer;
     display: flex;
     align-items: center;
     margin: 15px 15px;

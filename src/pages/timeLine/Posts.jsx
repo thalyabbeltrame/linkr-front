@@ -36,7 +36,6 @@ export default function Posts() {
       <Post
         id={post.id}
         key={post.id}
-        id={post.id}
         avatar={post.avatar}
         username={post.username}
         text={post.text}

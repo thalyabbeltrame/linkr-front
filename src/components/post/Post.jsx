@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { IoMdTrash } from 'react-icons/io';
 import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
 import {
   deletePostRequest,
-  likeDislikeRequest,
+  likeDislikeRequest
 } from '../../services/apiRequests';
 import { LinkPreview } from './LinkPreview';
 
@@ -83,7 +84,7 @@ export default function Post(props) {
   };
 
   const buildTooltipMessage = (users) => {
-    const numberOfLikes = users.length;
+    const numberOfLikes = users?.length;
     const userLiked = users.map((user) => user.id).includes(userData.id);
     if (numberOfLikes === 0) return 'Be the first to like this post';
     if (userLiked) {
@@ -94,9 +95,8 @@ export default function Post(props) {
     } else {
       return numberOfLikes === 1
         ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${
-            numberOfLikes - 2
-          } people`;
+        : `${users[0].username}, ${users[1].username} and other ${numberOfLikes - 2
+        } people`;
     }
   };
 
@@ -167,7 +167,12 @@ export default function Post(props) {
           <ReactTooltip place='bottom' type='light' effect='solid' />
         </LeftSide>
         <RightSide>
-          <h3>{username}</h3>
+          <span>
+            <h3>{username}</h3>
+            <p onClick={() => setIsOpen(true)}>
+              <IoMdTrash fontSize='1.3em' color='#FFFFFF' />
+            </p>
+          </span>
           <ReactTagify
             tagStyle={tagStyle}
             tagClicked={(tag) => handleHashtagClick(tag)}
@@ -261,6 +266,15 @@ const RightSide = styled.div`
     color: #b7b7b7;
     margin-bottom: 10px;
     word-break: break-word;
+  }
+  span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  p :last-child {
+    cursor: pointer;
   }
 
   @media screen and (max-width: 768px) {

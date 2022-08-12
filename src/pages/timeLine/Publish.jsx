@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
+import { usePosts } from '../../providers/posts';
 import { postTimelineRequest } from '../../services/apiRequests';
 
 export const Publish = () => {
   const { userData, logout } = useAuth();
-  const { hasUpdate, setHasUpdate } = useTimeline();
+  const { hasUpdate, setHasUpdate } = usePosts();
   const [isLoading, setIsLoading] = useState(false);
   const [publishData, setPublishData] = useState({
     link: '',

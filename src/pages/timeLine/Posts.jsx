@@ -1,34 +1,10 @@
-import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 
-
-import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
-import { getTimelineRequest } from '../../services/apiRequests';
 import Post from '../../components/post/Post';
 
-export default function Posts() {
-  const { logout } = useAuth();
-  const { dataPosts, setDataPosts, hasUpdate } = useTimeline();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleError = (error) =>
-    error.response.status === 401 ? logout() : setError(true);
-
-  useEffect(() => {
-    getTimelineRequest()
-      .then(({ data }) => {
-        setDataPosts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        handleError(err);
-      });
-  }, [hasUpdate]);
-
+export default function Posts({ dataPosts, error, loading }) {
+   
   const renderPosts = () => {
     if (dataPosts.length === 0)
       return <p className=''>There are no posts yet</p>;

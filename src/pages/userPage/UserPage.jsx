@@ -1,37 +1,48 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-
+import { getPostOfSigleUserById } from '../../services/apiRequests';
 import Header from '../../components/header/Header';
-import InputSearch from '../../components/header/InputSearch';
-import { Publish } from './Publish';
-import { usePosts } from '../../providers/posts';
+import Posts from '../../components/post/Post';
+import InputSearch from '../../components/header/InputSearch'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react';
 import { useAuth } from '../../providers/auth';
-import { getTimelineRequest } from "../../services/apiRequests.js"
-import { HashTag } from '../../components/trending/HashTags';
-import Posts from './Posts';
+import { usePosts } from '../../providers/posts';
 
-export const TimeLine = () => {
+export const UserPage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  const {
+    dataPosts,
+    setDataPosts,
+    user,
+    setUser,
+    hasUpdate
+  } = usePosts();
+
+  const params = useParams();
+  const { id } = params;
+  console.log(id)
+
+
   useEffect(() => {
-    getTimelineRequest()
+    getPostOfSigleUserById(id)
       .then(({ data }) => {
-        setDataPosts(data);
+        setDataPosts(data.posts);
+        setUser(data.user)
         setLoading(false);
+        console.log(data);
       })
       .catch((err) => {
         setLoading(false);
         handleError(err);
       });
-  }, [hasUpdate]);
+  }, [hasUpdate, id]);
+
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
-
-
 
 
   const [tela, setTela] = useState(window.screen.width);
@@ -42,21 +53,25 @@ export const TimeLine = () => {
     },
     true
   );
-
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
-          <Title>timeline</Title>
-          <Publish />
+          {tela <= 768 ? <span><InputSearch widthProps={"95vw"} /></span> : ""}
+          {user.length > 0 ?
+            <span className='title'>
+              <img src={user[0].avatar} alt="" />
+              <Title>{user[0].username}'s posts</Title>
+            </span>
+            : <Title>User not found</Title>}
           <Posts
+            userId={parseInt(id)}
+            setDataPosts={setDataPosts}
             dataPosts={dataPosts}
             error={error}
             loading={loading}
-            setDataPosts={setDataPosts} />
-          <HashTag />
+          />
         </Content>
       </MainContainer>
     </>
@@ -83,10 +98,32 @@ const Content = styled.div`
   max-width: 611px;
   width: 100%;
   margin-top: 125px;
+  z-index: 0;
+  .title{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 43px;
+    z-index: 0;
+  }
+  .title > img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+
+  }
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
     margin-top: 91px;
+    span{
+        z-index: 2;
+    }
+    .title{
+        padding: 20px;
+        margin-bottom: 0;
+    }
   }
 `;
 
@@ -95,11 +132,10 @@ const Title = styled.div`
   font-family: 'Oswald';
   font-weight: 700;
   font-size: 43px;
-  line-height: 64px;
   color: #ffffff;
-  margin-bottom: 43px;
   @media screen and (max-width: 768px) {
     margin-bottom: 19px;
     padding: 0 17px;
+    font-size: 33px;
   }
 `;

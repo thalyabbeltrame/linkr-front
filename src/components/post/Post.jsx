@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
+import { usePosts } from '../../providers/posts';
 import {
   deletePostRequest,
   likeDislikeRequest
@@ -23,7 +23,7 @@ export default function Post(props) {
 
   const { userData } = useAuth();
   const navigate = useNavigate();
-  const { hasUpdate, setHasUpdate } = useTimeline();
+  const { hasUpdate, setHasUpdate } = usePosts();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -84,7 +84,7 @@ export default function Post(props) {
   };
 
   const buildTooltipMessage = (users) => {
-    const numberOfLikes = users.length;
+    const numberOfLikes = users?.length;
     const userLiked = users.map((user) => user.id).includes(userData.id);
     if (numberOfLikes === 0) return 'Be the first to like this post';
     if (userLiked) {

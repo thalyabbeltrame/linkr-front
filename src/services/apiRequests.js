@@ -18,7 +18,12 @@ export const postTimelineRequest = async (data) => {
 
 export const searchUsers = async (name) => {
   return api.get(`search/${name}`);
-};
+
+}
+export const getPostOfSigleUserById = (id) => {
+  return api.get(`/user-posts/${id}`)
+}
+
 
 export const likeDislikeRequest = async (postId) => {
   return api.post(`/posts/${postId}/likeDislike`);

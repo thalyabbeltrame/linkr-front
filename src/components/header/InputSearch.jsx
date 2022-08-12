@@ -2,31 +2,37 @@ import { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { AiOutlineSearch } from 'react-icons/ai';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 
 import { searchUsers } from '../../services/apiRequests';
+
 
 export default function InputSearch({ widthProps }) {
   let search = '';
   const [searchList, setSearchList] = useState([]);
   const [displayStatus, setDisplayStatus] = useState('none');
+  const navigate = useNavigate();
 
   const handleSearch = async (search) => {
     try {
       const { data } = await searchUsers(search);
       setSearchList(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  function SingleUserOnSearchInput({ imgSrc, name }) {
+  function SingleUserOnSearchInput({ imgSrc, name, id }) {
     return (
-      <div className='user'>
-        <img src={imgSrc} alt={'name: ' + name} />
+      <div className="user" onClick={() => {
+        navigate("/timeline")
+        navigate(`/user/${id}`)
+      }}>
+        <img src={imgSrc} alt={"name: " + name} />
         <h2>{name}</h2>
       </div>
-    );
+    )
   }
 
   return (
@@ -34,10 +40,10 @@ export default function InputSearch({ widthProps }) {
       <DebounceInput
         minLength={3}
         debounceTimeout={300}
-        type='text'
-        placeholder='Search for people'
-        onBlur={() => setDisplayStatus('none')}
-        onFocus={() => setDisplayStatus('block')}
+        type="text"
+        placeholder="Search for people"
+        onBlur={() => setTimeout(() => setDisplayStatus("none"), 300)}
+        onFocus={() => setDisplayStatus("block")}
         onChange={(e) => {
           search = e.target.value;
           if (search.length > 0) {
@@ -54,17 +60,16 @@ export default function InputSearch({ widthProps }) {
           style={{ color: '#C6C6C6', width: '30px', height: '30px' }}
         />
       </span>
-      <div className='search-list'>
-        {searchList.length > 0
-          ? searchList.map((user) => {
-              return (
-                <SingleUserOnSearchInput
-                  imgSrc={user.avatar}
-                  name={user.username}
-                />
-              );
-            })
-          : ''}
+      <div className="search-list" >
+        {searchList.length > 0 ? (
+          searchList.map((user, i) => {
+            return <SingleUserOnSearchInput
+              imgSrc={user.avatar}
+              name={user.username}
+              id={user.id}
+              key={i} />
+          })
+        ) : ""}
       </div>
     </Container>
   );
@@ -72,6 +77,7 @@ export default function InputSearch({ widthProps }) {
 
 const Container = styled.div`
   position: relative;
+  z-index: 1;
 
   input {
     font-family: 'Lato', sans-serif;
@@ -123,6 +129,13 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 19px;
     line-height: 23px;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px 10px;
+    &:hover{
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      background-color: #b3b3b3;
+    }
   }
   h2,
   img {

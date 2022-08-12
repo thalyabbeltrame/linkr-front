@@ -9,16 +9,11 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { useAuth } from '../../providers/auth';
-<<<<<<< HEAD:src/components/posts/Post.jsx
 import { usePosts } from '../../providers/posts';
-import { deletePostRequest } from '../../services/apiRequests';
-=======
-import { useTimeline } from '../../providers/timeline';
 import {
   deletePostRequest,
   likeDislikeRequest,
 } from '../../services/apiRequests';
->>>>>>> main:src/components/post/Post.jsx
 import { LinkPreview } from './LinkPreview';
 
 export default function Post(props) {

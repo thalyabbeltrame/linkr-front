@@ -9,13 +9,12 @@ import { useAuth } from '../../providers/auth';
 import { getTimelineRequest } from "../../services/apiRequests.js"
 import { HashTag } from '../../components/trending/HashTags';
 import Posts from './Posts';
-import { Publish } from './Publish';
 
 export const TimeLine = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const {dataPosts, setDataPosts, hasUpdate} = usePosts();
+  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
   useEffect(() => {
     getTimelineRequest()
       .then(({ data }) => {
@@ -52,18 +51,12 @@ export const TimeLine = () => {
           {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
           <Title>timeline</Title>
           <Publish />
-<<<<<<< HEAD
-          <Posts 
+          <Posts
             dataPosts={dataPosts}
             error={error}
             loading={loading}
-            setDataPosts={setDataPosts}/>
-        <HashTag />
-
-=======
-          <Posts />
+            setDataPosts={setDataPosts} />
           <HashTag />
->>>>>>> main
         </Content>
       </MainContainer>
     </>

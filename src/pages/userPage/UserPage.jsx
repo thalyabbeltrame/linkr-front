@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { getPostOfSigleUserById } from '../../services/apiRequests';
 import Header from '../../components/header/Header';
-import Posts from '../../components/posts/Posts';
+import Posts from '../../components/post/Post';
 import InputSearch from '../../components/header/InputSearch'
 import { useParams } from 'react-router-dom'
 import { useEffect } from 'react';

@@ -1,21 +1,21 @@
 import { createContext, useContext, useState } from 'react';
 
-const TimelineContext = createContext();
+const PostsContext = createContext();
 
-export const TimelineProvider = ({ children }) => {
+export const PostsProvider = ({ children }) => {
   const [dataPosts, setDataPosts] = useState([]);
   const [hasUpdate, setHasUpdate] = useState(false);
 
   return (
-    <TimelineContext.Provider
+    <PostsContext.Provider
       value={{ dataPosts, setDataPosts, hasUpdate, setHasUpdate }}
     >
       {children}
-    </TimelineContext.Provider>
+    </PostsContext.Provider>
   );
 };
 
-export const useTimeline = () => {
-  const context = useContext(TimelineContext);
+export const usePosts = () => {
+  const context = useContext(PostsContext);
   return context;
 };

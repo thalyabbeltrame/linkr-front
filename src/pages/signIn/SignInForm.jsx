@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Button, Form, Input } from '../../components/CustomStyles';
+import { HandleButtonContent } from '../../components/HandleButtonContent';
 import { useAuth } from '../../providers/auth';
 import { api } from '../../services/api';
 import { signInRequest } from '../../services/apiRequests';
-import { Button, Form, Input } from '../../shared/CustomStyles';
-import { HandleButtonContent } from '../../shared/HandleButtonContent';
 import { isEmpty } from '../../utils/isEmpty';
 
 export const SignInForm = () => {
@@ -28,8 +28,8 @@ export const SignInForm = () => {
     try {
       const { data } = await signInRequest(userInfo);
       setMessage((msg) => (msg = 'sucess'));
-
       setUserData(data.user);
+
       api.defaults.headers['Authorization'] = data.token;
       localStorage.setItem('LinkrAuthUser', JSON.stringify(data.user));
       localStorage.setItem('LinkrAuthToken', data.token);

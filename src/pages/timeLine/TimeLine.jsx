@@ -1,31 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import Header from '../../shared/components/Header';
-import Posts from './Posts';
-import InputComponentSearch from '../../shared/components/InputComponentSearch'
+import Header from '../../components/header/Header';
+import Posts from '../../components/posts/Posts';
+import InputSearch from '../../components/header/InputSearch';
 import { Publish } from './Publish';
+import { usePosts } from '../../providers/posts';
+import { useAuth } from '../../providers/auth';
+import { getTimelineRequest } from "../../services/apiRequests.js"
 
 export const TimeLine = () => {
+  const [loading, setLoading] = useState(false);
+  const { logout } = useAuth();
+  const [error, setError] = useState(false);
+  const {dataPosts, setDataPosts, hasUpdate} = usePosts();
+  useEffect(() => {
+    getTimelineRequest()
+      .then(({ data }) => {
+        setDataPosts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        handleError(err);
+      });
+  }, [hasUpdate]);
+
+  const handleError = (error) =>
+    error.response.status === 401 ? logout() : setError(true);
+
+
+
+
+
   const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener('resize', () => {
-    setTela(window.screen.width)
-  }, true);
+  window.addEventListener(
+    'resize',
+    () => {
+      setTela(window.screen.width);
+    },
+    true
+  );
 
-return (
-  <>
-    <Header />
-    <MainContainer>
-      <Content>
-
-        {tela <= 768 ? <InputComponentSearch widthProps={"95vw"} /> : ""}
-        <Title>timeline</Title>
-        <Publish />
-        <Posts />
-      </Content>
-    </MainContainer>
-  </>
-);
+  return (
+    <>
+      <Header />
+      <MainContainer>
+        <Content>
+          {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
+          <Title>timeline</Title>
+          <Publish />
+          <Pos
+          ts 
+            dataPosts={dataPosts}
+            error={error}
+            loading={loading}
+            setDataPosts={setDataPosts}/>
+        </Content>
+      </MainContainer>
+    </>
+  );
 };
 
 const MainContainer = styled.main`

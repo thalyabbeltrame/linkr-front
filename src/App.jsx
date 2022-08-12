@@ -1,9 +1,9 @@
 import { BrowserRouter } from 'react-router-dom';
 
 import { AuthProvider } from './providers/auth';
-import { TimelineProvider } from './providers/timeline';
+import { PostsProvider } from './providers/posts';
 import { HandleRoute } from './routes/HandleRoutes';
-import GlobalStyles from './shared/GlobalStyles';
+import GlobalStyles from './components/GlobalStyles';
 
 function App() {
   return (
@@ -11,9 +11,9 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <AuthProvider>
-          <TimelineProvider>
+          <PostsProvider>
             <HandleRoute />
-          </TimelineProvider>
+          </PostsProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

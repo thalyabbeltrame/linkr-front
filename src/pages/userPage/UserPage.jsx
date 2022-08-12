@@ -1,44 +1,73 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import Header from '../../shared/components/Header';
-import Posts from '../timeLine/Posts';
-import InputComponentSearch from '../../shared/components/InputComponentSearch'
-import { useParams } from 'react-router-dom';
+import Header from '../../components/header/Header';
+import Posts from '../../components/posts/Posts';
+import InputSearch from '../../components/header/InputSearch'
+import { useParams } from 'react-router-dom'
 import { useEffect } from 'react';
-
+import { useAuth } from '../../providers/auth';
+import { usePosts } from '../../providers/posts';
+import { getPostOfSigleUserById } from "../../services/apiRequests.js"
 
 export const UserPage = () => {
-    const [tela, setTela] = useState(window.screen.width);
-    const [userPosts, setUserPosts] = useState([])
-    window.addEventListener('resize', () => {
-        setTela(window.screen.width)
-    }, true);
+  const [loading, setLoading] = useState(false);
+  const { logout } = useAuth();
+  const [error, setError] = useState(false);
+  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  const params = useParams();
+  const { id } = params;
+  console.log(id)
 
-    const params = useParams();
-    const { id } = params;
+  useEffect(() => {
+    getPostOfSigleUserById(id)
+      .then(({ data }) => {
+        setDataPosts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        handleError(err);
+      });
+  }, [hasUpdate]);
+
+  const handleError = (error) =>
+    error.response.status === 401 ? logout() : setError(true);
 
 
-    console.log(id)
-    console.log(userPosts)
 
-    return (
-        <>
-            <Header />
-            <MainContainer>
-                <Content>
-                    {tela <= 768 ? <span><InputComponentSearch widthProps={"95vw"} /></span> : ""}
-                    {userPosts.length > 0 ?
-                        <span className='title'>
-                            <img src={userPosts[0].avatar} alt="" />
-                            <Title>{userPosts[0].username}'s posts</Title>
-                        </span>
-                        : <Title>User not found</Title>}
-                    <Posts userId={parseInt(id)} setUserPosts={setUserPosts} />
-                </Content>
-            </MainContainer>
-        </>
-    );
+
+
+  const [tela, setTela] = useState(window.screen.width);
+  window.addEventListener(
+    'resize',
+    () => {
+      setTela(window.screen.width);
+    },
+    true
+  );
+  return (
+    <>
+      <Header />
+      <MainContainer>
+        <Content>
+          {tela <= 768 ? <span><InputSearch widthProps={"95vw"} /></span> : ""}
+          {dataPosts.length > 0 ?
+            <span className='title'>
+              <img src={dataPosts[0].avatar} alt="" />
+              <Title>{dataPosts[0].username}'s posts</Title>
+            </span>
+            : <Title>User not found</Title>}
+          <Posts
+            userId={parseInt(id)}
+            setDataPosts={setDataPosts}
+            dataPosts={dataPosts}
+            error={error}
+            loading={loading} />
+        </Content>
+      </MainContainer>
+    </>
+  );
 };
 
 const MainContainer = styled.main`

@@ -3,17 +3,28 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { useAuth } from '../../providers/auth';
-import { useTimeline } from '../../providers/timeline';
+import { usePosts } from '../../providers/posts';
 import { postTimelineRequest } from '../../services/apiRequests';
 
 export const Publish = () => {
   const { userData, logout } = useAuth();
-  const { hasUpdate, setHasUpdate } = useTimeline();
+  const { hasUpdate, setHasUpdate } = usePosts();
   const [isLoading, setIsLoading] = useState(false);
   const [publishData, setPublishData] = useState({
     link: '',
     text: '',
   });
+
+  const handleError = (error) => {
+    if (error.response.status === 401) {
+      Swal.fire({
+        icon: 'error',
+        title: 'OOPS...',
+        text: 'An error occured while trying to fetch the trending hashtags, please refresh the page',
+      });
+      logout();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,17 +37,9 @@ export const Publish = () => {
         link: '',
         text: '',
       });
-    } catch (err) {
-      console.log(err);
-      const { status } = err.response;
-      if (status === 401) {
-        Swal.fire({
-          icon: 'error',
-          title: 'OOPS...',
-          text: 'An error occured while trying to fetch the trending hashtags, please refresh the page',
-        });
-        logout();
-      }
+    } catch (error) {
+      console.log(error);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }

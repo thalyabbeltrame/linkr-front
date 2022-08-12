@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useAuth } from '../../providers/auth';
 import { useTimeline } from '../../providers/timeline';
 import { getTimelineRequest } from '../../services/apiRequests';
-import Post from './Post';
+import Post from '../../components/post/Post';
 
 export default function Posts() {
   const { logout } = useAuth();
@@ -36,6 +36,7 @@ export default function Posts() {
       <Post
         id={post.id}
         key={post.id}
+        id={post.id}
         avatar={post.avatar}
         username={post.username}
         text={post.text}

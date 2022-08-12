@@ -2,10 +2,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../components/header/Header';
-import Posts from '../../components/posts/Posts';
 import InputSearch from '../../components/header/InputSearch';
-import { Publish } from './Publish';
 import { HashTag } from '../../components/trending/HashTags';
+import Posts from './Posts';
+import { Publish } from './Publish';
 
 export const TimeLine = () => {
   const [tela, setTela] = useState(window.screen.width);
@@ -26,7 +26,7 @@ export const TimeLine = () => {
           <Title>timeline</Title>
           <Publish />
           <Posts />
-        <HashTag />
+          <HashTag />
         </Content>
       </MainContainer>
     </>

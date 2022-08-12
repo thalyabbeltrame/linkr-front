@@ -1,20 +1,21 @@
-import Lottie from 'lottie-react'
-import styled from 'styled-components'
-import empty from '../../assets/lottie/empty.json';
-export const EmptyMessage = ({ children }) => {
-    const style = { height: 300, width: 300 };
-    return (
-        <EmptyContent>
-            {children}
-            <Lottie animationData={empty} style={style} />
-        </EmptyContent>)
-}
+import Lottie from 'lottie-react';
+import styled from 'styled-components';
 
+import empty from '../../assets/lottie/empty.json';
+
+export const EmptyMessage = ({ children }) => {
+  const style = { height: 300, width: 300 };
+  return (
+    <EmptyContent>
+      {children}
+      <Lottie animationData={empty} style={style} />
+    </EmptyContent>
+  );
+};
 
 const EmptyContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

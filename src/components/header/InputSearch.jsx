@@ -1,52 +1,49 @@
-import styled from "styled-components";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react";
-import { DebounceInput } from "react-debounce-input"
-import { searchUsers } from "../../services/apiRequests";
+import { useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { AiOutlineSearch } from 'react-icons/ai';
+import styled from 'styled-components';
 
-export default function InputComponetSearch({ widthProps }) {
+import { searchUsers } from '../../services/apiRequests';
 
-  let search = "";
-  const [searchList, setSearchList] = useState([])
-  const [displayStatus, setDisplayStatus] = useState("none");
+export default function InputSearch({ widthProps }) {
+  let search = '';
+  const [searchList, setSearchList] = useState([]);
+  const [displayStatus, setDisplayStatus] = useState('none');
 
   const handleSearch = async (search) => {
     try {
       const { data } = await searchUsers(search);
-      setSearchList(data)
-      console.log(data)
+      setSearchList(data);
+      console.log(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   function SingleUserOnSearchInput({ imgSrc, name }) {
     return (
-      <div className="user" >
-        <img src={imgSrc} alt={"name: " + name} />
+      <div className='user'>
+        <img src={imgSrc} alt={'name: ' + name} />
         <h2>{name}</h2>
       </div>
-    )
+    );
   }
 
   return (
-    <Container
-      widthProps={widthProps}
-      displayStatus={displayStatus}>
+    <Container widthProps={widthProps} displayStatus={displayStatus}>
       <DebounceInput
         minLength={3}
         debounceTimeout={300}
-        type="text"
-        placeholder="Search for people"
-
-        onBlur={() => setDisplayStatus("none")}
-        onFocus={() => setDisplayStatus("block")}
+        type='text'
+        placeholder='Search for people'
+        onBlur={() => setDisplayStatus('none')}
+        onFocus={() => setDisplayStatus('block')}
         onChange={(e) => {
           search = e.target.value;
           if (search.length > 0) {
             handleSearch(search);
           } else {
-            setSearchList([])
+            setSearchList([]);
           }
         }}
         value={search}
@@ -57,12 +54,17 @@ export default function InputComponetSearch({ widthProps }) {
           style={{ color: '#C6C6C6', width: '30px', height: '30px' }}
         />
       </span>
-      <div className="search-list" >
-        {searchList.length > 0 ? (
-          searchList.map(user => {
-            return <SingleUserOnSearchInput imgSrc={user.avatar} name={user.username} />
-          })
-        ) : ""}
+      <div className='search-list'>
+        {searchList.length > 0
+          ? searchList.map((user) => {
+              return (
+                <SingleUserOnSearchInput
+                  imgSrc={user.avatar}
+                  name={user.username}
+                />
+              );
+            })
+          : ''}
       </div>
     </Container>
   );
@@ -83,10 +85,9 @@ const Container = styled.div`
     &::placeholder {
       color: #c6c6c6;
     }
-    &:focus{
+    &:focus {
       outline: none;
     }
-   
   }
   span {
     display: flex;
@@ -99,38 +100,33 @@ const Container = styled.div`
   h2 {
     color: #ffffff;
   }
-  .search-list{
+  .search-list {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: auto;
-    background-color: #E7E7E7;
+    background-color: #e7e7e7;
     border-radius: 8px;
     z-index: -1;
     max-height: 100vh;
     padding-top: 45px;
-    display: ${props => props.displayStatus};
+    display: ${(props) => props.displayStatus};
   }
-  .user{
+  .user {
     cursor: pointer;
     display: flex;
     align-items: center;
     margin: 15px 15px;
-    font-family: 'Lato',sans-serif;
+    font-family: 'Lato', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 19px;
     line-height: 23px;
-    padding: 10px 5px;
-    border-radius: 8px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    &:hover{
-      background-color: #acacac;
-    }
-    
   }
-  h2 {
+  h2,
+  img {
+    cursor: pointer;
     color: #515151;
   }
   img {

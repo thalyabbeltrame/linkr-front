@@ -21,18 +21,18 @@ export const UserPage = () => {
     hasUpdate
   } = usePosts();
 
+
   const params = useParams();
   const { id } = params;
-  console.log(id)
 
 
-  useEffect(() => {
-    getPostOfSigleUserById(id)
+  useEffect(async () => {
+    await getPostOfSigleUserById(id)
       .then(({ data }) => {
-        setDataPosts(data.posts);
         setUser(data.user)
+        setDataPosts(data.posts);
         setLoading(false);
-        console.log(data);
+
       })
       .catch((err) => {
         setLoading(false);
@@ -67,8 +67,8 @@ export const UserPage = () => {
             : <Title>User not found</Title>}
           <Posts
             userId={parseInt(id)}
-            setDataPosts={setDataPosts}
             dataPosts={dataPosts}
+            setDataPosts={setDataPosts}
             error={error}
             loading={loading}
           />

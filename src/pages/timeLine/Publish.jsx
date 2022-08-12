@@ -38,7 +38,6 @@ export const Publish = () => {
         text: '',
       });
     } catch (error) {
-      console.log(error);
       handleError(error);
     } finally {
       setIsLoading(false);

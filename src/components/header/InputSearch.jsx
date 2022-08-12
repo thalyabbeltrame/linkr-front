@@ -26,7 +26,6 @@ export default function InputSearch({ widthProps }) {
   function SingleUserOnSearchInput({ imgSrc, name, id }) {
     return (
       <div className="user" onClick={() => {
-        navigate("/timeline")
         navigate(`/user/${id}`)
       }}>
         <img src={imgSrc} alt={"name: " + name} />

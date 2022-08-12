@@ -1,9 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
-import Post from '../../components/post/Post';
+import { useAuth } from '../../providers/auth';
+import { usePosts } from '../../providers/posts';
+import { getTimelineRequest } from '../../services/apiRequests';
+import Post from './Post';
 
-export default function Posts({ dataPosts, error, loading }) {
+export default function Posts() {
+  const { logout } = useAuth();
+  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  console.log(dataPosts)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleError = (error) =>
+    error.response.status === 401 ? logout() : setError(true);
+
+  useEffect(() => {
+    getTimelineRequest()
+      .then(({ data }) => {
+        setDataPosts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        handleError(err);
+      });
+  }, [hasUpdate]);
 
   const renderPosts = () => {
     if (dataPosts.length === 0)

@@ -15,6 +15,7 @@ export const TimeLine = () => {
   const { logout } = useAuth();
   const [error, setError] = useState(false);
   const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  
   useEffect(() => {
     getTimelineRequest()
       .then(({ data }) => {

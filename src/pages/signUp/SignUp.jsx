@@ -1,4 +1,4 @@
-import { ContainerForm } from '../../shared/ContainerForm';
+import { ContainerForm } from '../../components/ContainerForm';
 import { SignUpForm } from './SignUpForm';
 
 export const SignUp = () => (

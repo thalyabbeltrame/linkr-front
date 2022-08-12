@@ -41,6 +41,7 @@ export default function Posts() {
         description={post.description}
         link={post.link}
         image={post.image}
+        likes={post.likes}
       />
     ));
   };

@@ -15,6 +15,17 @@ export const Publish = () => {
     text: '',
   });
 
+  const handleError = (error) => {
+    if (error.response.status === 401) {
+      Swal.fire({
+        icon: 'error',
+        title: 'OOPS...',
+        text: 'An error occured while trying to fetch the trending hashtags, please refresh the page',
+      });
+      logout();
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -26,17 +37,9 @@ export const Publish = () => {
         link: '',
         text: '',
       });
-    } catch (err) {
-      console.log(err);
-      const { status } = err.response;
-      if (status === 401) {
-        Swal.fire({
-          icon: 'error',
-          title: 'OOPS...',
-          text: 'An error occured while trying to fetch the trending hashtags, please refresh the page',
-        });
-        logout();
-      }
+    } catch (error) {
+      console.log(error);
+      handleError(error);
     } finally {
       setIsLoading(false);
     }

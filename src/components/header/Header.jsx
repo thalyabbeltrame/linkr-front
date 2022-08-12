@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import InputComponetSearch from './InputComponentSearch';
 import Logout from './Logout';
+import Search from './Search';
 
 export default function Header() {
   return (
@@ -9,7 +9,7 @@ export default function Header() {
       <Container>
         <div className='title'>linkr</div>
         <div className='desktop'>
-          <InputComponetSearch widthProps={'35vw'} />
+          <Search widthProps={'35vw'} />
         </div>
         <Logout />
       </Container>

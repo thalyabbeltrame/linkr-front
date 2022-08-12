@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Header from '../../shared/components/Header';
-import Posts from './Posts';
+import Header from '../../components/header/Header';
+import Posts from '../../components/posts/Posts';
 import { Publish } from './Publish';
 
 export const TimeLine = () => {

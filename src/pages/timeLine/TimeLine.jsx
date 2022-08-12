@@ -2,8 +2,9 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import Header from '../../components/header/Header';
-import Posts from './Posts';
 import InputSearch from '../../components/header/InputSearch';
+import { HashTag } from '../../components/trending/HashTags';
+import Posts from './Posts';
 import { Publish } from './Publish';
 
 export const TimeLine = () => {
@@ -25,6 +26,7 @@ export const TimeLine = () => {
           <Title>timeline</Title>
           <Publish />
           <Posts />
+          <HashTag />
         </Content>
       </MainContainer>
     </>

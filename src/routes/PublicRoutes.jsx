@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { SignIn } from '../pages/signIn/SignIn';
-import { SignUp } from '../pages/signUp/SignUp';
+import { SignInPage } from '../pages/SignInPage';
+import { SignUpPage } from '../pages/SignUpPage';
 
 export const PublicRoutes = () => (
   <Routes>
-    <Route path='/' element={<SignIn />} />
-    <Route path='/sign-up' element={<SignUp />} />
+    <Route path='/' element={<SignInPage />} />
+    <Route path='/sign-up' element={<SignUpPage />} />
     <Route path='*' element={<Navigate to='/' replace />} />
   </Routes>
 );

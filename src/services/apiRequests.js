@@ -18,20 +18,24 @@ export const postTimelineRequest = async (data) => {
 
 export const searchUsers = async (name) => {
   return api.get(`search/${name}`);
+};
 
-}
 export const getPostOfSigleUserById = (id) => {
-  return api.get(`/user-posts/${id}`)
-}
-
+  return api.get(`/user-posts/${id}`);
+};
 
 export const likeDislikeRequest = async (postId) => {
   return api.post(`/posts/${postId}/likeDislike`);
 };
+
 export const deletePostRequest = async (id) => {
   return api.delete(`/delete/${id}`);
 };
 
 export const getTrending = async () => {
   return api.get('/trending');
+};
+
+export const getPostsByHashtag = async (hashtag) => {
+  return api.get(`/hashtag/${hashtag}`);
 };

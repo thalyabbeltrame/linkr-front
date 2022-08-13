@@ -1,10 +1,10 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { AuthProvider } from './providers/auth';
-import { PostsProvider } from './providers/posts';
-import { TrendingProvider } from './providers/trendings';
+import { AuthProvider } from './providers/AuthProvider';
+import { PostsProvider } from './providers/PostsProvider';
+import { TrendingProvider } from './providers/TrendingsProvider';
 import { HandleRoute } from './routes/HandleRoutes';
-import GlobalStyles from './components/GlobalStyles';
+import { GlobalStyles } from './styles/GlobalStyles';
 
 function App() {
   return (

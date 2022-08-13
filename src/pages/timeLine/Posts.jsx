@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import Post from '../../components/post/Post';
 
 export default function Posts({ dataPosts, error, loading }) {
-
   const renderPosts = () => {
     if (dataPosts.length === 0)
       return <p className=''>There are no posts yet</p>;
+
     return dataPosts.map((post) => (
       <Post
         id={post.id}
         key={post.id}
         avatar={post.avatar}
+        userId={post.user_id}
         username={post.username}
         text={post.text}
         title={post.title}

@@ -1,3 +1,4 @@
+import ReactTooltip from '@huner2/react-tooltip';
 import { useState } from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
@@ -5,25 +6,33 @@ import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import { ReactTagify } from 'react-tagify';
-import ReactTooltip from '@huner2/react-tooltip';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import { useTrending } from '../../providers/trendings';
-
 
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
 import {
   deletePostRequest,
-  likeDislikeRequest
+  likeDislikeRequest,
 } from '../../services/apiRequests';
 import { LinkPreview } from './LinkPreview';
 
 export default function Post(props) {
-  const { id, avatar, username, text, title, description, link, image, likes } =
-    props;
+  const {
+    id,
+    avatar,
+    userId,
+    username,
+    text,
+    title,
+    description,
+    link,
+    image,
+    likes,
+  } = props;
   const { userData } = useAuth();
-  const { setUpdateTrending } = useTrending()
+  const { setUpdateTrending } = useTrending();
   const navigate = useNavigate();
   const { hasUpdate, setHasUpdate } = usePosts();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -55,7 +64,7 @@ export default function Post(props) {
     try {
       await deletePostRequest(id);
       setHasUpdate(!hasUpdate);
-      setUpdateTrending(update => !update)
+      setUpdateTrending((update) => !update);
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -74,7 +83,7 @@ export default function Post(props) {
   };
 
   const handleHashtagClick = (tag) =>
-    navigate(`../hashtag/${tag.replace('#', '').toLowerCase()}`);
+    navigate(`/hashtag/${tag.replace('#', '').toLowerCase()}`);
 
   const handleLikeDislike = async () => {
     try {
@@ -98,8 +107,9 @@ export default function Post(props) {
     } else {
       return numberOfLikes === 1
         ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${numberOfLikes - 2
-        } people`;
+        : `${users[0].username}, ${users[1].username} and other ${
+            numberOfLikes - 2
+          } people`;
     }
   };
   const tooltipMessage = buildTooltipMessage(likes);
@@ -170,7 +180,7 @@ export default function Post(props) {
         </LeftSide>
         <RightSide>
           <span>
-            <h3 onClick={() => navigate(`/user/${id}`)}>{username}</h3>
+            <h3 onClick={() => navigate(`/user/${userId}`)}>{username}</h3>
             <p onClick={() => setIsOpen(true)}>
               <IoMdTrash fontSize='1.3em' color='#FFFFFF' />
             </p>
@@ -261,7 +271,7 @@ const RightSide = styled.div`
     line-height: 23px;
     color: #ffffff;
     margin-bottom: 7px;
-    &:hover{
+    &:hover {
       text-decoration: underline;
     }
   }

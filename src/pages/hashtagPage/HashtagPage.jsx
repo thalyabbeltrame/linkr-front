@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Header from '../../components/header/Header';
-import InputSearch from '../../components/header/InputSearch';
 import { HashTag } from '../../components/trending/HashTags';
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
-import { getTimelineRequest } from '../../services/apiRequests.js';
-import Posts from './Posts';
-import { Publish } from './Publish';
+import { getPostsByHashtag } from '../../services/apiRequests';
+import Posts from '../timeLine/Posts';
 
-export const TimeLine = () => {
+export const HashtagPage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
   const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  const { hashtag } = useParams();
 
   useEffect(() => {
-    getTimelineRequest()
+    getPostsByHashtag(hashtag)
       .then(({ data }) => {
         setDataPosts(data);
         setLoading(false);
@@ -26,34 +26,18 @@ export const TimeLine = () => {
         setLoading(false);
         handleError(err);
       });
-  }, [hasUpdate]);
+  }, [hasUpdate, hashtag]);
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
-  const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener(
-    'resize',
-    () => {
-      setTela(window.screen.width);
-    },
-    true
-  );
 
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
-          <Title>timeline</Title>
-          <Publish />
-          <Posts
-            dataPosts={dataPosts}
-            error={error}
-            loading={loading}
-            setDataPosts={setDataPosts}
-          />
+          <Title>{`# ${hashtag}`}</Title>
+          <Posts dataPosts={dataPosts} error={error} loading={loading} />
           <HashTag />
         </Content>
       </MainContainer>

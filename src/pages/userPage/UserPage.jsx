@@ -1,38 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getPostOfSigleUserById } from '../../services/apiRequests';
+
 import Header from '../../components/header/Header';
-import Posts from '../timeLine/Posts';
-import InputSearch from '../../components/header/InputSearch'
-import { useParams } from 'react-router-dom'
-import { useEffect } from 'react';
+import InputSearch from '../../components/header/InputSearch';
 import { useAuth } from '../../providers/auth';
 import { usePosts } from '../../providers/posts';
+import { getPostOfSigleUserById } from '../../services/apiRequests';
+import Posts from '../timeLine/Posts';
 
 export const UserPage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const {
-    dataPosts,
-    setDataPosts,
-    user,
-    setUser,
-    hasUpdate
-  } = usePosts();
-
+  const { dataPosts, setDataPosts, user, setUser, hasUpdate } = usePosts();
 
   const params = useParams();
   const { id } = params;
 
-
   useEffect(() => {
     getPostOfSigleUserById(id)
       .then(({ data }) => {
-        setUser(data.user)
+        setUser(data.user);
         setDataPosts(data.posts);
         setLoading(false);
-
       })
       .catch((err) => {
         setLoading(false);
@@ -40,10 +31,8 @@ export const UserPage = () => {
       });
   }, [hasUpdate, id]);
 
-
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
 
   const [tela, setTela] = useState(window.screen.width);
   window.addEventListener(
@@ -58,13 +47,21 @@ export const UserPage = () => {
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? <span><InputSearch widthProps={"95vw"} /></span> : ""}
-          {user.length > 0 ?
+          {tela <= 768 ? (
+            <span>
+              <InputSearch widthProps={'95vw'} />
+            </span>
+          ) : (
+            ''
+          )}
+          {user.length > 0 ? (
             <span className='title'>
-              <img src={user[0].avatar} alt="" />
+              <img src={user[0].avatar} alt='' />
               <Title>{user[0].username}'s posts</Title>
             </span>
-            : <Title>User not found</Title>}
+          ) : (
+            <Title>User not found</Title>
+          )}
           <Posts
             userId={parseInt(id)}
             dataPosts={dataPosts}
@@ -99,7 +96,7 @@ const Content = styled.div`
   width: 100%;
   margin-top: 125px;
   z-index: 0;
-  .title{
+  .title {
     width: 100%;
     display: flex;
     align-items: center;
@@ -111,18 +108,17 @@ const Content = styled.div`
     width: 50px;
     height: 50px;
     margin-right: 20px;
-
   }
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
     margin-top: 91px;
-    span{
-        z-index: 2;
+    span {
+      z-index: 2;
     }
-    .title{
-        padding: 20px;
-        margin-bottom: 0;
+    .title {
+      padding: 20px;
+      margin-bottom: 0;
     }
   }
 `;

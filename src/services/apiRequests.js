@@ -39,3 +39,7 @@ export const getTrendingRequest = async () => {
 export const getPostsByHashtagRequest = async (hashtag) => {
   return api.get(`/hashtag/${hashtag}`);
 };
+
+export const updatePost = async (id, text) => {
+  return api.put(`/post/update/${id}`, {text: text});
+};

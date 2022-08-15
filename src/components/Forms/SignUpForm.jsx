@@ -5,6 +5,7 @@ import { Button, Form, Input } from './CustomStyles';
 import { HandleButtonContent } from './HandleButtonContent';
 import { signUpRequest } from '../../services/apiRequests';
 import { isEmpty } from '../../utils/isEmpty';
+import { alert } from '../../Helpers/alert';
 
 export const SignUpForm = () => {
   let navigate = useNavigate();
@@ -20,7 +21,7 @@ export const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEmpty(userInfo)) {
-      alert('All fields must be filled!');
+      alert('info', 'All fields must be filled!');
       return;
     }
     setLoading(true);
@@ -33,8 +34,9 @@ export const SignUpForm = () => {
       setMessage((msg) => (msg = 'error'));
       const { status } = err.response;
       if (status === 409) {
-        alert('The user is already registered!');
+        return alert('error', 'The user is already registered!');
       }
+      alert('error', 'An error has occurred!', err.response.data);
     } finally {
       setLoading(false);
     }

@@ -8,7 +8,6 @@ import { useAuth } from "../../providers/AuthProvider";
 import { alert } from "../../Helpers/alert";
 
 export const Likes = ({ id, likes }) => {
-    console.log(likes)
     const { userData, logout } = useAuth();
     const { setHasUpdate } = usePosts();
     const handleLikeDislike = async () => {
@@ -26,7 +25,7 @@ export const Likes = ({ id, likes }) => {
 
     const buildTooltipMessage = (users) => {
         const numberOfLikes = users.length;
-        const userLiked = users.map((user) => user.id).includes(userData.id);
+        const userLiked = users.map((user) => user.userId).includes(userData.id);
         if (numberOfLikes === 0) return 'Be the first to like this post';
         if (userLiked) {
             return numberOfLikes === 1
@@ -41,7 +40,7 @@ export const Likes = ({ id, likes }) => {
         }
     };
     const tooltipMessage = buildTooltipMessage(likes);
-    const renderIonIcon = likes.map((like) => like.id).includes(userData.id) ? (
+    const renderIonIcon = likes.map((like) => like.userId).includes(userData.id) ? (
         <AiFillHeart
             onClick={handleLikeDislike}
             size={20}

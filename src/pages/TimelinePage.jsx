@@ -30,22 +30,14 @@ export const TimelinePage = () => {
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
-  const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener(
-    'resize',
-    () => {
-      setTela(window.screen.width);
-    },
-    true
-  );
-
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
+          <span className='mobile'>
+            <InputSearch widthProps={'95vw'} />
+          </span>
           <Title>timeline</Title>
           <Publish />
           <Posts
@@ -81,10 +73,16 @@ const Content = styled.div`
   max-width: 611px;
   width: 100%;
   margin-top: 125px;
+  .mobile {
+    display: none;
+  }
 
   @media screen and (max-width: 768px) {
     max-width: 100%;
     margin-top: 91px;
+    .mobile{
+      display: block;
+    }
   }
 `;
 

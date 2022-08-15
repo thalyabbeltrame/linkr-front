@@ -35,26 +35,14 @@ export const UserPage = () => {
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
 
-  const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener(
-    'resize',
-    () => {
-      setTela(window.screen.width);
-    },
-    true
-  );
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? (
-            <span>
+            <span className='mobile'>
               <InputSearch widthProps={'95vw'} />
             </span>
-          ) : (
-            ''
-          )}
           {user.length > 0 ? (
             <span className='title'>
               <img src={user[0].avatar} alt='' />
@@ -99,6 +87,11 @@ const Content = styled.div`
   width: 100%;
   margin-top: 135px;
   z-index: 0;
+
+  .mobile {
+    display: none;
+  }
+
   .title {
     width: 100%;
     display: flex;
@@ -116,8 +109,9 @@ const Content = styled.div`
   @media screen and (max-width: 768px) {
     max-width: 100%;
     margin-top: 91px;
-    span {
+    .mobile {
       z-index: 2;
+      display: block;
     }
     .title {
       padding: 20px;

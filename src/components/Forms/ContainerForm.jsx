@@ -34,6 +34,7 @@ const MainContainer = styled.main`
 const Title = styled.h1`
   font-family: 'Passion One', cursive;
   font-size: 106px;
+  letter-spacing: 0.05em;
 
   @media screen and (max-width: 768px) {
     font-size: 76px;
@@ -45,6 +46,7 @@ const Title = styled.h1`
 const Message = styled.h2`
   font-family: 'Oswald', sans-serif;
   font-size: 43px;
+  line-height: 64px;
   width: 55%;
 
   @media screen and (max-width: 768px) {
@@ -63,6 +65,7 @@ const InfoContainer = styled.div`
   justify-content: center;
 
   @media screen and (max-width: 768px) {
+    width: 100%;
     align-items: center;
     margin-top: 10px;
   }
@@ -83,6 +86,6 @@ const FormContainer = styled.div`
     bottom: 0;
     align-items: flex-start;
     width: 100%;
-    height: 80vh;
+    height: calc(100% - 175px);
   }
 `;

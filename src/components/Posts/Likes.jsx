@@ -16,7 +16,7 @@ export const Likes = ({ id, likes }) => {
             setHasUpdate(update => !update);
         } catch (error) {
             let message = err.response.data;
-            if (message = 'Unauthorized') {
+            if (message === 'Unauthorized') {
                 return logout();
             }
             alert('error', 'An error has occurred, try again!', message)

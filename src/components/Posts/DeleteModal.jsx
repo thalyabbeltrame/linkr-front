@@ -44,7 +44,7 @@ export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
       setUpdateTrending((update) => !update);
     } catch (err) {
       let message = err.response.data;
-      if(message = 'Unauthorized') {
+      if(message === 'Unauthorized') {
         return logout();
       }
       alert('error', 'Failed to delete the post', message)

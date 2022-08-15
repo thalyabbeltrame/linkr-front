@@ -4,6 +4,7 @@ import { RiPencilFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { useAuth } from '../../providers/AuthProvider';
 import { DeleteModal } from './DeleteModal';
 import { Likes } from './Likes';
 import { LinkPreview } from './LinkPreview';
@@ -23,6 +24,7 @@ export const Post = ({
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { userData } = useAuth();
   const navigate = useNavigate();
   return (
     <>
@@ -35,20 +37,22 @@ export const Post = ({
         <RightSide>
           <span>
             <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
-            <div>
-              <RiPencilFill
-                style={{ cursor: 'pointer' }}
-                onClick={() => setIsEditing(!isEditing)}
-                fontSize='1.3em'
-                color='#FFFFFF'
-              />
-              <IoMdTrash
-                style={{ cursor: 'pointer' }}
-                onClick={() => setIsOpen((e) => !e)}
-                fontSize='1.3em'
-                color='#FFFFFF'
-              />
-            </div>
+            {userData.id === user_id ? (
+              <div>
+                <RiPencilFill
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setIsEditing(!isEditing)}
+                  fontSize='1.3em'
+                  color='#FFFFFF'
+                />
+                <IoMdTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setIsOpen((e) => !e)}
+                  fontSize='1.3em'
+                  color='#FFFFFF'
+                />
+              </div>
+            ) : null}
           </span>
           <TextTitle
             id={id}

@@ -6,12 +6,10 @@ import { Post } from './Post';
 export const Posts = ({ dataPosts, error, loading }) => {
   const renderPosts = () => {
     if (dataPosts.length === 0) {
-      return <p className=''>There are no posts yet</p>;
+      return <p className='no-posts'>There are no posts yet</p>;
     }
 
-    return dataPosts.map((post) => (
-      <Post  key={post.id} {...post}    />
-    ));
+    return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
 
   const renderContent = () => {
@@ -57,5 +55,9 @@ const PostsContainer = styled.section`
     padding: 20px;
     font-size: 18px;
     color: #ff0000;
+  }
+
+  .no-posts {
+    color: #fff;
   }
 `;

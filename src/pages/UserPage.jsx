@@ -8,6 +8,7 @@ import { Posts } from '../components/Posts/Posts';
 import { useAuth } from '../providers/AuthProvider';
 import { usePosts } from '../providers/PostsProvider';
 import { getPostOfSigleUserByIdRequest } from '../services/apiRequests';
+import { HashTags } from "../components/Trending/HashTags"
 
 export const UserPage = () => {
   const [loading, setLoading] = useState(false);
@@ -70,6 +71,7 @@ export const UserPage = () => {
             loading={loading}
           />
         </Content>
+      <HashTags styled={{marginTop: "0"}}/>
       </MainContainer>
     </>
   );
@@ -77,9 +79,10 @@ export const UserPage = () => {
 
 const MainContainer = styled.main`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
   height: 100vh;
+  width: 100%;
 
   @media screen and (max-width: 768px) {
     padding-left: 0;
@@ -94,7 +97,7 @@ const Content = styled.div`
   height: 100vh;
   max-width: 611px;
   width: 100%;
-  margin-top: 125px;
+  margin-top: 135px;
   z-index: 0;
   .title {
     width: 100%;

@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { alert } from '../../Helpers/alert';
 
+import { alert } from '../../Helpers/alert';
+import { useAuth } from '../../providers/AuthProvider';
 import { usePosts } from '../../providers/PostsProvider';
 import { useTrending } from '../../providers/TrendingsProvider';
 import { deletePostRequest } from '../../services/apiRequests';
-import { useAuth } from '../../providers/AuthProvider';
 
 export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
   const [loading, setLoading] = useState(false);
@@ -44,10 +44,10 @@ export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
       setUpdateTrending((update) => !update);
     } catch (err) {
       let message = err.response.data;
-      if(message === 'Unauthorized') {
+      if (message === 'Unauthorized') {
         return logout();
       }
-      alert('error', 'Failed to delete the post', message)
+      alert('error', 'Failed to delete the post', message);
     } finally {
       setLoading(false);
       setIsOpen(false);

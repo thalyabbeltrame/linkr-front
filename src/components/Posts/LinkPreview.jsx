@@ -7,7 +7,7 @@ export const LinkPreview = (props) => {
 
   return (
     <PreviewContent onClick={handleLinkPreview}>
-      <div>
+      <div className='preview'>
         <h2 className='title-preview'>{title}</h2>
         <p className='description-preview'>{description}</p>
         <a className='link-preview'>{link}</a>
@@ -33,7 +33,7 @@ const PreviewContent = styled.div`
     height: 115px;
   }
 
-  div {
+  .preview {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -57,7 +57,6 @@ const PreviewContent = styled.div`
     font-size: 16px;
     line-height: 19px;
     color: #cecece;
-    margin-bottom: 5px;
 
     @media screen and (max-width: 768px) {
       font-size: 11px;
@@ -74,7 +73,6 @@ const PreviewContent = styled.div`
     font-size: 11px;
     line-height: 13px;
     color: #9b9595;
-    margin-bottom: 13px;
 
     @media screen and (max-width: 768px) {
       font-size: 9px;

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { RiPencilFill } from 'react-icons/ri';
@@ -6,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { DeleteModal } from './DeleteModal';
-import { LinkPreview } from './LinkPreview';
 import { Likes } from './Likes';
+import { LinkPreview } from './LinkPreview';
 import { TextTitle } from './Text';
 
 export const Post = ({
@@ -20,10 +19,8 @@ export const Post = ({
   link,
   image,
   likes,
-  user_id
+  user_id,
 }) => {
-
-
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
@@ -34,17 +31,32 @@ export const Post = ({
         <LeftSide>
           <img src={avatar} alt={username} />
           <Likes id={id} likes={likes} />
-
         </LeftSide>
         <RightSide>
           <span>
             <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
             <div>
-              <RiPencilFill style={{ cursor: 'pointer' }} onClick={() => setIsEditing(!isEditing)} fontSize='1.3em' color='#FFFFFF' />
-              <IoMdTrash style={{ cursor: 'pointer' }} onClick={() => setIsOpen((e) => !e)} fontSize='1.3em' color='#FFFFFF' />
+              <RiPencilFill
+                style={{ cursor: 'pointer' }}
+                onClick={() => setIsEditing(!isEditing)}
+                fontSize='1.3em'
+                color='#FFFFFF'
+              />
+              <IoMdTrash
+                style={{ cursor: 'pointer' }}
+                onClick={() => setIsOpen((e) => !e)}
+                fontSize='1.3em'
+                color='#FFFFFF'
+              />
             </div>
           </span>
-          <TextTitle id={id} text={text} setIsEditing={setIsEditing} isEditing={isEditing} setIsOpen={setIsOpen} />
+          <TextTitle
+            id={id}
+            text={text}
+            setIsEditing={setIsEditing}
+            isEditing={isEditing}
+            setIsOpen={setIsOpen}
+          />
           <LinkPreview
             title={title}
             description={description}
@@ -135,7 +147,7 @@ const RightSide = styled.div`
   p :last-child {
     cursor: pointer;
   }
-  div{
+  div {
     display: flex;
     flex-direction: row;
     gap: 10px;

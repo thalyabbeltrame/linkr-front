@@ -7,7 +7,7 @@ import { useAuth } from '../../providers/AuthProvider';
 import { api } from '../../services/api';
 import { signInRequest } from '../../services/apiRequests';
 import { isEmpty } from '../../utils/isEmpty';
-
+import { alert } from '../../Helpers/alert';
 export const SignInForm = () => {
   const { setUserData } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isEmpty(userInfo)) {
-      alert('All fields must be filled!');
+      alert('info', 'All fields must be filled!');
       return;
     }
     setLoading(true);
@@ -37,8 +37,9 @@ export const SignInForm = () => {
       setMessage((msg) => (msg = 'error'));
       const { status } = err.response;
       if (status === 401) {
-        alert('User or password incorrect!');
+        return alert('error', 'User or password incorrect!');
       }
+      alert('error', 'An error has occurred!', err.response.data);
     } finally {
       setLoading(false);
     }

@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
+import { alert } from '../../Helpers/alert';
 
 import { usePosts } from '../../providers/PostsProvider';
 import { useTrending } from '../../providers/TrendingsProvider';
 import { deletePostRequest } from '../../services/apiRequests';
+import { useAuth } from '../../providers/AuthProvider';
 
 export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
   const [loading, setLoading] = useState(false);
   const { setUpdateTrending } = useTrending();
   const { hasUpdate, setHasUpdate } = usePosts();
+  const { logout } = useAuth();
 
   Modal.setAppElement('*');
   const customStyles = {
@@ -40,13 +42,12 @@ export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
       await deletePostRequest(id);
       setHasUpdate(!hasUpdate);
       setUpdateTrending((update) => !update);
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Cannot Delete post',
-        text: 'Something went wrong, please try again.',
-      });
+    } catch (err) {
+      let message = err.response.data;
+      if(message === 'Unauthorized') {
+        return logout();
+      }
+      alert('error', 'Failed to delete the post', message)
     } finally {
       setLoading(false);
       setIsOpen(false);

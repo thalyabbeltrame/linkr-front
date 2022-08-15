@@ -1,178 +1,50 @@
-import ReactTooltip from '@huner2/react-tooltip';
-import { useEffect, useRef, useState } from 'react';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+
+import { useState } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { RiPencilFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { ReactTagify } from 'react-tagify';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
-import { useTrending } from '../../providers/TrendingsProvider';
 
-
-import { useAuth } from '../../providers/AuthProvider';
-import { usePosts } from '../../providers/PostsProvider';
-import { likeDislikeRequest, updatePost } from '../../services/apiRequests';
 import { DeleteModal } from './DeleteModal';
 import { LinkPreview } from './LinkPreview';
+import { Likes } from './Likes';
+import { TextTitle } from './Text';
 
-export const Post = (props) => {
-  const {
-    id,
-    avatar,
-    username,
-    text,
-    title,
-    description,
-    link,
-    image,
-    likes,
-  } = props;
-  const { userData } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-  const [newDescription, setNewDescription] = useState(text);
-  const [isLoading, setIsLoading] = useState(false);
-  const inputRef = useRef(null);
-  const { setUpdateTrending } = useTrending();
-  const navigate = useNavigate();
-  const { hasUpdate, setHasUpdate } = usePosts();
+export const Post = ({
+  id,
+  avatar,
+  username,
+  text,
+  title,
+  description,
+  link,
+  image,
+  likes,
+  user_id
+}) => {
+
+
   const [modalIsOpen, setIsOpen] = useState(false);
-  const handleError = (error) => {
-    if (error.response.status === 401) logout();
-  };
-  const handleHashtagClick = (tag) =>
-    navigate(`/hashtag/${tag.replace('#', '').toLowerCase()}`);
-  const handleLikeDislike = async () => {
-    try {
-      await likeDislikeRequest(id);
-      setHasUpdate(!hasUpdate);
-    } catch (error) {
-      console.log(error);
-      handleError(error);
-    }
-  };
-  const buildTooltipMessage = (users) => {
-    const numberOfLikes = users.length;
-    const userLiked = users.map((user) => user.id).includes(userData.id);
-    if (numberOfLikes === 0) return 'Be the first to like this post';
-    if (userLiked) {
-      return numberOfLikes === 1
-        ? 'You'
-        : `You, ${users[0].username} and other 
-                ${numberOfLikes - 2} people`;
-    } else {
-      return numberOfLikes === 1
-        ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${numberOfLikes - 2
-        } people`;
-    }
-  };
-  const tooltipMessage = buildTooltipMessage(likes);
-  const renderIonIcon = likes.map((like) => like.id).includes(userData.id) ? (
-    <AiFillHeart
-      onClick={handleLikeDislike}
-      size={20}
-      style={{
-        color: '#AC0000',
-        width: '25px',
-        height: '25px',
-        marginBottom: '5px',
-        cursor: 'pointer',
-      }}
-    />
-  ) : (
-    <AiOutlineHeart
-      onClick={handleLikeDislike}
-      style={{
-        color: '#fff',
-        width: '25px',
-        height: '25px',
-        marginBottom: '5px',
-        cursor: 'pointer',
-      }}
-    />
-  );
-  const tagStyle = {
-    color: 'white',
-    cursor: 'pointer',
-    fontWeight: '700',
-  };
-  const onUpdatePosts = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      await updatePost(id, newDescription);
-      console.log(id, newDescription)
-      setHasUpdate(!hasUpdate);
-      setUpdateTrending((update) => !update);
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Cannot Delete post',
-        text: "Update post not sucess! Try again!",
-      });
-    } finally {
-      setIsLoading(false);
-      setIsOpen(false);
-      setIsEditing(false);
-    }
-  }
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
+  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
   return (
     <>
       <DeleteModal id={id} isOpen={modalIsOpen} setIsOpen={setIsOpen} />
       <PostContent>
         <LeftSide>
           <img src={avatar} alt={username} />
-          {renderIonIcon}
-          <Likes data-tip={tooltipMessage}>
-            {likes.length} {likes.length === 1 ? 'like' : 'likes'}
-          </Likes>
-          <ReactTooltip place='bottom' type='light' effect='solid' />
+          <Likes id={id} likes={likes} />
+
         </LeftSide>
         <RightSide>
           <span>
-            <h3 onClick={() => navigate(`/user/${id}`)}>{username}</h3>
+            <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
             <div>
-              <p onClick={() => setIsEditing(!isEditing)}>
-                <RiPencilFill fontSize='1.3em' color='#FFFFFF' />
-              </p>
-              <p onClick={() => setIsOpen((e) => !e)}>
-                <IoMdTrash fontSize='1.3em' color='#FFFFFF' />
-              </p>
+              <RiPencilFill style={{ cursor: 'pointer' }} onClick={() => setIsEditing(!isEditing)} fontSize='1.3em' color='#FFFFFF' />
+              <IoMdTrash style={{ cursor: 'pointer' }} onClick={() => setIsOpen((e) => !e)} fontSize='1.3em' color='#FFFFFF' />
             </div>
           </span>
-          {
-            isEditing ?
-              (<EditingText
-                ref={inputRef}
-                type="text"
-                value={newDescription}
-                onChange={e => setNewDescription(e.target.value)}
-                disabled={isLoading}
-                onKeyDown={(e) => {
-                  if (e.keyCode === 27) {
-                    setIsEditing(false)
-                  } else if (e.keyCode === 13) {
-                    onUpdatePosts(e)
-                  }
-                }} ></EditingText>
-              ) : (
-                <Text>
-                  <ReactTagify
-                    tagStyle={tagStyle}
-                    tagClicked={(tag) => handleHashtagClick(tag)}
-                  >
-                    <p>{text}</p>
-                  </ReactTagify>
-                </Text>
-              )
-          }
+          <TextTitle id={id} text={text} setIsEditing={setIsEditing} isEditing={isEditing} setIsOpen={setIsOpen} />
           <LinkPreview
             title={title}
             description={description}
@@ -226,16 +98,7 @@ const LeftSide = styled.div`
     }
   }
 `;
-const Likes = styled.p`
-  font-size: 11px;
-  line-height: 13px;
-  color: #ffffff;
 
-  @media screen and (max-width: 768px) {
-    font-size: 9px;
-    line-height: 11px;
-  }
-`;
 const RightSide = styled.div`
   display: flex;
   flex-direction: column;
@@ -289,41 +152,4 @@ const RightSide = styled.div`
       line-height: 18px;
     }
   }
-`;
-const EditingText = styled.textarea`
-    resize: vertical;
-    background: #171717;
-    width: 100%;
-    max-height: 150px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
-    background: #FFFFFF;
-    border-radius: 7px; 
-    margin-bottom: 10px;
-    &:focus {
-        box-shadow: 0 0 0 0;
-        border: 0 none;
-        outline: 0;
-    }
-    @media (max-width: 610px) {
-        font-size: 15px;
-        line-height: 18px;
-    }
-`;
-const Text = styled.div`
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 20px;
-
-    color: #B7B7B7;
-
-    @media (max-width: 610px) {
-        font-size: 15px;
-        line-height: 18px;
-    }
 `;

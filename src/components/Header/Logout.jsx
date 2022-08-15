@@ -32,7 +32,7 @@ export const Logout = () => {
               alt={!!userData ? userData.image : ''}
             />
           </span>
-          <h2 onClick={logout}>Logout</h2>
+          <h2 onClick={() => logout(false)}>Logout</h2>
         </div>
       </Container>
       <Overlay status={animation} onClick={() => setAnimation('close')} />

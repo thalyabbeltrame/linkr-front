@@ -10,19 +10,7 @@ export const Posts = ({ dataPosts, error, loading }) => {
     }
 
     return dataPosts.map((post) => (
-      <Post
-        id={post.id}
-        key={post.id}
-        avatar={post.avatar}
-        userId={post.user_id}
-        username={post.username}
-        text={post.text}
-        title={post.title}
-        description={post.description}
-        link={post.link}
-        image={post.image}
-        likes={post.likes}
-      />
+      <Post  key={post.id} {...post}    />
     ));
   };
 

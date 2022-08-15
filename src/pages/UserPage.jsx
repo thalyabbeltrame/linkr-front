@@ -17,8 +17,8 @@ export const UserPage = () => {
 
   const params = useParams();
   const { id } = params;
-
-  useEffect(() => {
+  
+  function updatePosts() {
     getPostOfSigleUserByIdRequest(id)
       .then(({ data }) => {
         setUser(data.user);
@@ -29,31 +29,20 @@ export const UserPage = () => {
         setLoading(false);
         handleError(err);
       });
+  }
+
+  useEffect(() => {
+    updatePosts();
   }, [hasUpdate, id]);
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
 
-  const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener(
-    'resize',
-    () => {
-      setTela(window.screen.width);
-    },
-    true
-  );
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? (
-            <span>
-              <InputSearch widthProps={'95vw'} />
-            </span>
-          ) : (
-            ''
-          )}
           {user.length > 0 ? (
             <span className='title'>
               <img src={user[0].avatar} alt='' />

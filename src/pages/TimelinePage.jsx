@@ -10,14 +10,15 @@ import { useAuth } from '../providers/AuthProvider';
 import { usePosts } from '../providers/PostsProvider';
 import { getTimelineRequest } from '../services/apiRequests.js';
 
+
 export const TimelinePage = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
   const { dataPosts, setDataPosts, hasUpdate } = usePosts();
 
-  useEffect(() => {
-    getTimelineRequest()
+  function UpdatePosts(){
+    const data = getTimelineRequest()
       .then(({ data }) => {
         setDataPosts(data);
         setLoading(false);
@@ -26,26 +27,23 @@ export const TimelinePage = () => {
         setLoading(false);
         handleError(err);
       });
+  }
+
+  useEffect(() => {
+    UpdatePosts();
   }, [hasUpdate]);
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
-  const [tela, setTela] = useState(window.screen.width);
-  window.addEventListener(
-    'resize',
-    () => {
-      setTela(window.screen.width);
-    },
-    true
-  );
 
   return (
     <>
       <Header />
       <MainContainer>
         <Content>
-          {tela <= 768 ? <InputSearch widthProps={'95vw'} /> : ''}
+          <span className='mobile-input-search'>
+            <InputSearch widthProps={'95vw'} />
+          </span>
           <Title>timeline</Title>
           <Publish />
           <Posts
@@ -67,9 +65,16 @@ const MainContainer = styled.main`
   justify-content: center;
   height: 100vh;
 
+  .mobile-input-search{
+    display: none;
+  }
+
   @media screen and (max-width: 768px) {
     padding-left: 0;
     width: 100%;
+    .mobile-input-search{
+      display: block;
+    }
   }
 `;
 

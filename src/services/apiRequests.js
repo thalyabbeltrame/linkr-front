@@ -43,3 +43,7 @@ export const getPostsByHashtagRequest = async (hashtag) => {
 export const updatePost = async (id, text) => {
   return api.put(`/post/update/${id}`, {text: text});
 };
+
+export const getIsFollowedRequest = async () => {
+  return api.get('/timeline/isfollowed');
+};

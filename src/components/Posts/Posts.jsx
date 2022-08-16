@@ -1,17 +1,32 @@
+import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
+import { getIsFollowedRequest } from '../../services/apiRequests';
+
 
 import { Post } from './Post';
 
 export const Posts = ({ dataPosts, error, loading }) => {
   const renderPosts = () => {
     if (dataPosts.length === 0) {
-      return <p className='no-posts'>There are no posts yet</p>;
-    }
+      useEffect(() => {
+        getIsFollowedRequest()
+          .then((data) => {
+            console.log(data.data.length)
+            if (data.data.length === 0) {
+              return <p className='no-posts'>You don't follow anyone yet. Search for new friends!</p>;
+            } else {
+              return <p className='no-posts'>No posts found from your friends</p>;
+            };
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      }, [dataPosts])
 
+    }
     return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
-
   const renderContent = () => {
     if (loading) {
       return (
@@ -23,7 +38,6 @@ export const Posts = ({ dataPosts, error, loading }) => {
         />
       );
     }
-
     if (error) {
       return (
         <p className='error-message'>

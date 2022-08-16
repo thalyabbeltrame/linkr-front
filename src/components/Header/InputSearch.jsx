@@ -21,7 +21,7 @@ export const InputSearch = ({ widthProps }) => {
     }
   };
 
-  const SingleUserOnSearchInput = ({ imgSrc, name, id }) => {
+  const SingleUserOnSearchInput = ({ imgSrc, name, id, follow }) => {
     return (
       <div
         className='user'
@@ -30,7 +30,8 @@ export const InputSearch = ({ widthProps }) => {
         }}
       >
         <img src={imgSrc} alt={'name: ' + name} />
-        <h2>{name}</h2>
+        <h2>{name} &nbsp;</h2>
+        <h4>{follow === 1 ? "• following" : ""}</h4>
       </div>
     );
   };
@@ -68,6 +69,7 @@ export const InputSearch = ({ widthProps }) => {
                   imgSrc={user.avatar}
                   name={user.username}
                   id={user.id}
+                  follow={user.follow}
                   key={i}
                 />
               );
@@ -112,6 +114,9 @@ const Container = styled.div`
 
   h2 {
     color: #ffffff;
+  }
+  h4 {
+    color: #C5C5C5;
   }
 
   .search-list {

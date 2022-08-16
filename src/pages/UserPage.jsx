@@ -9,13 +9,13 @@ import { useAuth } from '../providers/AuthProvider';
 import { usePosts } from '../providers/PostsProvider';
 import { getPostOfSigleUserByIdRequest } from '../services/apiRequests';
 import { HashTags } from '../components/Trending/HashTags';
+import { HandleFollow } from '../components/Follow/Follow';
 
 export const UserPage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
   const { dataPosts, setDataPosts, user, setUser, hasUpdate } = usePosts();
-
   const params = useParams();
   const { id } = params;
 
@@ -40,14 +40,15 @@ export const UserPage = () => {
       <Header />
       <MainContainer>
         <Content>
-            <span className='mobile'>
-              <InputSearch widthProps={'95vw'} />
-            </span>
+          <span className='mobile'>
+            <InputSearch widthProps={'95vw'} />
+          </span>
           {user.length > 0 ? (
-            <span className='title'>
+            <><span className='title'>
               <img src={user[0].avatar} alt='' />
               <Title>{user[0].username}'s posts</Title>
-            </span>
+              <HandleFollow id={id}/>
+            </span></>
           ) : (
             <Title>User not found</Title>
           )}
@@ -93,6 +94,7 @@ const Content = styled.div`
   }
 
   .title {
+    position: relative;
     width: 100%;
     display: flex;
     align-items: center;

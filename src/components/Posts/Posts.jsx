@@ -1,29 +1,20 @@
-import { useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
-import { getIsFollowedRequest } from '../../services/apiRequests';
 
 
 import { Post } from './Post';
 
-export const Posts = ({ dataPosts, error, loading }) => {
+export const Posts = ({ dataPosts, error, loading, status }) => {
   const renderPosts = () => {
     if (dataPosts.length === 0) {
-      useEffect(() => {
-        getIsFollowedRequest()
-          .then((data) => {
-            console.log(data.data.length)
-            if (data.data.length === 0) {
-              return <p className='no-posts'>You don't follow anyone yet. Search for new friends!</p>;
-            } else {
-              return <p className='no-posts'>No posts found from your friends</p>;
-            };
-          })
-          .catch((error) => {
-            console.log(error)
-          });
-      }, [dataPosts])
-
+      switch (status) {
+        case 205:
+          return <p p className='no-posts' > You don't follow anyone yet. Search for new friends!</p>;
+        case 210:
+          return <p className='no-posts'>No posts found from your friends</p>;
+        default:
+          return <p className='no-posts'>There are no posts yet</p>;
+      }
     }
     return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
@@ -72,6 +63,10 @@ const PostsContainer = styled.section`
   }
 
   .no-posts {
-    color: #fff;
-  }
+color: white;
+font-weight: 700;
+font-size: 19px;
+line-height: 23px;
+
+}
 `;

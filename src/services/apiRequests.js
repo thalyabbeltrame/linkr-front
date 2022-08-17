@@ -44,13 +44,18 @@ export const updatePost = async (id, text) => {
   return api.put(`/post/update/${id}`, {text: text});
 };
 
+
+export const getIsFollowedRequest = async () => {
+  return api.get('/timeline/isfollowed');
+};
+
 export const followRequest = async (id) => {
   return api.post(`/user/${id}/follow`);
-}
+};
 export const unfollowRequest = async (id) => {
   return api.delete(`/user/${id}/unfollow`);
-}
+};
 
 export const checkIsUserFollowed = async (id) => {
   return api.get(`/user/${id}/isFollowed`);
-}
+};

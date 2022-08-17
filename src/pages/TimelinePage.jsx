@@ -14,17 +14,18 @@ export const TimelinePage = () => {
   const [loading, setLoading] = useState(false);
   const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
+  const { dataPosts, setDataPosts, hasUpdate, status, setStatus } = usePosts();
 
   useEffect(() => {
     getTimelineRequest()
-      .then(({ data }) => {
+      .then(({ data, status }) => {
         setDataPosts(data);
         setLoading(false);
+        setStatus(status)
       })
-      .catch((err) => {
+      .catch((error) => {
         setLoading(false);
-        handleError(err);
+        handleError(error);
       });
   }, [hasUpdate]);
 
@@ -45,6 +46,7 @@ export const TimelinePage = () => {
             error={error}
             loading={loading}
             setDataPosts={setDataPosts}
+            status={status}
           />
         </Content>
         <HashTags />

@@ -16,8 +16,8 @@ export const postTimelineRequest = async (data) => {
   return api.post('/timeline', data);
 };
 
-export const searchUsersRequest = async (name) => {
-  return api.get(`search/${name}`);
+export const searchUsersRequest = async (id, name) => {
+  return api.get(`search/${name}/${id}`);
 };
 
 export const getPostOfSigleUserByIdRequest = (id) => {
@@ -42,6 +42,10 @@ export const getPostsByHashtagRequest = async (hashtag) => {
 
 export const updatePost = async (id, text) => {
   return api.put(`/post/update/${id}`, { text: text });
+};
+
+export const getIsFollowedRequest = async () => {
+  return api.get('/timeline/isfollowed');
 };
 
 export const followRequest = async (id) => {

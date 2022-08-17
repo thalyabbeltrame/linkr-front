@@ -41,16 +41,24 @@ export const getPostsByHashtagRequest = async (hashtag) => {
 };
 
 export const updatePost = async (id, text) => {
-  return api.put(`/post/update/${id}`, {text: text});
+  return api.put(`/post/update/${id}`, { text: text });
 };
 
 export const followRequest = async (id) => {
   return api.post(`/user/${id}/follow`);
-}
+};
 export const unfollowRequest = async (id) => {
   return api.delete(`/user/${id}/unfollow`);
-}
+};
 
 export const checkIsUserFollowed = async (id) => {
   return api.get(`/user/${id}/isFollowed`);
-}
+};
+
+export const getCommentsByPostIdRequest = async (id) => {
+  return api.get(`/posts/${id}/comments`);
+};
+
+export const postCommentRequest = async (id, comment) => {
+  return api.post(`/posts/${id}/comments`, { comment });
+};

@@ -10,6 +10,7 @@ import { likeDislikeRequest } from '../../services/apiRequests';
 export const Likes = ({ id, likes }) => {
   const { userData, logout } = useAuth();
   const { setHasUpdate } = usePosts();
+
   const handleLikeDislike = async () => {
     try {
       await likeDislikeRequest(id);
@@ -30,7 +31,7 @@ export const Likes = ({ id, likes }) => {
     if (userLiked) {
       return numberOfLikes === 1
         ? 'You'
-        : `You, ${users[0].username} and other 
+        : `You, ${users[0].username} and other
                     ${numberOfLikes - 2} people`;
     } else {
       return numberOfLikes === 1
@@ -51,7 +52,7 @@ export const Likes = ({ id, likes }) => {
         color: '#AC0000',
         width: '25px',
         height: '25px',
-        marginBottom: '5px',
+        marginBottom: '3px',
         cursor: 'pointer',
       }}
     />
@@ -62,22 +63,29 @@ export const Likes = ({ id, likes }) => {
         color: '#fff',
         width: '25px',
         height: '25px',
-        marginBottom: '5px',
+        marginBottom: '3px',
         cursor: 'pointer',
       }}
     />
   );
 
   return (
-    <>
+    <Container>
       {renderIonIcon}
       <Like data-tip={tooltipMessage}>
         {likes.length} {likes.length === 1 ? 'like' : 'likes'}
       </Like>
       <ReactTooltip place='bottom' type='light' effect='solid' />
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Like = styled.p`
   font-size: 11px;

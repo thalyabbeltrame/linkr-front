@@ -5,16 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { searchUsersRequest } from '../../services/apiRequests';
+import { useAuth } from '../../providers/AuthProvider';
 
 export const InputSearch = ({ widthProps }) => {
+  const { userData } = useAuth();
   let search = '';
   const [searchList, setSearchList] = useState([]);
   const [displayStatus, setDisplayStatus] = useState('none');
   const navigate = useNavigate();
 
-  const handleSearch = async (search) => {
+  const handleSearch = async () => {
     try {
-      const { data } = await searchUsersRequest(search);
+      const { data } = await searchUsersRequest(userData.id, search);
       setSearchList(data);
     } catch (error) {
       console.log(error);
@@ -31,7 +33,7 @@ export const InputSearch = ({ widthProps }) => {
       >
         <img src={imgSrc} alt={'name: ' + name} />
         <h2>{name} &nbsp;</h2>
-        <h4>{follow === 1 ? "• following" : ""}</h4>
+        <h4>{follow === "1" ? "• following" : ""}</h4>
       </div>
     );
   };
@@ -48,7 +50,7 @@ export const InputSearch = ({ widthProps }) => {
         onChange={(e) => {
           search = e.target.value;
           if (search.length > 0) {
-            handleSearch(search);
+            handleSearch();
           } else {
             setSearchList([]);
           }

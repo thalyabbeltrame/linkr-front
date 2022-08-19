@@ -1,36 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-
 import { Header } from '../components/Header/Header';
 import { InputSearch } from '../components/Header/InputSearch';
 import { Posts } from '../components/Posts/Posts';
 import { Publish } from '../components/Publish/Publish';
 import { HashTags } from '../components/Trending/HashTags';
-import { useAuth } from '../providers/AuthProvider';
-import { usePosts } from '../providers/PostsProvider';
 import { getTimelineRequest } from '../services/apiRequests.js';
 
 export const TimelinePage = () => {
-  const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
+  
   const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, hasUpdate, status, setStatus } = usePosts();
 
-  useEffect(() => {
-    getTimelineRequest()
-      .then(({ data, status }) => {
-        setDataPosts(data);
-        setLoading(false);
-        setStatus(status)
-      })
-      .catch((error) => {
-        setLoading(false);
-        handleError(error);
-      });
-  }, [hasUpdate]);
 
-  const handleError = (error) =>
-    error.response.status === 401 ? logout() : setError(true);
   return (
     <>
       <Header />
@@ -42,11 +23,7 @@ export const TimelinePage = () => {
           <Title>timeline</Title>
           <Publish />
           <Posts
-            dataPosts={dataPosts}
             error={error}
-            loading={loading}
-            setDataPosts={setDataPosts}
-            status={status}
           />
         </Content>
         <HashTags />

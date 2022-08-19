@@ -1,11 +1,33 @@
 import { TailSpin } from 'react-loader-spinner';
+import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components';
-
-
 import { Post } from './Post';
+import { useEffect, useState } from 'react';
+import { usePosts } from '../../providers/PostsProvider';
+import { getPostOfSigleUserByIdRequest, getTimelineRequest, getPostsByHashtagRequest } from '../../services/apiRequests'
+import { useAuth } from '../../providers/AuthProvider';
 
-export const Posts = ({ dataPosts, error, loading, status }) => {
-  const renderPosts = () => {
+export const Posts = ({
+  error, userId, hashtag
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [dataPosts, setDataPosts] = useState([])
+  const { hasUpdate, status, setStatus } = usePosts();
+  const { logout } = useAuth();
+
+  const handleError = (error) =>
+    error.response.status === 401 ? logout() : setError(true);
+
+
+  const renderContent = () => {
+    if (error) {
+      return (
+        <p className='error-message'>
+          An error occured while trying to fetch the posts, please refresh the
+          page
+        </p>
+      );
+    }
     if (dataPosts.length === 0) {
       switch (status) {
         case 205:
@@ -18,30 +40,72 @@ export const Posts = ({ dataPosts, error, loading, status }) => {
     }
     return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <TailSpin
-          wrapperClass='spinner'
-          height='80'
-          width='80'
-          color='#1877F2'
-        />
-      );
-    }
-    if (error) {
-      return (
-        <p className='error-message'>
-          An error occured while trying to fetch the posts, please refresh the
-          page
-        </p>
-      );
-    }
+  const [page, setPage] = useState(1)
 
-    return renderPosts();
-  };
+  const getPosts = async () => {
+    if (!!userId) {
+      const { data, status } = await getPostOfSigleUserByIdRequest(userId, page)
+      return { data: data.posts, status };
+    } else if (!!hashtag) {
+      const { data, status } = await getPostsByHashtagRequest(hashtag, page)
+      return { data, status };
+    } else {
+      const { data, status } = await getTimelineRequest(page);
+      return { data, status };
+    }
+  }
 
-  return <PostsContainer>{renderContent()}</PostsContainer>;
+  useEffect(() => {
+    setDataPosts([])
+    setPage(1)
+    setLoading(true)
+  }, [hasUpdate, userId, hashtag]);
+
+  const handleLoader = () => {
+    setTimeout(async () => {
+      try {
+        const { data, status } = await getPosts()
+        setStatus(status)
+
+        if (data.length > 0) {
+          setDataPosts([...dataPosts, ...data]);
+        }
+        if (data.length === 0 || data.length < 10) {
+          setLoading(false)
+        }
+        setPage(page + 1)
+      } catch (error) {
+        handleError(error);
+      }
+    }, 1000)
+  }
+
+  return (
+    <PostsContainer>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={handleLoader}
+        hasMore={loading}
+        loader={
+          <div style={{ width: "100%", display: "flex", alignItems: "center", flexDirection: 'column' }}>
+            <TailSpin
+              height="50"
+              width="50"
+              color="#6D6D6D"
+              ariaLabel="tail-spin-loading"
+              radius="0"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+            />
+            <h1 className='loading-text'>Loading more posts...</h1>
+          </div>}
+        useWindow={true}
+      >
+        {renderContent()}
+      </InfiniteScroll >
+    </PostsContainer >
+  );
 };
 
 const PostsContainer = styled.section`
@@ -55,6 +119,13 @@ const PostsContainer = styled.section`
     margin-top: 50px;
   }
 
+  .loading-text{
+    font-size: 22px;
+    color: #6D6D6D;
+    margin-top: 40px;
+    margin-bottom: 100px;
+  }
+
   .error-message {
     text-align: center;
     padding: 20px;
@@ -63,10 +134,10 @@ const PostsContainer = styled.section`
   }
 
   .no-posts {
-color: white;
-font-weight: 700;
-font-size: 19px;
-line-height: 23px;
+  color: white;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 23px;
 
 }
 `;

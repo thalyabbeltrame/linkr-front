@@ -5,31 +5,15 @@ import styled from 'styled-components';
 import { Header } from '../components/Header/Header';
 import { Posts } from '../components/Posts/Posts';
 import { HashTags } from '../components/Trending/HashTags';
-import { useAuth } from '../providers/AuthProvider';
 import { usePosts } from '../providers/PostsProvider';
-import { getPostsByHashtagRequest } from '../services/apiRequests';
+
 
 export const HashtagPage = () => {
   const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
   const [error, setError] = useState(false);
   const { dataPosts, setDataPosts, hasUpdate } = usePosts();
   const { hashtag } = useParams();
 
-  useEffect(() => {
-    getPostsByHashtagRequest(hashtag)
-      .then(({ data }) => {
-        setDataPosts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        handleError(err);
-      });
-  }, [hasUpdate, hashtag]);
-
-  const handleError = (error) =>
-    error.response.status === 401 ? logout() : setError(true);
 
   return (
     <>
@@ -37,7 +21,11 @@ export const HashtagPage = () => {
       <MainContainer>
         <Content>
           <Title>{`# ${hashtag}`}</Title>
-          <Posts dataPosts={dataPosts} error={error} loading={loading} />
+          <Posts
+            dataPosts={dataPosts}
+            error={error}
+            loading={loading}
+            hashtag={hashtag} />
         </Content>
         <HashTags />
       </MainContainer>

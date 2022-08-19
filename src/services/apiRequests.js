@@ -8,8 +8,8 @@ export const signUpRequest = async (data) => {
   return api.post('/signUp', data);
 };
 
-export const getTimelineRequest = async () => {
-  return api.get('/timeline');
+export const getTimelineRequest = async (page) => {
+  return api.get(`/timeline/${page}`);
 };
 
 export const postTimelineRequest = async (data) => {
@@ -20,8 +20,8 @@ export const searchUsersRequest = async (id, name) => {
   return api.get(`search/${name}/${id}`);
 };
 
-export const getPostOfSigleUserByIdRequest = (id) => {
-  return api.get(`/user-Posts/${id}`);
+export const getPostOfSigleUserByIdRequest = (id, page) => {
+  return api.get(`/user-Posts/${id}/${page}`);
 };
 
 export const likeDislikeRequest = async (postId) => {
@@ -36,8 +36,8 @@ export const getTrendingRequest = async () => {
   return api.get('/trending');
 };
 
-export const getPostsByHashtagRequest = async (hashtag) => {
-  return api.get(`/hashtag/${hashtag}`);
+export const getPostsByHashtagRequest = async (hashtag, page) => {
+  return api.get(`/hashtag/${hashtag}/${page}`);
 };
 
 export const updatePost = async (id, text) => {

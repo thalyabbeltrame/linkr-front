@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Header } from '../components/Header/Header';
 import { InputSearch } from '../components/Header/InputSearch';
 import { Posts } from '../components/Posts/Posts';
-import { useAuth } from '../providers/AuthProvider';
 import { usePosts } from '../providers/PostsProvider';
 import { getPostOfSigleUserByIdRequest } from '../services/apiRequests';
 import { HashTags } from '../components/Trending/HashTags';
@@ -13,27 +12,19 @@ import { HandleFollow } from '../components/Follow/Follow';
 
 export const UserPage = () => {
   const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
   const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, user, setUser, hasUpdate } = usePosts();
+  const { user, setUser, hasUpdate } = usePosts();
   const params = useParams();
-  const { id } = params;
+  const { id } = params;  
+
+  const getId = async () => {
+    const { data } = await getPostOfSigleUserByIdRequest(id, 1);
+    setUser(data.user)
+  }
 
   useEffect(() => {
-    getPostOfSigleUserByIdRequest(id)
-      .then(({ data }) => {
-        setUser(data.user);
-        setDataPosts(data.posts);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        handleError(err);
-      });
-  }, [hasUpdate, id]);
-
-  const handleError = (error) =>
-    error.response.status === 401 ? logout() : setError(true);
+    getId();
+  }, [id]);
 
   return (
     <>
@@ -54,10 +45,8 @@ export const UserPage = () => {
           )}
           <Posts
             userId={parseInt(id)}
-            dataPosts={dataPosts}
-            setDataPosts={setDataPosts}
-            error={error}
-            loading={loading}
+            error={error}  
+    
           />
         </Content>
         <HashTags styled={{ marginTop: '0' }} />

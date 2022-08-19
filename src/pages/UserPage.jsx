@@ -6,7 +6,7 @@ import { HandleFollow } from '../components/Follow/Follow';
 import { Header } from '../components/Header/Header';
 import { InputSearch } from '../components/Header/InputSearch';
 import { Posts } from '../components/Posts/Posts';
-import { HashTags } from '../components/Trending/HashTags';ain
+import { HashTags } from '../components/Trending/HashTags';
 import { usePosts } from '../providers/PostsProvider';
 import { getPostOfSigleUserByIdRequest } from '../services/apiRequests';
 

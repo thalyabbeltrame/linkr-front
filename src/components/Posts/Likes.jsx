@@ -7,11 +7,12 @@ import { useAuth } from '../../providers/AuthProvider';
 import { usePosts } from '../../providers/PostsProvider';
 import { likeDislikeRequest } from '../../services/apiRequests';
 
-export const Likes = ({ id, likes }) => {
+export const Likes = ({ id, likes, is_repost }) => {
   const { userData, logout } = useAuth();
   const { setHasUpdate } = usePosts();
 
   const handleLikeDislike = async () => {
+    if (is_repost) return;
     try {
       await likeDislikeRequest(id);
       setHasUpdate((update) => !update);
@@ -36,9 +37,8 @@ export const Likes = ({ id, likes }) => {
     } else {
       return numberOfLikes === 1
         ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${
-            numberOfLikes - 2
-          } people`;
+        : `${users[0].username}, ${users[1].username} and other ${numberOfLikes - 2
+        } people`;
     }
   };
   const tooltipMessage = buildTooltipMessage(likes);

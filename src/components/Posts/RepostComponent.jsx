@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { BiRepost } from 'react-icons/bi';
 
 export const RepostComponent = ({ reposted_by, myRepost }) => {
-    console.log('aqui')
     return (
         <PostContent>
             <div>

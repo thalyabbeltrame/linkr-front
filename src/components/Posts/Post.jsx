@@ -54,13 +54,17 @@ export const Post = ({
           <LeftSide>
             <img src={avatar} alt={username} />
             <Interactions>
-              <Likes id={id} likes={likes} />
+              <Likes id={id} likes={likes} is_repost={is_repost} />
               <CommentsCount
+                is_repost={is_repost}
                 count={comments_count}
-                isOpen={isCommentOpen}
                 setIsOpen={setIsCommentOpen}
               />
-              <RepostCount count={reposts_count} setIsOpen={setIsRepostOpen} />
+              <RepostCount
+                is_repost={is_repost}
+                count={reposts_count}
+                setIsOpen={setIsRepostOpen}
+              />
             </Interactions>
           </LeftSide>
           <RightSide>
@@ -70,13 +74,13 @@ export const Post = ({
                 <div>
                   <RiPencilFill
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setIsEditing(!isEditing)}
+                    onClick={() => { is_repost ? null : setIsEditing(!isEditing) }}
                     fontSize='1.3em'
                     color='#FFFFFF'
                   />
                   <IoMdTrash
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setIsOpen((e) => !e)}
+                    onClick={() => { is_repost ? null : setIsOpen((e) => !e) }}
                     fontSize='1.3em'
                     color='#FFFFFF'
                   />

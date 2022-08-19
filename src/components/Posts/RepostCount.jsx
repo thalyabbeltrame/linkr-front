@@ -1,7 +1,13 @@
 import { BiRepost } from 'react-icons/bi';
 import styled from 'styled-components';
 
-export const RepostCount = ({ count, setIsOpen }) => {
+export const RepostCount = ({ count, setIsOpen, is_repost }) => {
+  const handleClick = () => {
+    if (!is_repost) {
+      setIsOpen(isOpen => !isOpen)
+    }
+
+  }
   return (
     <Container>
       <BiRepost
@@ -12,7 +18,7 @@ export const RepostCount = ({ count, setIsOpen }) => {
           marginBottom: '3px',
           cursor: 'pointer',
         }}
-        onClick={() => setIsOpen(open => !open)}
+        onClick={handleClick}
       />
       <Count>
         {count} {count === 1 ? 'repost' : 'reposts'}

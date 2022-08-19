@@ -118,8 +118,8 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #252525;
       border-radius: 0 8px 8px 0;
+      background: #252525;
       border: none;
       position: absolute;
       right: 40px;
@@ -134,7 +134,7 @@ const Container = styled.div`
     width: 100%;
     height: 39px;
     background: #252525;
-    border-radius: 8px 0 0 8px;
+    border-radius: 8px;
     border: none;
     font-size: 14px;
     line-height: 17px;

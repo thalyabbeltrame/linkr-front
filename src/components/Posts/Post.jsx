@@ -40,7 +40,7 @@ export const Post = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user_id === userData.id) {
+    if (reposted_by === userData.id) {
       setMyRepost(true);
     }
   }, [id]);

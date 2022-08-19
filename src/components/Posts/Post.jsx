@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { RiPencilFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { LinkPreview } from './LinkPreview';
 import { RepostCount } from './RepostCount';
 import { RepostModal } from './RepostModal';
 import { TextTitle } from './Text';
+import { RepostComponent } from './RepostComponent';
 
 export const Post = ({
   id,
@@ -27,17 +28,27 @@ export const Post = ({
   user_id,
   comments_count,
   reposts_count,
+  is_repost,
+  reposted_by,
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [isRepostOpen, setIsRepostOpen] = useState(false);
+  const [myRepost, setMyRepost] = useState(false);
   const { userData } = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (user_id === userData.id) {
+      setMyRepost(true);
+    }
+  }, [id]);
   return (
     <>
+      {is_repost === true ? <RepostComponent reposted_by={reposted_by} myRepost={myRepost} /> : ''}
       <DeleteModal id={id} isOpen={modalIsOpen} setIsOpen={setIsOpen} />
       <RepostModal id={id} isOpen={isRepostOpen} setIsOpen={setIsRepostOpen} />
+
       <PostContent>
         <Main>
           <LeftSide>

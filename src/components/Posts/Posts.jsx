@@ -3,6 +3,7 @@ import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 import useInterval from 'use-interval';
 import { GrUpdate } from 'react-icons/gr';
+import { alert } from '../../Helpers/alert';
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider';
@@ -32,11 +33,15 @@ export const Posts = ({ userId, hashtag }) => {
 
   useInterval(async () => {
     try {
-      if (!!userId || !!hashtag) return;
+      if (!!userId || !!hashtag || dataPosts.length === 0) return;
       const response = await getNewPostsRequest(dataPosts[0]?.id);
       setNumberOfNewPosts(response.data);
-    } catch (error) {
-      handleError(error);
+    } catch (err) {
+      let message = err.response.data;
+      if (message === 'Unauthorized') {
+        return logout();
+      }
+      alert('error', 'Failed to take action follow/unfollow', message);
     }
   }, 15000);
 
@@ -55,14 +60,15 @@ export const Posts = ({ userId, hashtag }) => {
         const { data, status } = await getTimelineRequest(page);
         return { data, status };
       }
-    } catch (error) {
-      handleError(error);
+    } catch (err) {
+      console.log(err)
+      let message = err.response.data;
+      if (message === 'Unauthorized') {
+        return logout();
+      }
+      alert('error', 'Failed to take action follow/unfollow', message);
     }
   };
-
-  const handleError = (error) =>
-    error.response.status === 401 ? logout() : setError(true);
-
   const handleLoader = async () => {
     try {
       const { data, status } = await getPosts();
@@ -74,8 +80,12 @@ export const Posts = ({ userId, hashtag }) => {
         setHasMore(false);
       }
       setPage(page + 1);
-    } catch (error) {
-      handleError(error);
+    } catch (err) {
+      let message = err.response.data;
+      if (message === 'Unauthorized') {
+        return logout();
+      }
+      alert('error', 'Failed to take action follow/unfollow', message);
     }
   };
 
@@ -108,7 +118,8 @@ export const Posts = ({ userId, hashtag }) => {
           return <p className='no-posts'>There are no posts yet</p>;
       }
     }
-    return dataPosts.map((post) => <Post key={post.id} {...post} />);
+    console.log(dataPosts)
+    return dataPosts.map((post) => <Post key={post.id + Math.random()} {...post} />);
   };
 
   return (
@@ -136,6 +147,7 @@ export const Posts = ({ userId, hashtag }) => {
         hasMore={hasMore}
         loader={
           <div
+            key={0}
             style={{
               width: '100%',
               display: 'flex',

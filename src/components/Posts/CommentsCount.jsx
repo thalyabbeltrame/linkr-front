@@ -1,7 +1,13 @@
 import { AiOutlineComment } from 'react-icons/ai';
 import styled from 'styled-components';
 
-export const CommentsCount = ({ count, isOpen, setIsOpen }) => {
+export const CommentsCount = ({ count, setIsOpen, is_repost }) => {
+  const handleClick = () => {
+    if(!is_repost) {
+      setIsOpen(isOpen => !isOpen)
+    }
+    
+  }
   return (
     <Container>
       <AiOutlineComment
@@ -12,7 +18,7 @@ export const CommentsCount = ({ count, isOpen, setIsOpen }) => {
           marginBottom: '3px',
           cursor: 'pointer',
         }}
-        onClick={() => setIsOpen(() => !isOpen)}
+        onClick={handleClick}
       />
       <Count>
         {count} {count === 1 ? 'comment' : 'comments'}

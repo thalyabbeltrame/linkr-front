@@ -70,3 +70,7 @@ export const postCommentRequest = async (id, comment) => {
 export const createRepost = async (id) => {
   return api.post(`/repost/${id}`);
 };
+
+export const getNewPostsRequest = async (postId) => {
+  return api.get(`/newPosts/${postId}`);
+};

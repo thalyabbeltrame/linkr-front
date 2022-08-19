@@ -26,7 +26,7 @@ export const Post = ({
   likes,
   user_id,
   comments_count,
-  reposts_count
+  reposts_count,
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -49,10 +49,7 @@ export const Post = ({
                 isOpen={isCommentOpen}
                 setIsOpen={setIsCommentOpen}
               />
-              <RepostCount
-                count={reposts_count}
-                setIsOpen={setIsRepostOpen}
-              />
+              <RepostCount count={reposts_count} setIsOpen={setIsRepostOpen} />
             </Interactions>
           </LeftSide>
           <RightSide>
@@ -113,6 +110,7 @@ const Main = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: auto;
   background: #171717;
   padding: 20px 20px 20px 11px;
   border-radius: 16px;
@@ -127,7 +125,6 @@ const LeftSide = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70px;
-  height: 100%;
   margin-right: 11px;
 
   img {

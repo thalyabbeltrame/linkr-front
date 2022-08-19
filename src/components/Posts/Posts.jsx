@@ -1,6 +1,8 @@
 import InfiniteScroll from 'react-infinite-scroller';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
+import useInterval from 'use-interval';
+import { GrUpdate } from 'react-icons/gr';
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider';
@@ -9,6 +11,7 @@ import {
   getPostOfSigleUserByIdRequest,
   getPostsByHashtagRequest,
   getTimelineRequest,
+  getNewPostsRequest,
 } from '../../services/apiRequests';
 import { Post } from './Post';
 
@@ -16,11 +19,70 @@ export const Posts = ({ userId, hashtag }) => {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(false);
   const [dataPosts, setDataPosts] = useState([]);
-  const { hasUpdate, status, setStatus } = usePosts();
+  const [numberOfNewPosts, setNumberOfNewPosts] = useState(0);
+  const [page, setPage] = useState(1);
+  const { hasUpdate, setHasUpdate, status, setStatus } = usePosts();
   const { logout } = useAuth();
+
+  useEffect(() => {
+    setDataPosts([]);
+    setPage(1);
+    setHasMore(true);
+  }, [hasUpdate, userId, hashtag]);
+
+  useInterval(async () => {
+    try {
+      if (!!userId || !!hashtag) return;
+      const response = await getNewPostsRequest(dataPosts[0]?.id);
+      setNumberOfNewPosts(response.data);
+    } catch (error) {
+      handleError(error);
+    }
+  }, 15000);
+
+  const getPosts = async () => {
+    try {
+      if (!!userId) {
+        const { data, status } = await getPostOfSigleUserByIdRequest(
+          userId,
+          page
+        );
+        return { data: data.posts, status };
+      } else if (!!hashtag) {
+        const { data, status } = await getPostsByHashtagRequest(hashtag, page);
+        return { data, status };
+      } else {
+        const { data, status } = await getTimelineRequest(page);
+        return { data, status };
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
+
+  const handleLoader = async () => {
+    try {
+      const { data, status } = await getPosts();
+      setStatus(status);
+      if (data.length > 0) {
+        setDataPosts([...dataPosts, ...data]);
+      }
+      if (data.length === 0 || data.length < 10) {
+        setHasMore(false);
+      }
+      setPage(page + 1);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
+  const handleUpdate = () => {
+    setNumberOfNewPosts(0);
+    setHasUpdate(!hasUpdate);
+  };
 
   const renderContent = () => {
     if (error) {
@@ -48,52 +110,26 @@ export const Posts = ({ userId, hashtag }) => {
     }
     return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
-  const [page, setPage] = useState(1);
-
-  const getPosts = async () => {
-    try {
-      if (!!userId) {
-        const { data, status } = await getPostOfSigleUserByIdRequest(
-          userId,
-          page
-        );
-        return { data: data.posts, status };
-      } else if (!!hashtag) {
-        const { data, status } = await getPostsByHashtagRequest(hashtag, page);
-        return { data, status };
-      } else {
-        const { data, status } = await getTimelineRequest(page);
-        return { data, status };
-      }
-    } catch (error) {
-      handleError(error);
-    }
-  };
-
-  useEffect(() => {
-    setDataPosts([]);
-    setPage(1);
-    setHasMore(true);
-  }, [hasUpdate, userId, hashtag]);
-
-  const handleLoader = async () => {
-    try {
-      const { data, status } = await getPosts();
-      setStatus(status);
-      if (data.length > 0) {
-        setDataPosts([...dataPosts, ...data]);
-      }
-      if (data.length === 0 || data.length < 10) {
-        setHasMore(false);
-      }
-      setPage(page + 1);
-    } catch (error) {
-      handleError(error);
-    }
-  };
 
   return (
     <PostsContainer>
+      {
+        <>
+          {numberOfNewPosts ? (
+            <NewPostsButton onClick={handleUpdate}>
+              <p>{numberOfNewPosts} new posts, load more!</p>
+              <GrUpdate
+                style={{
+                  color: '#fff',
+                  width: '20px',
+                  height: '20px',
+                  marginLeft: '10px',
+                }}
+              />
+            </NewPostsButton>
+          ) : null}
+        </>
+      }
       <InfiniteScroll
         pageStart={0}
         loadMore={handleLoader}
@@ -159,4 +195,22 @@ const PostsContainer = styled.section`
     font-size: 19px;
     line-height: 23px;
   }
+`;
+
+const NewPostsButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 61px;
+  background: #1877f2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  border: none;
+  margin-bottom: 17px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 19px;
+  color: #ffffff;
 `;

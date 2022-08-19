@@ -23,7 +23,8 @@
     "react-tagify": "^0.1.4",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.26",
-    "sweetalert2-react-content": "^5.0.2"
+    "sweetalert2-react-content": "^5.0.2",
+    "use-interval": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.15",

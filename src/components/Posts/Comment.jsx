@@ -1,6 +1,5 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { useAuth } from '../../providers/AuthProvider';
 
 export const Comment = ({
   comment,
@@ -10,7 +9,7 @@ export const Comment = ({
   is_following,
   author_id,
 }) => {
-  const { userData } = useAuth();
+  const navigate = useNavigate();
 
   const renderExtraInfo = () => {
     if (user_id === author_id) {
@@ -27,7 +26,7 @@ export const Comment = ({
       <img src={avatar} alt={username} />
       <Content>
         <div>
-          <h3>{username}</h3>
+          <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
           <h4>{renderExtraInfo()}</h4>
         </div>
         <p>{comment}</p>

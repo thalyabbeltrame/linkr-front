@@ -4,8 +4,8 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { searchUsersRequest } from '../../services/apiRequests';
 import { useAuth } from '../../providers/AuthProvider';
+import { searchUsersRequest } from '../../services/apiRequests';
 
 export const InputSearch = ({ widthProps }) => {
   const { userData } = useAuth();
@@ -33,7 +33,7 @@ export const InputSearch = ({ widthProps }) => {
       >
         <img src={imgSrc} alt={'name: ' + name} />
         <h2>{name} &nbsp;</h2>
-        <h4>{follow === "1" ? "• following" : ""}</h4>
+        <h4>{follow === '1' ? '• following' : ''}</h4>
       </div>
     );
   };
@@ -118,7 +118,7 @@ const Container = styled.div`
     color: #ffffff;
   }
   h4 {
-    color: #C5C5C5;
+    color: #c5c5c5;
   }
 
   .search-list {

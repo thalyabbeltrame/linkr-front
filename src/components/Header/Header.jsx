@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { InputSearch } from './InputSearch';
 import { Logout } from './Logout';

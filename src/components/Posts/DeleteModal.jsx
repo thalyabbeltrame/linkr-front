@@ -42,9 +42,5 @@ export const DeleteModal = ({ id, isOpen, setIsOpen }) => {
       cancelMessage={'No, go back'}
       confirmMessage={'Yes, delete it'}
     />
-  )
-
-
-
+  );
 };
-

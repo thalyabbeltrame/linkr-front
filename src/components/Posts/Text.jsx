@@ -36,7 +36,7 @@ export const TextTitle = ({ id, text, setIsOpen, isEditing, setIsEditing }) => {
       if (message === 'Unauthorized') {
         return logout();
       }
-      alert('error', 'failed to edit the post', message);
+      alert('error', 'Failed to edit the post', message);
     } finally {
       setIsLoading(false);
       setIsOpen(false);

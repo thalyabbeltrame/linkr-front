@@ -1,5 +1,6 @@
 import Lottie from 'lottie-react';
 import { ThreeDots } from 'react-loader-spinner';
+
 import error from '../../assets/lottie/errorRed.json';
 import sucess from '../../assets/lottie/sucessGreen.json';
 

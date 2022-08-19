@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { alert } from '../../Helpers/alert';
 import { useAuth } from '../../providers/AuthProvider';
-
 import {
   getCommentsByPostIdRequest,
   postCommentRequest,

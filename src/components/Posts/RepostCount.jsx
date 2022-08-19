@@ -4,10 +4,10 @@ import styled from 'styled-components';
 export const RepostCount = ({ count, setIsOpen, is_repost }) => {
   const handleClick = () => {
     if (!is_repost) {
-      setIsOpen(isOpen => !isOpen)
+      setIsOpen((isOpen) => !isOpen);
     }
+  };
 
-  }
   return (
     <Container>
       <BiRepost

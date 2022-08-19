@@ -1,18 +1,17 @@
+import { useEffect, useState } from 'react';
+import { BiRefresh } from 'react-icons/bi';
 import InfiniteScroll from 'react-infinite-scroller';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
 import useInterval from 'use-interval';
-import { GrUpdate } from 'react-icons/gr';
-import { alert } from '../../Helpers/alert';
 
-import { useEffect, useState } from 'react';
 import { useAuth } from '../../providers/AuthProvider';
 import { usePosts } from '../../providers/PostsProvider';
 import {
+  getNewPostsRequest,
   getPostOfSigleUserByIdRequest,
   getPostsByHashtagRequest,
   getTimelineRequest,
-  getNewPostsRequest,
 } from '../../services/apiRequests';
 import { Post } from './Post';
 
@@ -34,14 +33,13 @@ export const Posts = ({ userId, hashtag }) => {
   useInterval(async () => {
     try {
       if (!!userId || !!hashtag || dataPosts.length === 0) return;
-      const response = await getNewPostsRequest(dataPosts[0]?.id);
+      const response = await getNewPostsRequest(dataPosts[0]?.created_at);
       setNumberOfNewPosts(response.data);
     } catch (err) {
       let message = err.response.data;
       if (message === 'Unauthorized') {
         return logout();
       }
-      alert('error', 'Failed to take action follow/unfollow', message);
     }
   }, 15000);
 
@@ -61,12 +59,11 @@ export const Posts = ({ userId, hashtag }) => {
         return { data, status };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       let message = err.response.data;
       if (message === 'Unauthorized') {
         return logout();
       }
-      alert('error', 'Failed to take action follow/unfollow', message);
     }
   };
   const handleLoader = async () => {
@@ -85,7 +82,6 @@ export const Posts = ({ userId, hashtag }) => {
       if (message === 'Unauthorized') {
         return logout();
       }
-      alert('error', 'Failed to take action follow/unfollow', message);
     }
   };
 
@@ -118,8 +114,9 @@ export const Posts = ({ userId, hashtag }) => {
           return <p className='no-posts'>There are no posts yet</p>;
       }
     }
-    console.log(dataPosts)
-    return dataPosts.map((post) => <Post key={post.id + Math.random()} {...post} />);
+    return dataPosts.map((post) => (
+      <Post key={post.id + Math.random()} {...post} />
+    ));
   };
 
   return (
@@ -129,11 +126,11 @@ export const Posts = ({ userId, hashtag }) => {
           {numberOfNewPosts ? (
             <NewPostsButton onClick={handleUpdate}>
               <p>{numberOfNewPosts} new posts, load more!</p>
-              <GrUpdate
+              <BiRefresh
                 style={{
                   color: '#fff',
-                  width: '20px',
-                  height: '20px',
+                  width: '30px',
+                  height: '30px',
                   marginLeft: '10px',
                 }}
               />

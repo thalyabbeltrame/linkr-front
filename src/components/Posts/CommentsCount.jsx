@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 export const CommentsCount = ({ count, setIsOpen, is_repost }) => {
   const handleClick = () => {
-    if(!is_repost) {
-      setIsOpen(isOpen => !isOpen)
+    if (!is_repost) {
+      setIsOpen((isOpen) => !isOpen);
     }
-    
-  }
+  };
+
   return (
     <Container>
       <AiOutlineComment

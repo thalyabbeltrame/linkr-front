@@ -66,3 +66,7 @@ export const getCommentsByPostIdRequest = async (id) => {
 export const postCommentRequest = async (id, comment) => {
   return api.post(`/posts/${id}/comments`, { comment });
 };
+
+export const createRepost = async (id) => {
+  return api.post(`/repost/${id}`);
+};

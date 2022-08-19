@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useAuth } from '../../providers/AuthProvider';
+import { Comments } from './Comments';
+import { CommentsCount } from './CommentsCount';
 import { DeleteModal } from './DeleteModal';
 import { Likes } from './Likes';
 import { LinkPreview } from './LinkPreview';
@@ -21,53 +23,65 @@ export const Post = ({
   image,
   likes,
   user_id,
+  comments_count,
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const { userData } = useAuth();
   const navigate = useNavigate();
   return (
     <>
       <DeleteModal id={id} isOpen={modalIsOpen} setIsOpen={setIsOpen} />
       <PostContent>
-        <LeftSide>
-          <img src={avatar} alt={username} />
-          <Likes id={id} likes={likes} />
-        </LeftSide>
-        <RightSide>
-          <span>
-            <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
-            {userData.id === user_id ? (
-              <div>
-                <RiPencilFill
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setIsEditing(!isEditing)}
-                  fontSize='1.3em'
-                  color='#FFFFFF'
-                />
-                <IoMdTrash
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setIsOpen((e) => !e)}
-                  fontSize='1.3em'
-                  color='#FFFFFF'
-                />
-              </div>
-            ) : null}
-          </span>
-          <TextTitle
-            id={id}
-            text={text}
-            setIsEditing={setIsEditing}
-            isEditing={isEditing}
-            setIsOpen={setIsOpen}
-          />
-          <LinkPreview
-            title={title}
-            description={description}
-            link={link}
-            image={image}
-          />
-        </RightSide>
+        <Main>
+          <LeftSide>
+            <img src={avatar} alt={username} />
+            <Interactions>
+              <Likes id={id} likes={likes} />
+              <CommentsCount
+                count={comments_count}
+                isOpen={isCommentOpen}
+                setIsOpen={setIsCommentOpen}
+              />
+            </Interactions>
+          </LeftSide>
+          <RightSide>
+            <span>
+              <h3 onClick={() => navigate(`/user/${user_id}`)}>{username}</h3>
+              {userData.id === user_id ? (
+                <div>
+                  <RiPencilFill
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setIsEditing(!isEditing)}
+                    fontSize='1.3em'
+                    color='#FFFFFF'
+                  />
+                  <IoMdTrash
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setIsOpen((e) => !e)}
+                    fontSize='1.3em'
+                    color='#FFFFFF'
+                  />
+                </div>
+              ) : null}
+            </span>
+            <TextTitle
+              id={id}
+              text={text}
+              setIsEditing={setIsEditing}
+              isEditing={isEditing}
+              setIsOpen={setIsOpen}
+            />
+            <LinkPreview
+              title={title}
+              description={description}
+              link={link}
+              image={image}
+            />
+          </RightSide>
+        </Main>
+        <Comments id={id} isOpen={isCommentOpen} postAuthor_id={user_id} />
       </PostContent>
     </>
   );
@@ -75,43 +89,66 @@ export const Post = ({
 
 const PostContent = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  background: #171717;
-  border-radius: 16px;
-  padding: 20px;
+  flex-direction: column;
   margin-bottom: 16px;
+  border-radius: 16px;
+  background: #1e1e1e;
+  height: auto;
 
   @media screen and (max-width: 768px) {
     border-radius: 0;
-    padding: 15px;
   }
 `;
+
+const Main = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: #171717;
+  padding: 20px 20px 20px 11px;
+  border-radius: 16px;
+
+  @media screen and (max-width: 768px) {
+    border-radius: 0;
+  }
+`;
+
 const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50px;
+  width: 70px;
   height: 100%;
-  margin-right: 20px;
+  margin-right: 11px;
 
   img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-bottom: 19px;
     object-fit: cover;
   }
 
   @media screen and (max-width: 768px) {
-    width: 40px;
-    margin-right: 15px;
+    width: 70px;
+    margin-right: 11px;
 
     img {
       width: 40px;
       height: 40px;
-      margin-bottom: 17px;
     }
+  }
+`;
+
+const Interactions = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: calc(100% - 50px);
+
+  @media screen and (max-width: 768px) {
+    height: calc(100% - 40px);
   }
 `;
 

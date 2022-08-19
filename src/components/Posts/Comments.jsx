@@ -36,7 +36,19 @@ export const Comments = ({ id, isOpen, postAuthor_id }) => {
       }
     };
     getComments();
-  }, [hasUpdate]);
+  }, []);
+  // useEffect(() => {
+  //   const getComments = async () => {
+  //     try {
+  //       const response = await getCommentsByPostIdRequest(id);
+  //       setComments(response.data);
+  //       setHasUpdate((update) => !update);
+  //     } catch (error) {
+  //       handleError(error);
+  //     }
+  //   };
+  //   getComments();
+  // }, [hasUpdate]);
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -122,9 +134,9 @@ const Container = styled.div`
       background: #252525;
       border-radius: 0 8px 8px 0;
       border: none;
-      position: absolute,
-      right: 40px,
-      bottom: 28px,
+      position: absolute;
+      right: 40px;
+      bottom: 28px;
     }
   }
 

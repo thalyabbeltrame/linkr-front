@@ -10,6 +10,8 @@ import { CommentsCount } from './CommentsCount';
 import { DeleteModal } from './DeleteModal';
 import { Likes } from './Likes';
 import { LinkPreview } from './LinkPreview';
+import { RepostCount } from './RepostCount';
+import { RepostModal } from './RepostModal';
 import { TextTitle } from './Text';
 
 export const Post = ({
@@ -24,15 +26,18 @@ export const Post = ({
   likes,
   user_id,
   comments_count,
+  reposts_count
 }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [isRepostOpen, setIsRepostOpen] = useState(false);
   const { userData } = useAuth();
   const navigate = useNavigate();
   return (
     <>
       <DeleteModal id={id} isOpen={modalIsOpen} setIsOpen={setIsOpen} />
+      <RepostModal id={id} isOpen={isRepostOpen} setIsOpen={setIsRepostOpen} />
       <PostContent>
         <Main>
           <LeftSide>
@@ -43,6 +48,10 @@ export const Post = ({
                 count={comments_count}
                 isOpen={isCommentOpen}
                 setIsOpen={setIsCommentOpen}
+              />
+              <RepostCount
+                count={reposts_count}
+                setIsOpen={setIsRepostOpen}
               />
             </Interactions>
           </LeftSide>

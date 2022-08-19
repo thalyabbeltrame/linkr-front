@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,16 +11,18 @@ import { usePosts } from '../providers/PostsProvider';
 import { getPostOfSigleUserByIdRequest } from '../services/apiRequests';
 
 export const UserPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const { user, setUser, hasUpdate } = usePosts();
+  const { user, setUser } = usePosts();
   const params = useParams();
-  const { id } = params;  
+  const { id } = params;
 
   const getId = async () => {
-    const { data } = await getPostOfSigleUserByIdRequest(id, 1);
-    setUser(data.user)
-  }
+    try {
+      const { data } = await getPostOfSigleUserByIdRequest(id, 1);
+      setUser(data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getId();
@@ -45,11 +47,7 @@ export const UserPage = () => {
           ) : (
             <Title>User not found</Title>
           )}
-          <Posts
-            userId={parseInt(id)}
-            error={error}  
-    
-          />
+          <Posts userId={parseInt(id)} />
         </Content>
         <HashTags styled={{ marginTop: '0' }} />
       </MainContainer>

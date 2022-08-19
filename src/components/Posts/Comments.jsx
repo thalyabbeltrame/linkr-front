@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { alert } from '../../Helpers/alert';
 import { useAuth } from '../../providers/AuthProvider';
-import { usePosts } from '../../providers/PostsProvider';
+
 import {
   getCommentsByPostIdRequest,
   postCommentRequest,
@@ -13,8 +13,8 @@ import { Comment } from './Comment';
 
 export const Comments = ({ id, isOpen, postAuthor_id }) => {
   const { userData, logout } = useAuth();
-  const { hasUpdate, setHasUpdate } = usePosts();
   const [comments, setComments] = useState([]);
+  const [hasCommentsUpdate, setHasCommentsUpdate] = useState(false);
   const [input, setInput] = useState('');
 
   const handleError = (error) => {
@@ -30,25 +30,12 @@ export const Comments = ({ id, isOpen, postAuthor_id }) => {
       try {
         const response = await getCommentsByPostIdRequest(id);
         setComments(response.data);
-        setHasUpdate((update) => !update);
       } catch (error) {
         handleError(error);
       }
     };
     getComments();
-  }, []);
-  // useEffect(() => {
-  //   const getComments = async () => {
-  //     try {
-  //       const response = await getCommentsByPostIdRequest(id);
-  //       setComments(response.data);
-  //       setHasUpdate((update) => !update);
-  //     } catch (error) {
-  //       handleError(error);
-  //     }
-  //   };
-  //   getComments();
-  // }, [hasUpdate]);
+  }, [hasCommentsUpdate]);
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -56,7 +43,7 @@ export const Comments = ({ id, isOpen, postAuthor_id }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      handleSubmit(e);
+      submitComment(e);
     }
   };
 
@@ -68,7 +55,7 @@ export const Comments = ({ id, isOpen, postAuthor_id }) => {
 
     try {
       await postCommentRequest(id, input);
-      setHasUpdate((hasUpdate) => !hasUpdate);
+      setHasCommentsUpdate((hasUpdateComments) => !hasUpdateComments);
       setInput('');
     } catch (error) {
       handleError(error);

@@ -1,17 +1,12 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+
 import { Header } from '../components/Header/Header';
 import { InputSearch } from '../components/Header/InputSearch';
 import { Posts } from '../components/Posts/Posts';
 import { Publish } from '../components/Publish/Publish';
 import { HashTags } from '../components/Trending/HashTags';
-import { getTimelineRequest } from '../services/apiRequests.js';
 
 export const TimelinePage = () => {
-  
-  const [error, setError] = useState(false);
-
-
   return (
     <>
       <Header />
@@ -22,9 +17,7 @@ export const TimelinePage = () => {
           </span>
           <Title>timeline</Title>
           <Publish />
-          <Posts
-            error={error}
-          />
+          <Posts />
         </Content>
         <HashTags />
       </MainContainer>
@@ -59,7 +52,7 @@ const Content = styled.div`
   @media screen and (max-width: 768px) {
     max-width: 100%;
     margin-top: 91px;
-    .mobile{
+    .mobile {
       display: block;
     }
   }

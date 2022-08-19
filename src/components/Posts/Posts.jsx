@@ -1,23 +1,26 @@
+import InfiniteScroll from 'react-infinite-scroller';
 import { TailSpin } from 'react-loader-spinner';
-import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components';
-import { Post } from './Post';
-import { useEffect, useState } from 'react';
-import { usePosts } from '../../providers/PostsProvider';
-import { getPostOfSigleUserByIdRequest, getTimelineRequest, getPostsByHashtagRequest } from '../../services/apiRequests'
-import { useAuth } from '../../providers/AuthProvider';
 
-export const Posts = ({
-  error, userId, hashtag
-}) => {
-  const [loading, setLoading] = useState(true);
-  const [dataPosts, setDataPosts] = useState([])
+import { useEffect, useState } from 'react';
+import { useAuth } from '../../providers/AuthProvider';
+import { usePosts } from '../../providers/PostsProvider';
+import {
+  getPostOfSigleUserByIdRequest,
+  getPostsByHashtagRequest,
+  getTimelineRequest,
+} from '../../services/apiRequests';
+import { Post } from './Post';
+
+export const Posts = ({ userId, hashtag }) => {
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(false);
+  const [dataPosts, setDataPosts] = useState([]);
   const { hasUpdate, status, setStatus } = usePosts();
   const { logout } = useAuth();
 
   const handleError = (error) =>
     error.response.status === 401 ? logout() : setError(true);
-
 
   const renderContent = () => {
     if (error) {
@@ -31,7 +34,12 @@ export const Posts = ({
     if (dataPosts.length === 0) {
       switch (status) {
         case 205:
-          return <p p className='no-posts' > You don't follow anyone yet. Search for new friends!</p>;
+          return (
+            <p p className='no-posts'>
+              {' '}
+              You don't follow anyone yet. Search for new friends!
+            </p>
+          );
         case 210:
           return <p className='no-posts'>No posts found from your friends</p>;
         default:
@@ -40,71 +48,83 @@ export const Posts = ({
     }
     return dataPosts.map((post) => <Post key={post.id} {...post} />);
   };
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const getPosts = async () => {
-    if (!!userId) {
-      const { data, status } = await getPostOfSigleUserByIdRequest(userId, page)
-      return { data: data.posts, status };
-    } else if (!!hashtag) {
-      const { data, status } = await getPostsByHashtagRequest(hashtag, page)
-      return { data, status };
-    } else {
-      const { data, status } = await getTimelineRequest(page);
-      return { data, status };
+    try {
+      if (!!userId) {
+        const { data, status } = await getPostOfSigleUserByIdRequest(
+          userId,
+          page
+        );
+        return { data: data.posts, status };
+      } else if (!!hashtag) {
+        const { data, status } = await getPostsByHashtagRequest(hashtag, page);
+        return { data, status };
+      } else {
+        const { data, status } = await getTimelineRequest(page);
+        return { data, status };
+      }
+    } catch (error) {
+      handleError(error);
     }
-  }
+  };
 
   useEffect(() => {
-    setDataPosts([])
-    setPage(1)
-    setLoading(true)
+    setDataPosts([]);
+    setPage(1);
+    setHasMore(true);
   }, [hasUpdate, userId, hashtag]);
 
-  const handleLoader = () => {
-    setTimeout(async () => {
-      try {
-        const { data, status } = await getPosts()
-        setStatus(status)
-
-        if (data.length > 0) {
-          setDataPosts([...dataPosts, ...data]);
-        }
-        if (data.length === 0 || data.length < 10) {
-          setLoading(false)
-        }
-        setPage(page + 1)
-      } catch (error) {
-        handleError(error);
+  const handleLoader = async () => {
+    try {
+      const { data, status } = await getPosts();
+      setStatus(status);
+      if (data.length > 0) {
+        setDataPosts([...dataPosts, ...data]);
       }
-    }, 1000)
-  }
+      if (data.length === 0 || data.length < 10) {
+        setHasMore(false);
+      }
+      setPage(page + 1);
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   return (
     <PostsContainer>
       <InfiniteScroll
         pageStart={0}
         loadMore={handleLoader}
-        hasMore={loading}
+        hasMore={hasMore}
         loader={
-          <div style={{ width: "100%", display: "flex", alignItems: "center", flexDirection: 'column' }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
             <TailSpin
-              height="50"
-              width="50"
-              color="#6D6D6D"
-              ariaLabel="tail-spin-loading"
-              radius="0"
+              height='50'
+              width='50'
+              color='#6D6D6D'
+              ariaLabel='tail-spin-loading'
+              radius='0'
               wrapperStyle={{}}
-              wrapperClass=""
+              wrapperClass=''
               visible={true}
             />
             <h1 className='loading-text'>Loading more posts...</h1>
-          </div>}
+          </div>
+        }
         useWindow={true}
       >
         {renderContent()}
-      </InfiniteScroll >
-    </PostsContainer >
+      </InfiniteScroll>
+    </PostsContainer>
   );
 };
 
@@ -119,9 +139,9 @@ const PostsContainer = styled.section`
     margin-top: 50px;
   }
 
-  .loading-text{
+  .loading-text {
     font-size: 22px;
-    color: #6D6D6D;
+    color: #6d6d6d;
     margin-top: 40px;
     margin-bottom: 100px;
   }
@@ -134,10 +154,9 @@ const PostsContainer = styled.section`
   }
 
   .no-posts {
-  color: white;
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 23px;
-
-}
+    color: white;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 23px;
+  }
 `;

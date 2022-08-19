@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Header } from '../components/Header/Header';
 import { Posts } from '../components/Posts/Posts';
 import { HashTags } from '../components/Trending/HashTags';
-import { usePosts } from '../providers/PostsProvider';
-
 
 export const HashtagPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const { dataPosts, setDataPosts, hasUpdate } = usePosts();
   const { hashtag } = useParams();
-
 
   return (
     <>
@@ -21,11 +15,7 @@ export const HashtagPage = () => {
       <MainContainer>
         <Content>
           <Title>{`# ${hashtag}`}</Title>
-          <Posts
-            dataPosts={dataPosts}
-            error={error}
-            loading={loading}
-            hashtag={hashtag} />
+          <Posts hashtag={hashtag} />
         </Content>
         <HashTags />
       </MainContainer>

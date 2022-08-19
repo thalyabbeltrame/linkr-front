@@ -42,9 +42,5 @@ export const RepostModal = ({ id, isOpen, setIsOpen }) => {
       cancelMessage={'No, cancel'}
       confirmMessage={'Yes, share'}
     />
-  )
-
-
-
+  );
 };
-

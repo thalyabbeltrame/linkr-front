@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Button, Form, Input } from './CustomStyles';
-import { HandleButtonContent } from './HandleButtonContent';
+import { alert } from '../../Helpers/alert';
 import { signUpRequest } from '../../services/apiRequests';
 import { isEmpty } from '../../utils/isEmpty';
-import { alert } from '../../Helpers/alert';
+import { Button, Form, Input } from './CustomStyles';
+import { HandleButtonContent } from './HandleButtonContent';
 
 export const SignUpForm = () => {
   let navigate = useNavigate();

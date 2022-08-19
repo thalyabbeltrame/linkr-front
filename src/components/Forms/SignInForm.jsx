@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, Input } from './CustomStyles';
-import { HandleButtonContent } from './HandleButtonContent';
+import { alert } from '../../Helpers/alert';
 import { useAuth } from '../../providers/AuthProvider';
 import { api } from '../../services/api';
 import { signInRequest } from '../../services/apiRequests';
 import { isEmpty } from '../../utils/isEmpty';
-import { alert } from '../../Helpers/alert';
+import { Button, Form, Input } from './CustomStyles';
+import { HandleButtonContent } from './HandleButtonContent';
 
 export const SignInForm = () => {
   const { setUserData } = useAuth();

@@ -17,8 +17,8 @@ export const PostsProvider = ({ children }) => {
         setHasUpdate,
         user,
         setUser,
-        status, 
-        setStatus
+        status,
+        setStatus,
       }}
     >
       {children}

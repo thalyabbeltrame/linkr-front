@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { api } from '../services/api';
 import { alert } from '../Helpers/alert';
+import { api } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -19,8 +19,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = (sessionExpired = true) => {
-    if(sessionExpired) {
-      alert('error', 'Your session expired', 'Log in again!')
+    if (sessionExpired) {
+      alert('error', 'Your session expired', 'Log in again!');
     }
     setUserData(null);
     localStorage.removeItem('LinkrAuthUser');

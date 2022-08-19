@@ -37,8 +37,9 @@ export const Likes = ({ id, likes, is_repost }) => {
     } else {
       return numberOfLikes === 1
         ? `${users[0].username}`
-        : `${users[0].username}, ${users[1].username} and other ${numberOfLikes - 2
-        } people`;
+        : `${users[0].username}, ${users[1].username} and other ${
+            numberOfLikes - 2
+          } people`;
     }
   };
   const tooltipMessage = buildTooltipMessage(likes);

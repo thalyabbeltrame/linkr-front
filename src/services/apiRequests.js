@@ -71,6 +71,6 @@ export const createRepost = async (id) => {
   return api.post(`/repost/${id}`);
 };
 
-export const getNewPostsRequest = async (postId) => {
-  return api.get(`/newPosts/${postId}`);
+export const getNewPostsRequest = async (timestamp) => {
+  return api.get(`/newPosts/${timestamp}`);
 };

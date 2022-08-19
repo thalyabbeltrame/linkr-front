@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { RiPencilFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,10 @@ import { CommentsCount } from './CommentsCount';
 import { DeleteModal } from './DeleteModal';
 import { Likes } from './Likes';
 import { LinkPreview } from './LinkPreview';
+import { RepostComponent } from './RepostComponent';
 import { RepostCount } from './RepostCount';
 import { RepostModal } from './RepostModal';
 import { TextTitle } from './Text';
-import { RepostComponent } from './RepostComponent';
 
 export const Post = ({
   id,
@@ -38,14 +38,20 @@ export const Post = ({
   const [myRepost, setMyRepost] = useState(false);
   const { userData } = useAuth();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (user_id === userData.id) {
       setMyRepost(true);
     }
   }, [id]);
+
   return (
     <>
-      {is_repost === true ? <RepostComponent reposted_by={reposted_by} myRepost={myRepost} /> : ''}
+      {is_repost === true ? (
+        <RepostComponent reposted_by={reposted_by} myRepost={myRepost} />
+      ) : (
+        ''
+      )}
       <DeleteModal id={id} isOpen={modalIsOpen} setIsOpen={setIsOpen} />
       <RepostModal id={id} isOpen={isRepostOpen} setIsOpen={setIsRepostOpen} />
 
@@ -74,13 +80,17 @@ export const Post = ({
                 <div>
                   <RiPencilFill
                     style={{ cursor: 'pointer' }}
-                    onClick={() => { is_repost ? null : setIsEditing(!isEditing) }}
+                    onClick={() => {
+                      is_repost ? null : setIsEditing(!isEditing);
+                    }}
                     fontSize='1.3em'
                     color='#FFFFFF'
                   />
                   <IoMdTrash
                     style={{ cursor: 'pointer' }}
-                    onClick={() => { is_repost ? null : setIsOpen((e) => !e) }}
+                    onClick={() => {
+                      is_repost ? null : setIsOpen((e) => !e);
+                    }}
                     fontSize='1.3em'
                     color='#FFFFFF'
                   />
